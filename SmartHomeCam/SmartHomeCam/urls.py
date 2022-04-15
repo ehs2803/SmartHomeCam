@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include("mainpage.urls")),
     path('account/', include("account.urls")),
     path('mypage/', include("mypage.urls")),
+    path('homecam/', include("homecam.urls")),
 ]
