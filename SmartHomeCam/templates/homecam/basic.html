@@ -1,10 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Basic mode</title>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        #loadingbtn{
+            //display: none;
+            width: 500px;
+            height: 500px;
+            align-content: center;
+        }
+    </style>
 </head>
 <body>
-
+<img src = "{% url 'video_basic' %}">
+<button class="btn btn-primary" id="loadingbtn" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  Loading...
+</button>
 </body>
 </html>

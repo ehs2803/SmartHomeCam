@@ -57,6 +57,7 @@ USE_TZ = False
 
 ==================================================================================
 2022.04.15.금
+- smartsupervisor -> smarthomecam 버전으로 바꾸기
 - homecam app 만들기
 - index.html 만들기 완성. ppt로 디자인 만들어서 이미지 버튼 만들기.
 - basic.html, pet.html 만들어서 매핑함.
