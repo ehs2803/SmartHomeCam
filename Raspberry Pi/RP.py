@@ -18,8 +18,8 @@ capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)  # 세로
 
 while True:
     # 소켓 객체 생성
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    #client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 서버와 연결
     client_socket.connect((ip, port))
     print("연결 성공")

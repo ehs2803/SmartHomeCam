@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Basic mode</title>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/mainpage/styles.css' %}" rel="stylesheet"/>
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
-        #loadingbtn{
-            //display: none;
+        #loadingbtn {
+        / / display: none;
             width: 500px;
             height: 500px;
             align-content: center;
@@ -15,10 +19,74 @@
     </style>
 </head>
 <body>
-<img src = "{% url 'video_basic' %}">
-<button class="btn btn-primary" id="loadingbtn" type="button" disabled>
-  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-  Loading...
-</button>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container px-5">
+        <a class="navbar-brand" href="/">Smart Supervisor</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                {% if user %}
+                    <li class="nav-item"><a class="nav-link" href="mypage">mypage</a></li>
+                    <li class="nav-item"><a class="nav-link" href="account/logout">logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="account/signup">Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="account">Log In</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div align="center">
+    <img src="{% url 'video_basic' %}">
+    <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading...
+    </button>
+</div>
+
+
 </body>
 </html>
+<script>
+    function alarm(){
+        var returnValue = confirm('fall down 발견');
+        if(returnValue){
+        $("#cctv1").css("background", "yellow");
+        }
+    }
+
+    setInterval(function () {
+        $.ajax({
+            url: '/homecam/ajax/',
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': 'normal message'},
+            success: function (data) {
+                console.log(data);
+                if (data['send_data'] == "1") {
+                    //$("#cctv1").css("background", "red");
+                    setTimeout(alarm,100);
+                }
+            }
+        })
+    }, 1000);
+    setInterval(function () {
+        $.ajax({
+            url: '/homecam/ajax2/',
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': 'normal message'},
+            success: function (data) {
+                console.log(data);
+                if (data['send_data'] == "1") {
+                    //$("#cctv1").css("background", "red");
+                    setTimeout(alarm,100);
+                }
+            }
+        })
+    }, 1000);
+</script>
