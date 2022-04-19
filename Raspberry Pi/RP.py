@@ -23,6 +23,16 @@ while True:
     # 서버와 연결
     client_socket.connect((ip, port))
     print("연결 성공")
+    # 메시지는 hello로 보낸다.
+    msg = 'temp';
+    # 메시지를 바이너리(byte)형식으로 변환한다.
+    data = msg.encode();
+    # 메시지 길이를 구한다.
+    length = len(data);
+    # server로 리틀 엔디언 형식으로 데이터 길이를 전송한다.
+    client_socket.sendall(length.to_bytes(4, byteorder="little"));
+    # 데이터를 전송한다.
+    client_socket.sendall(data);
 
     # 메시지 수신
     while True:

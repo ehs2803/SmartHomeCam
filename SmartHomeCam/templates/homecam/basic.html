@@ -41,11 +41,16 @@
 </nav>
 
 <div align="center">
-    <img src="{% url 'video_basic' %}">
+    <img src="{% url 'video_basic' user.username %}">
     <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Loading...
     </button>
+</div>
+<div align="center">
+    <button>녹화시작</button>
+    <button>화면캡처</button>
+    <button>연결끓기</button>
 </div>
 
 
@@ -59,21 +64,26 @@
         }
     }
 
+    var un = '{{user.username}}';
+
     setInterval(function () {
         $.ajax({
             url: '/homecam/ajax/',
             type: "POST",
             dataType: "json",
-            data: {'send_data': 'normal message'},
+            data: {'send_data': un},
             success: function (data) {
                 console.log(data);
                 if (data['send_data'] == "1") {
-                    //$("#cctv1").css("background", "red");
-                    setTimeout(alarm,100);
+                    $("#loadingbtn").css("display", "none");
+                }
+                else{
+                    $("#loadingbtn").css("display", "inline");
                 }
             }
         })
     }, 1000);
+
     setInterval(function () {
         $.ajax({
             url: '/homecam/ajax2/',
