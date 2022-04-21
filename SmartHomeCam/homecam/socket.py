@@ -1,6 +1,8 @@
 import socket
 
 from homecam.frame import Frame
+from homecam.migrations.client import Client
+
 
 class VideoCamera(object):
     def __new__(cls, *args, **kwargs):
@@ -8,12 +10,6 @@ class VideoCamera(object):
             print("__new__ is called\n")
             cls._instance = super().__new__(cls)  # Foo 클래스의 객체를 생성하고 Foo._instance로 바인딩
         return cls._instance                      # Foo._instance를 리턴
-    '''
-    def __new__(cls):
-      if not hasattr(cls, 'instance'):
-        cls.instance = super(Singleton, cls).__new__(cls)
-      return cls.instance
-    '''
 
     def __init__(self):
         self.ip='127.0.0.1'
@@ -37,6 +33,14 @@ class VideoCamera(object):
             data = client_socket.recv(length);
             # 수신된 데이터를 str형식으로 decode한다.
             msg = data.decode();
-            conn = Frame(client_socket)
-            self.threads[msg]=conn
+
+            if self.threads.get(msg):
+                client_ = self.threads[msg]
+                client_.add_client(client_socket)
+                self.threads[msg] = client_
+                print('#############################')
+            else:
+                client = Client(msg, client_socket)
+                self.threads[msg] = client
+
 

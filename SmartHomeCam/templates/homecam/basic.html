@@ -16,6 +16,9 @@
             height: 500px;
             align-content: center;
         }
+        .live{
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -39,9 +42,10 @@
         </div>
     </div>
 </nav>
-
+<br>
+<br><br>
 <div align="center">
-    <img src="{% url 'video_basic' user.username %}">
+    <img class="live" src="{% url 'video_basic' user.username %}">
     <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Loading...
@@ -50,21 +54,38 @@
 <div align="center">
     <button>녹화시작</button>
     <button>화면캡처</button>
-    <button>연결끓기</button>
+    <button onclick="disconnect()">연결끓기</button>
 </div>
+{{ cnt }}
 
 
 </body>
 </html>
 <script>
-    function alarm(){
-        var returnValue = confirm('fall down 발견');
-        if(returnValue){
-        $("#cctv1").css("background", "yellow");
-        }
-    }
 
+</script>
+<script>
     var un = '{{user.username}}';
+
+    function disconnect(){
+        $.ajax({
+            url: "/homecam/ajax/disconnect/" + un + "/1/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+                if (result) {
+                    alert("저장되었습니다.");
+                } else {
+                    alert("잠시 후에 시도해주세요.");
+                }
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+
+    }
 
     setInterval(function () {
         $.ajax({
@@ -76,27 +97,15 @@
                 console.log(data);
                 if (data['send_data'] == "1") {
                     $("#loadingbtn").css("display", "none");
+                    $(".live").css("display", "inline");
                 }
                 else{
+                    $(".live").css("display", "none");
                     $("#loadingbtn").css("display", "inline");
                 }
             }
         })
     }, 1000);
 
-    setInterval(function () {
-        $.ajax({
-            url: '/homecam/ajax2/',
-            type: "POST",
-            dataType: "json",
-            data: {'send_data': 'normal message'},
-            success: function (data) {
-                console.log(data);
-                if (data['send_data'] == "1") {
-                    //$("#cctv1").css("background", "red");
-                    setTimeout(alarm,100);
-                }
-            }
-        })
-    }, 1000);
+
 </script>
