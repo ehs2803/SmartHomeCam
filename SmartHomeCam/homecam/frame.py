@@ -30,7 +30,7 @@ class Frame:
             # 프레임 데이터 분할
             frame_data = self.data_buffer[:frame_size]
             self.data_buffer = self.data_buffer[frame_size:]
-            print("수신 프레임 크기 : {} bytes".format(frame_size))
+            #print("수신 프레임 크기 : {} bytes".format(frame_size))
             # loads : 직렬화된 데이터를 역직렬화
             # 역직렬화(de-serialization) : 직렬화된 파일이나 바이트 객체를 원래의 데이터로 복원하는 것
             frame = pickle.loads(frame_data)

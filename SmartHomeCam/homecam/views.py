@@ -27,16 +27,21 @@ def landing(request):
 def basic(request):
     user = None
     connectNum = None
+    idList = []
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
         if CAMERA.threads.get(user.username):
             connectNum = CAMERA.threads.get(user.username).cnt
+            for key in CAMERA.threads[user.username].connections:
+                idList.append(key)
         else:
             connectNum = 0
 
+    print(idList)
     context = {
         'user': user,
-        'cnt' : connectNum
+        'cnt' : connectNum,
+        'idList' : idList,
     }
     return render(request, "homecam/basic.html", context=context)
 

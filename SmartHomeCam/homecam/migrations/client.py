@@ -31,7 +31,7 @@ class Client:
 
     def disconnect_socket(self, id):
         self.connections[id].disconnet()
-        #del self.connections[id]
+        del self.connections[id]
         #del self.threads[id]
         self.cnt-=1
         print(111111111111111111111111111)

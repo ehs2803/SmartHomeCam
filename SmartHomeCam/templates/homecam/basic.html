@@ -45,7 +45,7 @@
 <br>
 <br><br>
 <div align="center">
-    <img class="live" src="{% url 'video_basic' user.username %}">
+    <img id="livecam" class="live" src="{% url 'video_basic' user.username %}">
     <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Loading...
@@ -53,7 +53,7 @@
 </div>
 <div align="center">
     <button>녹화시작</button>
-    <button>화면캡처</button>
+    <button onclick="imageSrcChangeTest()">화면캡처</button>
     <button onclick="disconnect()">연결끓기</button>
 </div>
 {{ cnt }}
@@ -67,6 +67,9 @@
 <script>
     var un = '{{user.username}}';
 
+    function imageSrcChangeTest(){
+        document.getElementById("livecam").src = "{% url 'video_basic' 'tempt5' %}";
+    }
     function disconnect(){
         $.ajax({
             url: "/homecam/ajax/disconnect/" + un + "/1/",
