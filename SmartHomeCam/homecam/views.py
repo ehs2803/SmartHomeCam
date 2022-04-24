@@ -45,19 +45,19 @@ def basic(request):
     }
     return render(request, "homecam/basic.html", context=context)
 
-def gen_basic(camera, username):
+def gen_basic(camera, username, id):
     while True:
         if camera.threads.get(username):
             break
     client = camera.threads[username]
     while True:
-        frame = client.connections['1'].get_frame()
+        frame = client.connections[id].get_frame()
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 
-def video_basic(request, username):
-    return StreamingHttpResponse(gen_basic(CAMERA, username),
+def video_basic(request, username, id):
+    return StreamingHttpResponse(gen_basic(CAMERA, username, id),
                     content_type='multipart/x-mixed-replace; boundary=frame')
 
 

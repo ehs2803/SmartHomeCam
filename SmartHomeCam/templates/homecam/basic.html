@@ -16,7 +16,8 @@
             height: 500px;
             align-content: center;
         }
-        .live{
+
+        .live {
             display: none;
         }
     </style>
@@ -44,8 +45,11 @@
 </nav>
 <br>
 <br><br>
+<div id="div_btn">
+
+</div>
 <div align="center">
-    <img id="livecam" class="live" src="{% url 'video_basic' user.username %}">
+    <img id="livecam" class="live" src="{% url 'video_basic' user.username '1' %}">
     <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Loading...
@@ -56,21 +60,50 @@
     <button onclick="imageSrcChangeTest()">화면캡처</button>
     <button onclick="disconnect()">연결끓기</button>
 </div>
-{{ cnt }}
-
 
 </body>
 </html>
 <script>
+    $(document).ready(function () {
+        var str_html = '';
+        var cnt = {{ cnt }};
+        console.log(typeof cnt)
+        if(cnt==0){
+            $('#div_btn').html("연결된 기종이 없습니다.");
+        }
+        /*
+        // 버튼을 10개 추가한다.
+        for (var i = 0; i < cnt; i++) {
+            var html_btn = '<button type="button" id="Btn" style="width:100px">버튼{}</button>';
+            html_btn = html_btn.replace('{}', i);
+            str_html = str_html + html_btn + '\n';
+        }
 
+        $('#div_btn').html(str_html);
+
+        // 버튼을 동적연결한다.
+        $(document).on("click", "#Btn", function () {
+            var idx = $(this).index();
+            var temp1 = un;
+            var temp2 = String(idx);
+            var str = "{% url 'video_basic' '${temp1}' '{1}' %}";
+            str = String.format("{% url 'video_basic' '%s' '%s' %}", un, idx);
+            console.log(str);
+            document.getElementById("livecam").src = str;
+        });
+        */
+
+    });
 </script>
 <script>
     var un = '{{user.username}}';
 
-    function imageSrcChangeTest(){
-        document.getElementById("livecam").src = "{% url 'video_basic' 'tempt5' %}";
+    function imageSrcChangeTest() {
+        document.getElementById("livecam").src = "{% url 'video_basic' 'tempt5' '1' %}";
+
     }
-    function disconnect(){
+
+    function disconnect() {
         $.ajax({
             url: "/homecam/ajax/disconnect/" + un + "/1/",
             type: "POST",
@@ -101,8 +134,7 @@
                 if (data['send_data'] == "1") {
                     $("#loadingbtn").css("display", "none");
                     $(".live").css("display", "inline");
-                }
-                else{
+                } else {
                     $(".live").css("display", "none");
                     $("#loadingbtn").css("display", "inline");
                 }
