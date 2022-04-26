@@ -27,16 +27,18 @@ def landing(request):
 def basic(request):
     user = None
     connectNum = None
-    idList = []
+    idList = ''
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
         if CAMERA.threads.get(user.username):
             connectNum = CAMERA.threads.get(user.username).cnt
             for key in CAMERA.threads[user.username].connections:
-                idList.append(key)
+                idList+=key
+                idList+=' '
         else:
             connectNum = 0
-
+    idList='1 2 3 4 5 '
+    idList=''
     print(idList)
     context = {
         'user': user,
@@ -44,6 +46,16 @@ def basic(request):
         'idList' : idList,
     }
     return render(request, "homecam/basic.html", context=context)
+
+def basic_livecam(request, username, id):
+    user = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+
+    context = {
+        'user': user,
+    }
+    return render(request, "homecam/basic_livecam.html", context=context)
 
 def gen_basic(camera, username, id):
     while True:

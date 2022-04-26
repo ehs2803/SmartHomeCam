@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div align="center">
+    <img id="livecam" class="live" src="{% url 'video_basic' user.username '1' %}">
+    <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading...
+    </button>
+</div>
+<div align="center">
+    <button>녹화시작</button>
+    <button onclick="imageSrcChangeTest()">화면캡처</button>
+    <button onclick="disconnect()">연결끓기</button>
+</div>
+
+</body>
+</html>
+<script>
+        var un = '{{user.username}}';
+        function disconnect() {
+        $.ajax({
+            url: "/homecam/ajax/disconnect/" + un + "/1/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+                if (result) {
+                    alert("저장되었습니다.");
+                } else {
+                    alert("잠시 후에 시도해주세요.");
+                }
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+
+    }
+
+    setInterval(function () {
+        $.ajax({
+            url: '/homecam/ajax/',
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (data) {
+                console.log(data);
+                if (data['send_data'] == "1") {
+                    $("#loadingbtn").css("display", "none");
+                    $(".live").css("display", "inline");
+                } else {
+                    $(".live").css("display", "none");
+                    $("#loadingbtn").css("display", "inline");
+                }
+            }
+        })
+    }, 1000);
+</script>
