@@ -45,20 +45,8 @@
 </nav>
 <br>
 <br><br>
-<div id="div_btn">
+<div align="center" id="div_btn">
 
-</div>
-<div align="center">
-    <img id="livecam" class="live" src="{% url 'video_basic' user.username '1' %}">
-    <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        Loading...
-    </button>
-</div>
-<div align="center">
-    <button>녹화시작</button>
-    <button onclick="imageSrcChangeTest()">화면캡처</button>
-    <button onclick="disconnect()">연결끓기</button>
 </div>
 
 </body>
@@ -66,12 +54,14 @@
 <script>
     var un = '{{user.username}}';
     var idlist = '{{ idList }}';
+    idlist.trim();
+    console.log(idlist);
     var idsplit = idlist.split(' ');
 
     $(document).ready(function () {
         var str_html = '';
 
-        if (true||idsplit.length == 0) {
+        if (idsplit.length == 0) {
             $('#div_btn').html("연결된 기종이 없습니다.------------");
             document.getElementById("livecam").style.visibility='hidden';
             console.log('-------');

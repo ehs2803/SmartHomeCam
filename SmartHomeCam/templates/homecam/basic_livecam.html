@@ -1,15 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/mainpage/styles.css' %}" rel="stylesheet"/>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        #loadingbtn {
+        / / display: none;
+            width: 500px;
+            height: 500px;
+            align-content: center;
+        }
+
+        .live {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
 <div align="center">
-    <img id="livecam" class="live" src="{% url 'video_basic' user.username '1' %}">
+    <img id="livecam" class="live" src="{% url 'video_basic' user.username id %}">
     <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Loading...
@@ -24,8 +40,11 @@
 </body>
 </html>
 <script>
-        var un = '{{user.username}}';
-        function disconnect() {
+    var un = '{{user.username}}';
+    var id = '{{ id }}';
+
+
+    function disconnect() {
         $.ajax({
             url: "/homecam/ajax/disconnect/" + un + "/1/",
             type: "POST",

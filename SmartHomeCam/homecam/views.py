@@ -38,7 +38,6 @@ def basic(request):
         else:
             connectNum = 0
     idList='1 2 3 4 5 '
-    idList=''
     print(idList)
     context = {
         'user': user,
@@ -51,9 +50,10 @@ def basic_livecam(request, username, id):
     user = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-
+    camid = id
     context = {
         'user': user,
+        'id' : camid,
     }
     return render(request, "homecam/basic_livecam.html", context=context)
 
