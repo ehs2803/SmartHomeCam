@@ -94,13 +94,15 @@ def video_pet(request):
                    content_type='multipart/x-mixed-replace; boundary=frame')
 
 @csrf_exempt
-def ajax_method(request):
-    sendmessage = "111"
+def ajax_connect_config(request, username, id):
+    sendmessage = ""
     receive_message = request.POST.get('send_data')
-    if CAMERA.threads.get(receive_message):
-        print(CAMERA.threads.get(receive_message).cnt)
-        if CAMERA.threads.get(receive_message).cnt>0:
-            sendmessage="1"
+    if CAMERA.threads.get(username):
+        if CAMERA.threads.get(username).cnt>0:
+            if CAMERA.threads.get(username).connections.get(id):
+                sendmessage="1"
+            else:
+                sendmessage="0"
         else:
             sendmessage="0"
     else:
@@ -113,4 +115,14 @@ def ajax_disconnect(request, username, id):
     client = CAMERA.threads.get(username)
     client.disconnect_socket(id)
     send_message = {'send_data' : '1'}
-    return JsonResponse(send_message) # 라즈베리파이 연결 여부
+    return JsonResponse(send_message)
+
+@csrf_exempt
+def ajax_capture(request, username, id):
+    send_message = {'send_data' : '1'}
+    return JsonResponse(send_message)
+
+@csrf_exempt
+def ajax_video_recording(request, username, id):
+    send_message = {'send_data' : '1'}
+    return JsonResponse(send_message)

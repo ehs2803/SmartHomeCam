@@ -32,8 +32,8 @@
     </button>
 </div>
 <div align="center">
-    <button>녹화시작</button>
-    <button onclick="imageSrcChangeTest()">화면캡처</button>
+    <button onclick="videorecording()">녹화시작</button>
+    <button onclick="capture()">화면캡처</button>
     <button onclick="disconnect()">연결끓기</button>
 </div>
 
@@ -43,10 +43,9 @@
     var un = '{{user.username}}';
     var id = '{{ id }}';
 
-
-    function disconnect() {
+        function videorecording() {
         $.ajax({
-            url: "/homecam/ajax/disconnect/" + un + "/1/",
+            url: "/homecam/ajax/videoRC/" + un + "/"+ id+"/",
             type: "POST",
             dataType: "json",
             data: {'send_data': un},
@@ -61,12 +60,49 @@
                 alert("에러 발생");
             }
         })
+    }
 
+    function capture() {
+        $.ajax({
+            url: "/homecam/ajax/capture/" + un + "/"+ id+"/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+                if (result) {
+                    alert("저장되었습니다.");
+                } else {
+                    alert("잠시 후에 시도해주세요.");
+                }
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+    }
+
+    function disconnect() {
+        $.ajax({
+            url: "/homecam/ajax/disconnect/" + un + "/"+ id+"/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+                if (result) {
+                    alert("저장되었습니다.");
+                } else {
+                    alert("잠시 후에 시도해주세요.");
+                }
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
     }
 
     setInterval(function () {
         $.ajax({
-            url: '/homecam/ajax/',
+            url: '/homecam/ajax/config/'+ un + "/"+ id +"/",
             type: "POST",
             dataType: "json",
             data: {'send_data': un},

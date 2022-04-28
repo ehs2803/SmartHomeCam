@@ -1,7 +1,6 @@
 import socket
 
-from homecam.frame import Frame
-from homecam.migrations.client import Client
+from homecam.client import Client
 
 
 class VideoCamera(object):

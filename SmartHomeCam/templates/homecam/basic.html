@@ -85,6 +85,7 @@
 
     });
 </script>
+
 <script>
 
 
@@ -93,44 +94,6 @@
 
     }
 
-    function disconnect() {
-        $.ajax({
-            url: "/homecam/ajax/disconnect/" + un + "/1/",
-            type: "POST",
-            dataType: "json",
-            data: {'send_data': un},
-            success: function (result) {
-                if (result) {
-                    alert("저장되었습니다.");
-                } else {
-                    alert("잠시 후에 시도해주세요.");
-                }
-            },
-            error: function () {
-                alert("에러 발생");
-            }
-        })
-
-    }
-
-    setInterval(function () {
-        $.ajax({
-            url: '/homecam/ajax/',
-            type: "POST",
-            dataType: "json",
-            data: {'send_data': un},
-            success: function (data) {
-                console.log(data);
-                if (data['send_data'] == "1") {
-                    $("#loadingbtn").css("display", "none");
-                    $(".live").css("display", "inline");
-                } else {
-                    $(".live").css("display", "none");
-                    $("#loadingbtn").css("display", "inline");
-                }
-            }
-        })
-    }, 1000);
 
 
 </script>
