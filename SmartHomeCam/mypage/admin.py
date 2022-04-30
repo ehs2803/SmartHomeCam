@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from mainpage.models import Family
+
 # Register your models here.
+from mypage.models import Family
 
 admin.site.register(Family)
