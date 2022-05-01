@@ -9,7 +9,7 @@ urlpatterns = [
     path('chart/', views.chart),
     path('familyInfo/', views.family),
     path('familyInfo/<id>/', views.family_detail),
-    path('register_family/', views.register_family),
+    path('register_family/', views.register_family, name="familyregister"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -120,7 +120,16 @@
     </div>
     <div id="layoutSidenav_content">
         <main>
-
+            {{ family_member.name }}<br>
+            {{ family_member.email }}<br>
+            {{ family_member.tel }}<br>
+            <img src="{{ family_member.image1.url }}" class="card-img-top" alt="...">
+            {%  if family_member.image2 %}
+                <img src="{{ family_member.image2.url }}" class="card-img-top" alt="...">
+            {%  endif %}
+            {%  if family_member.image3 %}
+                <img src="{{ family_member.image3.url }}" class="card-img-top" alt="...">
+            {%  endif %}
 
         </main>
         <footer class="py-4 bg-light mt-auto">

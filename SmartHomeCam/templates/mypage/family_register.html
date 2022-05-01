@@ -120,7 +120,20 @@
     </div>
     <div id="layoutSidenav_content">
         <main>
+            <form method="POST" action="{% url 'familyregister' %}" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Choose your favorite monster</legend>
 
+                    {% csrf_token %}
+                    name<input type="text" name="name"><br>
+                    email<input type="email" name="email"><br>
+                    tel <input type="text" name="tel"><br>
+                    image1<input type="file" name="image1"><br>
+                    image2<input type="file" name="image2" accept="image/*" multiple><br>
+                    image3<input type="file" name="image3" accept="image/*" multiple><br>
+                    <input type="submit" value="추가하기"><br>
+                </fieldset>
+            </form>
         </main>
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
@@ -140,8 +153,6 @@
         crossorigin="anonymous"></script>
 <script src="{% static 'js/mypage/mypage.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<script src="assets/demo/chart-area-demo.js"></script>
-<script src="assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="{% static 'js/mypage/datatables-simple-demo.js' %}"></script>
 </body>
