@@ -140,3 +140,4 @@ if request.session.get('id'):
 - 가족멤버 info 사진 크기 조절
 - 가족멤버 등록 form 페이지 일부 디자인
 - mypate html에서 navbar.html, footer.html 분리
+- 가족멤버 상세페이지에서 부트스트랩 적용해서 멤버사진 버튼으로 옆으로 슬라이드 형태로 넘길 수 있음.
