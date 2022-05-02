@@ -62,7 +62,7 @@ def register_family(request):
             pass
 
         try:
-            image3 = request.FILES['image4']
+            image3 = request.FILES['image3']
         except:
             pass
 

@@ -1,18 +1,3 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <title>Dashboard - SB Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
-    <link href="{% static 'css/mypage/mypage.css' %}" rel="stylesheet"/>
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-</head>
-<body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="index.html">smart supervisor</a>
@@ -58,8 +43,8 @@
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="familyInfo">가족 등록 현황</a>
-                            <a class="nav-link" href="register_family">가족 등록</a>
+                            <a class="nav-link" href="/mypage/familyInfo">가족 등록 현황</a>
+                            <a class="nav-link" href="{% url 'familyregister' %}">가족 등록</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
@@ -118,30 +103,3 @@
             </div>
         </nav>
     </div>
-    <div id="layoutSidenav_content">
-        <main>
-            {{ family_member.name }}<br>
-            {{ family_member.email }}<br>
-            {{ family_member.tel }}<br>
-            <img src="{{ family_member.image1.url }}" class="card-img-top" alt="...">
-            {%  if family_member.image2 %}
-                <img src="{{ family_member.image2.url }}" class="card-img-top" alt="...">
-            {%  endif %}
-            {%  if family_member.image3 %}
-                <img src="{{ family_member.image3.url }}" class="card-img-top" alt="...">
-            {%  endif %}
-
-        </main>
-{% include "mypage/footer.html" %}
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-<script src="{% static 'js/mypage/mypage.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<script src="assets/demo/chart-area-demo.js"></script>
-<script src="assets/demo/chart-bar-demo.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-<script src="{% static 'js/mypage/datatables-simple-demo.js' %}"></script>
-</body>
-</html>
