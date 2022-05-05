@@ -10,6 +10,8 @@ urlpatterns = [
     path('familyInfo/', views.family),
     path('familyInfo/<id>/', views.family_detail),
     path('register_family/', views.register_family, name="familyregister"),
+    path('family/update/<id>/', views.update_family, name="familyupdate"),
+    path('family/delete/<id>/', views.delete_family, name="familydelete"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

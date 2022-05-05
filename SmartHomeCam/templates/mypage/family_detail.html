@@ -160,10 +160,22 @@
                 </button>
             </div>
 
-            {{ family_member.name }}<br>
-            {{ family_member.email }}<br>
-            {{ family_member.tel }}<br>
+            가족 멤버 이름 : {{ family_member.name }}<br>
+            가족 멤버 이메일 :
+            {% if family_member.email %}
+                {{ family_member.email }}<br>
+            {% else %}
+                이메일을 등록하지 않았습니다.<br>
+            {%  endif %}
+            가족 멤버 전화번호 :
+            {% if family_member.tel %}
+                {{ family_member.tel }}<br>
+            {% else %}
+                전화번호를 등록하지 않았습니다.<br>
+            {%  endif %}
 
+            <a href="/mypage/family/update/{{ family_member.fid }}/" class="btn btn-primary">정보수정하기</a>
+            <a href="/mypage/family/delete/{{ family_member.fid }}/" class="btn btn-primary">삭제하기</a>
 
         </main>
         {% include "mypage/footer.html" %}
