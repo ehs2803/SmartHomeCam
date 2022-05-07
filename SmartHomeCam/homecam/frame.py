@@ -2,6 +2,9 @@ import cv2
 import struct
 import pickle
 
+from homecam.algorithm.basic import detect_person
+
+
 class Frame:
     def __init__(self, client_socket):
         self.client_socket = client_socket
@@ -39,8 +42,10 @@ class Frame:
             frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
             # frame = preproc2(frame)
             # frame = detect_human_algorithms(frame, init_args_user, self.rpIndex)
+            frame = detect_person(frame)
 
             ret, frame = cv2.imencode('.jpg', frame)
+
             self.imageFrame =  frame.tobytes()
 
     def get_frame(self):

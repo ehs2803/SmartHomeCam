@@ -13,8 +13,8 @@ cam = cv2.VideoCapture(0)
 color_green = (0,255,0)
 line_width = 3
 while True:
-    ret_val, img = cam.read()
-    image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    ret_val, image = cam.read()
+    #image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     (h, w) = image.shape[:2]
     blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), [104., 117., 123.], False, False)
     net.setInput(blob)

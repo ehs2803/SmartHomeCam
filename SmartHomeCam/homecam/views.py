@@ -5,6 +5,7 @@ from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from homecam.algorithm.basic import detect_person
 from homecam.socket import VideoCamera
 
 CAMERA  = None
@@ -38,6 +39,7 @@ def basic(request):
         else:
             connectNum = 0
     idList='1 2 3 4 5 '
+
     print(idList)
     context = {
         'user': user,
