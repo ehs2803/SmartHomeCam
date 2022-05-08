@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'account',
     'mainpage',
     'mypage',
+    'homecam',
 ]
 
 MIDDLEWARE = [

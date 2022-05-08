@@ -5,6 +5,7 @@ from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from account.models import AuthUser
 from homecam.algorithm.basic import detect_person
 from homecam.socket import VideoCamera
 
@@ -121,7 +122,10 @@ def ajax_disconnect(request, username, id):
 
 @csrf_exempt
 def ajax_capture(request, username, id):
-    send_message = {'send_data' : '1'}
+    user = AuthUser.objects.get(pk=request.session.get('id'))
+    client = CAMERA.threads[username]
+    check = client.connections[id].capture_picture(user)
+    send_message = {'send_data': '1'}
     return JsonResponse(send_message)
 
 @csrf_exempt

@@ -1,8 +1,17 @@
+import time
+
+from PIL import Image
+from django.core.files import File
 import cv2
 import struct
 import pickle
+import datetime
+from django.core.files.base import ContentFile
+from django.core.files.images import ImageFile
 
+from account.models import AuthUser
 from homecam.algorithm.basic import detect_person
+from homecam.models import CapturePicture
 
 
 class Frame:
@@ -11,6 +20,7 @@ class Frame:
         self.data_buffer = b""
         self.data_size = struct.calcsize("L")
         self.imageFrame = None
+        self.imagesave = None
         self.check=False
 
     def detect_live(self):
@@ -42,11 +52,25 @@ class Frame:
             frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
             # frame = preproc2(frame)
             # frame = detect_human_algorithms(frame, init_args_user, self.rpIndex)
-            frame = detect_person(frame)
+            #frame = detect_person(frame)
+
 
             ret, frame = cv2.imencode('.jpg', frame)
+            self.imagesave = frame
+            self.imageFrame = frame.tobytes()
 
-            self.imageFrame =  frame.tobytes()
+    def capture_picture(self, puser):
+        user = puser
+        cp = CapturePicture()
+        cp.uid = user
+        file = ContentFile(self.imagesave)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        file.name = timestamp+'.jpg'
+        cp.image = file
+        cp.time = timestamp
+        cp.save()
+
 
     def get_frame(self):
         return self.imageFrame

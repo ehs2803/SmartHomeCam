@@ -154,3 +154,18 @@ if request.session.get('id'):
 ==================================================================================
 2022.05.07.토
 - opencv-dnn 기반 얼굴인식 서버에 적용 성공. -> 다만 속도가 매우 느려짐.
+
+==================================================================================
+2022.05.08.일
+- 캡처 기능 구현함. 사용자가 캡처하기 버튼 누르면 캡처 저장됨.
+
+CREATE TABLE `capture_picture` (
+  `cpid` int NOT NULL AUTO_INCREMENT,
+  `uid` int NOT NULL,
+  `image` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `time` timestamp default current_timestamp,
+  PRIMARY KEY (`cpid`),
+  CONSTRAINT `cp_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci
+
+- 위 테이블을 데이터베이스에 만듬.
