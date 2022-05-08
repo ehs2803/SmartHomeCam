@@ -6,7 +6,6 @@ from SmartHomeCam import settings
 
 # Tensorflow Model의 경우
 net = cv2.dnn.readNetFromTensorflow("homecam/algorithm/opencv_face_detector_uint8.pb","homecam/algorithm/opencv_face_detector.pbtxt")  # 99.912%/97.502%/79.021%
-
 color_green = (0, 255, 0)
 line_width = 3
 
