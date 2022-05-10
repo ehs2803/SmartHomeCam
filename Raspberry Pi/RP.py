@@ -22,7 +22,7 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((ip, port))
 print("연결 성공")
 # 메시지는 hello로 보낸다.
-msg = 'temp';
+msg = 'temp1'
 # 메시지를 바이너리(byte)형식으로 변환한다.
 data = msg.encode();
 # 메시지 길이를 구한다.
@@ -65,8 +65,10 @@ while True:
     try:
         client_socket.sendall(struct.pack(">L", len(frame)) + frame)
     except:
-        print(1)
         break
+    data = client_socket.recv(4);
+    print(data)
+
 # 메모리를 해제
 client_socket.close()
 capture.release()

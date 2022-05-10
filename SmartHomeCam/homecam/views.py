@@ -130,5 +130,7 @@ def ajax_capture(request, username, id):
 
 @csrf_exempt
 def ajax_video_recording(request, username, id):
+    user = AuthUser.objects.get(pk=request.session.get('id'))
+    client = CAMERA.threads[username]
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)

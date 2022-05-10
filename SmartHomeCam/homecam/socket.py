@@ -31,7 +31,7 @@ class VideoCamera(object):
             # 다시 데이터를 수신한다.
             data = client_socket.recv(length);
             # 수신된 데이터를 str형식으로 decode한다.
-            msg = data.decode();
+            msg = data.decode()
 
             if self.threads.get(msg):
                 client_ = self.threads[msg]

@@ -169,3 +169,7 @@ CREATE TABLE `capture_picture` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci
 
 - 위 테이블을 데이터베이스에 만듬.
+
+==================================================================================
+2022.05.10.화
+- 녹화 기능을 위한 테이블 만듬.

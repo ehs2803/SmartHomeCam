@@ -31,6 +31,8 @@ class Frame:
             while len(self.data_buffer) < self.data_size:
                 # 데이터 수신
                 self.data_buffer += self.client_socket.recv(4096)
+
+            self.client_socket.sendall("10".encode())
             # 버퍼의 저장된 데이터 분할
             packed_data_size = self.data_buffer[:self.data_size]
             self.data_buffer = self.data_buffer[self.data_size:]
@@ -70,6 +72,10 @@ class Frame:
         cp.image = file
         cp.time = timestamp
         cp.save()
+
+    def recording_video(self, puser):
+        user = puser
+
 
 
     def get_frame(self):

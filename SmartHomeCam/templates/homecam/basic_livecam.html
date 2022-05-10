@@ -43,9 +43,9 @@
     var un = '{{user.username}}';
     var id = '{{ id }}';
 
-        function videorecording() {
+    function videorecording() {
         $.ajax({
-            url: "/homecam/ajax/videoRC/" + un + "/"+ id+"/",
+            url: "/homecam/ajax/videoRC/" + un + "/" + id + "/",
             type: "POST",
             dataType: "json",
             data: {'send_data': un},
@@ -64,7 +64,7 @@
 
     function capture() {
         $.ajax({
-            url: "/homecam/ajax/capture/" + un + "/"+ id+"/",
+            url: "/homecam/ajax/capture/" + un + "/" + id + "/",
             type: "POST",
             dataType: "json",
             data: {'send_data': un},
@@ -83,7 +83,7 @@
 
     function disconnect() {
         $.ajax({
-            url: "/homecam/ajax/disconnect/" + un + "/"+ id+"/",
+            url: "/homecam/ajax/disconnect/" + un + "/" + id + "/",
             type: "POST",
             dataType: "json",
             data: {'send_data': un},
@@ -102,7 +102,7 @@
 
     setInterval(function () {
         $.ajax({
-            url: '/homecam/ajax/config/'+ un + "/"+ id +"/",
+            url: '/homecam/ajax/config/' + un + "/" + id + "/",
             type: "POST",
             dataType: "json",
             data: {'send_data': un},
