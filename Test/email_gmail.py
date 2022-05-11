@@ -63,7 +63,7 @@ server = smtplib.SMTP('smtp.gmail.com',587)
 server.ehlo()  # say Hello
 server.starttls()  # TLS 사용시 필요
 # 로그인 한다.
-server.login('ehs2803@skuniv.ac.kr', 'Hr167722!!')
+server.login('ehs2803@skuniv.ac.kr', '')
 # MAIL(송신자) 설정
 sender = data['From'];
 # RCPT(수신자), 리스트로 보낸다.
