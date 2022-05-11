@@ -179,3 +179,4 @@ CREATE TABLE `capture_picture` (
 - yolo v4 tiny 사람, 강아지, 고양이 테스트 완료
 - aws sns - sms 보내는거 성공. 다만 리전이 서울에서 sms지원이 않되서 일본 도쿄리전으로 설정한 경우 샌드박스에 미리 전화번호를 등록해야함.
 - face recognition을 위한 landmark를 위해 face detection을 opencv말고 dlib(hog)로 테스토해봄. 
+- 파이썬 코드에서 이메일 보내는거 성공. gmail 로 송신함. 보낼 때 html 기반으로 사진 전송도 성공함.
