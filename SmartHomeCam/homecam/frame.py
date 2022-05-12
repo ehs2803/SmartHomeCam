@@ -11,7 +11,7 @@ from django.core.files.images import ImageFile
 
 from account.models import AuthUser
 from homecam.algorithm.basic import detect_person
-from homecam.models import CapturePicture
+from homecam.models import CapturePicture, RecordingVideo
 
 
 class Frame:
@@ -21,11 +21,15 @@ class Frame:
         self.data_size = struct.calcsize("L")
         self.imageFrame = None
         self.imagesave = None
-        self.check=False
+        self.check = False
+
+        self.recording_video_check = False
+        self.out = None
+        self.rvfilename = None
 
     def detect_live(self):
         while True:
-            if self.check==True:
+            if self.check == True:
                 break
             # 설정한 데이터의 크기보다 버퍼에 저장된 데이터의 크기가 작은 경우
             while len(self.data_buffer) < self.data_size:
@@ -45,7 +49,7 @@ class Frame:
             # 프레임 데이터 분할
             frame_data = self.data_buffer[:frame_size]
             self.data_buffer = self.data_buffer[frame_size:]
-            #print("수신 프레임 크기 : {} bytes".format(frame_size))
+            # print("수신 프레임 크기 : {} bytes".format(frame_size))
             # loads : 직렬화된 데이터를 역직렬화
             # 역직렬화(de-serialization) : 직렬화된 파일이나 바이트 객체를 원래의 데이터로 복원하는 것
             frame = pickle.loads(frame_data)
@@ -54,8 +58,9 @@ class Frame:
             frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
             # frame = preproc2(frame)
             # frame = detect_human_algorithms(frame, init_args_user, self.rpIndex)
-            #frame = detect_person(frame)
-
+            # frame = detect_person(frame)
+            if self.recording_video_check==True:
+                self.out.write(frame)
 
             ret, frame = cv2.imencode('.jpg', frame)
             self.imagesave = frame
@@ -68,19 +73,42 @@ class Frame:
         file = ContentFile(self.imagesave)
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-        file.name = timestamp+'.jpg'
+        file.name = timestamp + '.jpg'
         cp.image = file
         cp.time = timestamp
         cp.save()
 
     def recording_video(self, puser):
-        user = puser
+        if self.recording_video_check == False:
+            ts = time.time()
+            timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y_%m_%d_%H_%M_%S')
+            self.rvfilename = 'media/tempVideoRepository/'+timestamp + '.mp4'
+            print(self.rvfilename)
+            self.out = cv2.VideoWriter(self.rvfilename, cv2.VideoWriter_fourcc(*'DIVX'), 20, (640, 480))
+            self.recording_video_check = True
+        else:
+            self.recording_video_check = False
+            self.out.release()
+            self.out = None
+            saved_filename = self.rvfilename
+            self.rvfilename = None
+            user = puser
+            rv = RecordingVideo()
+            rv.uid = user
+            ts = time.time()
+            timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+            rv.time = timestamp
 
-
+            fp = open(saved_filename, 'rb')
+            vf = fp.read()
+            file = ContentFile(vf)
+            file.name = timestamp + '.mp4'
+            rv.video = file
+            rv.save()
 
     def get_frame(self):
         return self.imageFrame
 
     def disconnet(self):
-        self.check=True
+        self.check = True
         self.client_socket.close()

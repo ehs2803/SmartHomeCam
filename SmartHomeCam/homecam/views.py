@@ -132,5 +132,6 @@ def ajax_capture(request, username, id):
 def ajax_video_recording(request, username, id):
     user = AuthUser.objects.get(pk=request.session.get('id'))
     client = CAMERA.threads[username]
+    client.connections[id].recording_video(user)
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
