@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here
 from account.models import AuthUser
+from homecam.models import CapturePicture, RecordingVideo
 from mypage.models import Family
 
 
@@ -178,6 +179,51 @@ def delete_family(request, id):
         family_member = Family.objects.get(uid=user.id, fid=id)
     family_member.delete()
     return redirect('/mypage/familyInfo')
+
+def user_capture_pictures(request):
+    user=None
+    capture_pictures = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        capture_pictures = CapturePicture.objects.filter(uid=user.id)
+
+    context = {
+        'user': user,
+        'capture_pictures': capture_pictures,
+    }
+    return render(request, "mypage/capture_picture.html", context=context)
+
+
+def delete_capture(request, id):
+    capture_picture = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        capture_picture = CapturePicture.objects.get(cpid=id)
+    capture_picture.delete()
+    return redirect('/mypage/capturePictures')
+
+def user_recording_videos(request):
+    user = None
+    recording_videos = None
+    media = '/media/'
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        recording_videos = RecordingVideo.objects.filter(uid=user.id)
+
+    context = {
+        'user': user,
+        'recording_videos':recording_videos,
+        'mediaa' : media,
+    }
+    return render(request, "mypage/recording_video.html", context=context)
+
+def delete_video(request, id):
+    video = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        video = RecordingVideo.objects.get(rvid=id)
+    video.delete()
+    return redirect('/mypage/recordingVideos')
 
 def chart(request):
     user = None

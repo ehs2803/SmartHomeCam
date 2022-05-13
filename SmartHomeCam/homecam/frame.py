@@ -82,7 +82,7 @@ class Frame:
         if self.recording_video_check == False:
             ts = time.time()
             timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y_%m_%d_%H_%M_%S')
-            self.rvfilename = 'media/tempVideoRepository/'+timestamp + '.mp4'
+            self.rvfilename = 'media/tempVideoRepository/'+timestamp + '.avi'
             print(self.rvfilename)
             self.out = cv2.VideoWriter(self.rvfilename, cv2.VideoWriter_fourcc(*'DIVX'), 20, (640, 480))
             self.recording_video_check = True
@@ -102,7 +102,7 @@ class Frame:
             fp = open(saved_filename, 'rb')
             vf = fp.read()
             file = ContentFile(vf)
-            file.name = timestamp + '.mp4'
+            file.name = timestamp + '.avi'
             rv.video = file
             rv.save()
 

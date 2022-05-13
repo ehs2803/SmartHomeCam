@@ -1,4 +1,7 @@
+from django.conf.urls.static import static
 from django.urls import path
+
+from SmartHomeCam import settings
 from homecam import views
 
 urlpatterns = [
@@ -13,4 +16,5 @@ urlpatterns = [
     path('ajax/capture/<username>/<id>/', views.ajax_capture),
     path('ajax/videoRC/<username>/<id>/', views.ajax_video_recording),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #(?P<username>[^/]+)$

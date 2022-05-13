@@ -12,6 +12,10 @@ urlpatterns = [
     path('register_family/', views.register_family, name="familyregister"),
     path('family/update/<id>/', views.update_family, name="familyupdate"),
     path('family/delete/<id>/', views.delete_family, name="familydelete"),
+    path('capturePictures/', views.user_capture_pictures),
+    path('capture/delete/<id>/', views.delete_capture),
+    path('recordingVideos/', views.user_recording_videos),
+    path('video/delete/<id>/', views.delete_video),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
