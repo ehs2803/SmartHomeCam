@@ -2,8 +2,8 @@ import boto3
 
 client = boto3.client(
 "sns",
-aws_access_key_id="AKIAQ3PRBUWG2AG75SM6",
-aws_secret_access_key="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",
+aws_access_key_id="",
+aws_secret_access_key="",
 region_name="ap-northeast-1" # 도쿄
 )
 '''
