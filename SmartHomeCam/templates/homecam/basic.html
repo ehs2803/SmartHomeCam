@@ -61,12 +61,12 @@
     $(document).ready(function () {
         var str_html = '';
 
-        if (idsplit.length == 0) {
+        if (idsplit.length == 1) {
             $('#div_btn').html("연결된 기종이 없습니다.------------");
-            document.getElementById("livecam").style.visibility='hidden';
+            //document.getElementById("livecam").style.visibility='hidden';
             console.log('-------');
         } else {
-            for (var i = 0; i < idsplit.length; i++) {
+            for (var i = 0; i < idsplit.length-1; i++) {
                 var str_location = '';
                 str_location += '\'';
                 str_location += un;

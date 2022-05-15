@@ -15,7 +15,8 @@ from homecam.models import CapturePicture, RecordingVideo
 
 
 class Frame:
-    def __init__(self, client_socket):
+    def __init__(self, client_socket, camid):
+        self.camid = camid
         self.client_socket = client_socket
         self.data_buffer = b""
         self.data_size = struct.calcsize("L")
@@ -76,6 +77,7 @@ class Frame:
         file.name = timestamp + '.jpg'
         cp.image = file
         cp.time = timestamp
+        cp.camid = self.camid
         cp.save()
 
     def recording_video(self, puser):
@@ -104,6 +106,7 @@ class Frame:
             file = ContentFile(vf)
             file.name = timestamp + '.mp4'
             rv.video = file
+            rv.camid = self.camid
             rv.save()
 
     def get_frame(self):

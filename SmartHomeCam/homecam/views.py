@@ -39,7 +39,7 @@ def basic(request):
                 idList+=' '
         else:
             connectNum = 0
-    idList='1 2 3 4 5 '
+    idList.rstrip()
 
     print(idList)
     context = {

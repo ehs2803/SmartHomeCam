@@ -19,12 +19,12 @@
 <body class="sb-nav-fixed">
 {% include "mypage/navbar.html" %}
 <div id="layoutSidenav_content">
-aa
-
 
                 {% load static %}
         {% for rv in recording_videos %}
-            <h1>{{ rv.time }}</h1><a href="/mypage/video/delete/{{ rv.rvid }}"><button>삭제하기</button></a><br>
+            <h1>{{ rv.time }}</h1>
+            <h2>{{ rv.camid }}</h2>
+            <a href="/mypage/video/delete/{{ rv.rvid }}"><button class="btn btn-primary">삭제하기</button></a><br>
             <video src="{{ rv.video.url }}" controls>
             </video>
             <br>

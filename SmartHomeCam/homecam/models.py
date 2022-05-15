@@ -13,6 +13,7 @@ class CapturePicture(models.Model):
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
     image = models.ImageField(upload_to=user_directory_path)
     time = models.DateTimeField(blank=True, null=True)
+    camid = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -23,6 +24,7 @@ class RecordingVideo(models.Model):
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
     video = models.FileField(upload_to=user_directory_path_video_userRequest)
     time = models.DateTimeField(blank=True, null=True)
+    camid = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False

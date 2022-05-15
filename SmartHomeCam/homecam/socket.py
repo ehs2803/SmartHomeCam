@@ -32,14 +32,14 @@ class VideoCamera(object):
             data = client_socket.recv(length);
             # 수신된 데이터를 str형식으로 decode한다.
             msg = data.decode()
-
-            if self.threads.get(msg):
-                client_ = self.threads[msg]
-                client_.add_client(client_socket)
-                self.threads[msg] = client_
+            userid, rpid = msg.split(':')
+            if self.threads.get(userid):
+                client_ = self.threads[userid]
+                client_.add_client(client_socket, rpid)
+                self.threads[userid] = client_
                 print('#############################')
             else:
-                client = Client(msg, client_socket)
-                self.threads[msg] = client
+                client = Client(userid, client_socket, rpid)
+                self.threads[userid] = client
 
 

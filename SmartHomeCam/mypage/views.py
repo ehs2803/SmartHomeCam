@@ -4,16 +4,30 @@ from django.shortcuts import render, redirect
 # Create your views here
 from account.models import AuthUser
 from homecam.models import CapturePicture, RecordingVideo
+import homecam.views
+from homecam.socket import VideoCamera
 from mypage.models import Family
 
-
 def landing(request):
+    CAMERA = homecam.views.CAMERA
+    connectNum = None
+    idList = ''
     user = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-
+        if CAMERA.threads.get(user.username):
+            connectNum = CAMERA.threads.get(user.username).cnt
+            for key in CAMERA.threads[user.username].connections:
+                idList+=key
+                idList+=' '
+        else:
+            connectNum = 0
+    idList.rstrip()
+    idList='temp1 temp2 '
     context = {
-        'user': user
+        'user': user,
+        'cnt': connectNum,
+        'idList': idList,
     }
     return render(request, "mypage/mypage.html", context=context)
 
@@ -224,6 +238,16 @@ def delete_video(request, id):
         video = RecordingVideo.objects.get(rvid=id)
     video.delete()
     return redirect('/mypage/recordingVideos')
+
+def config_mode(request, id):
+    user = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+
+    context = {
+        'user': user
+    }
+    return render(request, "mypage/config.html", context=context)
 
 def chart(request):
     user = None
