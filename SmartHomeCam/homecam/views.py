@@ -155,6 +155,8 @@ def config_detect_person(request, username, id):
         client.connections[id].check_detect_person = False
     else:
         client.connections[id].check_detect_person = True
+    send_message = {'send_data' : '1'}
+    return JsonResponse(send_message)
 
 @csrf_exempt
 def config_recognition_face(request, username, id):
@@ -163,6 +165,8 @@ def config_recognition_face(request, username, id):
         client.connections[id].check_recognition_face = False
     else:
         client.connections[id].check_recognition_face = True
+    send_message = {'send_data' : '1'}
+    return JsonResponse(send_message)
 
 @csrf_exempt
 def config_detect_fire(request, username, id):
@@ -171,6 +175,8 @@ def config_detect_fire(request, username, id):
         client.connections[id].check_detect_fire = False
     else:
         client.connections[id].check_detect_fire = True
+    send_message = {'send_data' : '1'}
+    return JsonResponse(send_message)
 
 @csrf_exempt
 def config_detect_animal(request, username, id):
@@ -179,3 +185,5 @@ def config_detect_animal(request, username, id):
         client.connections[id].check_detect_animal = False
     else:
         client.connections[id].check_detect_animal = True
+    send_message = {'send_data' : '1'}
+    return JsonResponse(send_message)
