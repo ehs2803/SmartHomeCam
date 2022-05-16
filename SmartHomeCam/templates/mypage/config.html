@@ -11,17 +11,37 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
     <link href="{% static 'css/mypage/mypage.css' %}" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
 {% include "mypage/navbar.html" %}
-    <div id="layoutSidenav_content">
-        <main>
+<div id="layoutSidenav_content">
+    <main>
 
+        <h1>사람 객체 인식 설정</h1>
+        <h3 id="dp">사람 인식 기능 OFF</h3>
+        <button onclick="config_detect_person()" id="dpb">사람인식 기능 켜기</button>
+        <hr>
 
+        <h1>사람 얼굴 인식 설정</h1>
+        <h3 id="rf">사람 얼굴 인식 기능 OFF</h3>
+        <button onclick="config_recognition_face()" id="rfb">사람얼굴 인식 기능 켜기</button>
+        <hr>
 
-        </main>
-{% include "mypage/footer.html" %}
-    </div>
+        <h1>화재탐지 설정</h1>
+        <h3 id="df">화재 탐지 기능 OFF</h3>
+        <button onclick="config_detect_fire()" id="dfb">화재탐지 기능 켜기</button>
+        <hr>
+
+        <h1>반려동물 모드 설정</h1>
+        <h3 id="da">반려동물 인식 기능 OFF</h3>
+        <button onclick="config_detect_animal()" id="dab">반려동물 인식 모드 켜기</button>
+        <hr>
+
+    </main>
+    {% include "mypage/footer.html" %}
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
@@ -31,3 +51,111 @@
 <script src="{% static 'js/mypage/datatables-simple-demo.js' %}"></script>
 </body>
 </html>
+<script>
+    var un = '{{user.username}}';
+    var id = '{{ id }}';
+
+    function config_detect_person() {
+        $.ajax({
+            url: "/homecam/ajax/config/detectperson/" + un + "/" + id + "/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+]               if(result) console.log('success-detect-person');
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+    }
+
+    function config_recognition_face() {
+        $.ajax({
+            url: "/homecam/ajax/config/recognitionface/" + un + "/" + id + "/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+                if(result) console.log('success-recognition-face');
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+    }
+
+    function config_detect_fire() {
+        $.ajax({
+            url: "/homecam/ajax/config/detectfire/" + un + "/" + id + "/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+                if(result) console.log('success-detect-fire');
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+    }
+
+    function config_detect_animal() {
+        $.ajax({
+            url: "/homecam/ajax/config/detectanimal/" + un + "/" + id + "/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+                if(result) console.log('success-detect-animal');
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+    }
+
+    setInterval(function () {
+        $.ajax({
+            url: '/homecam/ajax/configs/' + un + "/" + id + "/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (data) {
+                console.log(data);
+                if(data['dp']==true){
+                    $("#dp").text('사람 인식 기능 ON');
+                    $("#dpb").text('사람 인식 기능 끄기');
+                }
+                else{
+                    $("#dp").text('사람 인식 기능 OFF');
+                    $("#dpb").text('사람 인식 기능 켜기');
+                }
+                if(data['rf']==true){
+                    $("#rf").text('얼굴 인식 기능 ON');
+                    $("#rfb").text('얼굴 인식 기능 끄기');
+                }
+                else{
+                    $("#rf").text('얼굴 인식 기능 OFF');
+                    $("#rfb").text('얼굴 인식 기능 켜기');
+                }
+                if(data['df']==true){
+                    $("#df").text('화재 탐지 기능 ON');
+                    $("#dfb").text('화재 탐지 기능 끄기');
+                }
+                else{
+                    $("#df").text('화재 탐지 기능 OFF');
+                    $("#dfb").text('화재 탐지 기능 켜기');
+                }
+                if(data['da']==true){
+                    $("#da").text('반려동물 인식 기능 ON');
+                    $("#dab").text('반려동물 인식 기능 끄기');
+                }
+                else{
+                    $("#da").text('반려동물 인식 기능 OFF');
+                    $("#dab").text('반려동물 인식 기능 켜기');
+                }
+            }
+        })
+    }, 1000);
+</script>

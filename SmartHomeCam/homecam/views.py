@@ -135,3 +135,47 @@ def ajax_video_recording(request, username, id):
     client.connections[id].recording_video(user)
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
+
+@csrf_exempt
+def config_info(request, username, id):
+    receive_message = request.POST.get('send_data')
+
+    client = CAMERA.threads[username]
+    check_deteck_person = client.connections[id].check_detect_person
+    check_recognition_face = client.connections[id].check_recognition_face
+    check_detect_fire = client.connections[id].check_detect_fire
+    check_detect_animal = client.connections[id].check_detect_animal
+    send_message = {'dp':check_deteck_person, 'rf':check_recognition_face, 'df':check_detect_fire, 'da':check_detect_animal}
+    return JsonResponse(send_message)
+
+@csrf_exempt
+def config_detect_person(request, username, id):
+    client = CAMERA.threads[username]
+    if(client.connections[id].check_detect_person):
+        client.connections[id].check_detect_person = False
+    else:
+        client.connections[id].check_detect_person = True
+
+@csrf_exempt
+def config_recognition_face(request, username, id):
+    client = CAMERA.threads[username]
+    if (client.connections[id].check_recognition_face):
+        client.connections[id].check_recognition_face = False
+    else:
+        client.connections[id].check_recognition_face = True
+
+@csrf_exempt
+def config_detect_fire(request, username, id):
+    client = CAMERA.threads[username]
+    if (client.connections[id].check_detect_fire):
+        client.connections[id].check_detect_fire = False
+    else:
+        client.connections[id].check_detect_fire = True
+
+@csrf_exempt
+def config_detect_animal(request, username, id):
+    client = CAMERA.threads[username]
+    if (client.connections[id].check_detect_animal):
+        client.connections[id].check_detect_animal = False
+    else:
+        client.connections[id].check_detect_animal = True

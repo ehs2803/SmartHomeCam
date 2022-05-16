@@ -28,6 +28,11 @@ class Frame:
         self.out = None
         self.rvfilename = None
 
+        self.check_detect_person = False
+        self.check_recognition_face = False
+        self.check_detect_fire = False
+        self.check_detect_animal = False
+
     def detect_live(self):
         while True:
             if self.check == True:

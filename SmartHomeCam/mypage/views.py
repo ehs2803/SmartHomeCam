@@ -23,7 +23,7 @@ def landing(request):
         else:
             connectNum = 0
     idList.rstrip()
-    idList='temp1 temp2 '
+
     context = {
         'user': user,
         'cnt': connectNum,
@@ -243,9 +243,10 @@ def config_mode(request, id):
     user = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-
+    camid = id
     context = {
-        'user': user
+        'user': user,
+        'id': camid,
     }
     return render(request, "mypage/config.html", context=context)
 

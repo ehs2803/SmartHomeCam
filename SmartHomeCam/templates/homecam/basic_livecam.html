@@ -102,7 +102,7 @@
 
     setInterval(function () {
         $.ajax({
-            url: '/homecam/ajax/config/' + un + "/" + id + "/",
+            url: '/homecam/ajax/config/detectfire/' + un + "/" + id + "/",
             type: "POST",
             dataType: "json",
             data: {'send_data': un},
