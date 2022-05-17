@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
 
 from account.models import AuthUser
-from homecam.algorithm.basic import detect_person
+from homecam.algorithm.detect_person_animal import YoloDetect
 from homecam.models import CapturePicture, RecordingVideo
 
 
@@ -32,6 +32,8 @@ class Frame:
         self.check_recognition_face = False
         self.check_detect_fire = False
         self.check_detect_animal = False
+
+        self.YoloDetector = YoloDetect()
 
     def detect_live(self):
         while True:
@@ -62,9 +64,14 @@ class Frame:
 
             # imdecode : 이미지(프레임) 디코딩
             frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
-            # frame = preproc2(frame)
-            # frame = detect_human_algorithms(frame, init_args_user, self.rpIndex)
-            # frame = detect_person(frame)
+
+            if self.check_detect_person or self.check_detect_animal:
+                frame = self.YoloDetector.Detect_person_animal_YOLO(frame=frame, size=320, score_threshold=0.4, nms_threshold=0.4,
+                                                  check_detect_person=self.check_detect_person,
+                                                  check_detect_animal=self.check_detect_animal)
+            if self.check_recognition_face:
+                pass
+
             if self.recording_video_check==True:
                 self.out.write(frame)
 
