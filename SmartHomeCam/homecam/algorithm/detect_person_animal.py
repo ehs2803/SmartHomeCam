@@ -1,14 +1,19 @@
+import datetime
+
 import cv2
 import numpy as np
 import time
 
+from django.contrib.auth.models import User
 from django.contrib.messages.storage import session
+from django.core.files.base import ContentFile
 
 from account.models import AuthUser
 from homecam.algorithm.Email import EmailSender
 from homecam.algorithm.SMSMessage import SmsSender
 import django.contrib.sessions
 
+from homecam.models import DetectPerson
 from mypage.models import Family
 
 
@@ -35,13 +40,15 @@ class YoloDetect(EmailSender, SmsSender):
         # 클래스의 갯수만큼 랜덤 RGB 배열을 생성
         self.colors = np.random.uniform(0, 255, size=(len(self.classes), 3))
 
-        self.detect_person_time = None
-        self.detect_animal_time = None
+        self.detect_person_time = time.time()
+        self.detect_animal_time = time.time()
 
         self.PhoneNumberList = []
         self.EmailAddressList = []
 
-    def Detect_person_animal_YOLO(self, frame, size, score_threshold, nms_threshold, check_detect_person,check_detect_animal):
+    def Detect_person_animal_YOLO(self, frame, size, score_threshold, nms_threshold, username, camid,
+                                  check_detect_person,check_detect_animal):
+        copy_frame = frame.copy()
         # 이미지의 높이, 너비, 채널 받아오기
         height, width, channels = frame.shape
 
@@ -58,6 +65,9 @@ class YoloDetect(EmailSender, SmsSender):
         class_ids = []
         confidences = []
         boxes = []
+
+        check_person = False
+        check_animal = False
         # printq
         for out in outs:
             for detection in out:
@@ -66,16 +76,10 @@ class YoloDetect(EmailSender, SmsSender):
                 confidence = scores[class_id]
                 if not (class_id == 0 or class_id == 15 or class_id == 16):
                     continue
-                if check_detect_person==False and class_id==0:
-                    continue
-                if check_detect_animal==False and (class_id==15 or class_id==16):
-                    continue
-
                 if check_detect_person and class_id==0:
-                    #10초 후에
-                    self.updateContactList()
+                    check_person=True
                 if check_detect_animal and (class_id==15 or class_id==16):
-                    pass
+                    check_animal=True
 
                 if confidence > 0.1:
                     # 탐지된 객체의 너비, 높이 및 중앙 좌표값 찾기
@@ -107,14 +111,47 @@ class YoloDetect(EmailSender, SmsSender):
                 cv2.rectangle(frame, (x - 1, y), (x + len(class_name) * 13 + 65, y - 25), color, -1)
                 cv2.putText(frame, label, (x, y - 8), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 2)
 
-                # 탐지된 객체의 정보 출력
-                print(f"[{class_name}({i})] conf: {confidences[i]} / x: {x} / y: {y} / width: {w} / height: {h}")
+        if check_detect_person and check_person:
+            # 10초 후에
+            if time.time() - self.detect_person_time > 10:
+                print(1)
+                self.updateContactList(username)
+                self.detect_person_time = time.time()
+                ret1, frame1 = cv2.imencode('.jpg', frame)
+                ret2, frame2 = cv2.imencode('.jpg', copy_frame)
+
+                dp = DetectPerson()
+
+                user = AuthUser.objects.get(username=username)
+                ts = time.time()
+                timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+                dp.uid = user
+                file1 = ContentFile(frame1)
+                file2 = ContentFile(frame2)
+                file1.name = timestamp+'_1' + '.jpg'
+                file2.name = timestamp+'_2' + '.jpg'
+                dp.image1 = file1
+                dp.image2 = file2
+                dp.time = timestamp
+                dp.camid = camid
+                dp.save()
+
+        if check_detect_animal and check_animal == True:
+            pass
 
         return frame
 
-    def updateContactList(self):
-        user = AuthUser.objects.get(pk=session.get('id'))
+    def updateContactList(self, username):
+        user = User.objects.get(username=username)
         family_members = Family.objects.filter(uid=user.id)
+        self.PhoneNumberList.clear()
+        self.EmailAddressList.clear()
+        for family in family_members:
+            self.EmailAddressList.append(family.email)
+            self.PhoneNumberList.append(family.tel)
+        print(self.EmailAddressList)
+        print(self.PhoneNumberList)
 
 
 

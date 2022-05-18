@@ -12,7 +12,7 @@ class Client:
 
 
         self.cnt+=1
-        conn = Frame(client_socket, rpid)
+        conn = Frame(client_socket, username,rpid)
         self.connections[rpid]=conn
 
         live_detect_thread = Thread(target=conn.detect_live)
@@ -21,7 +21,7 @@ class Client:
 
     def add_client(self, client_socket, rpid):
         self.cnt += 1
-        conn = Frame(client_socket, rpid)
+        conn = Frame(client_socket, self.username, rpid)
         self.connections[rpid] = conn
         live_detect_thread = Thread(target=conn.detect_live)
         live_detect_thread.start()

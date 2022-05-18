@@ -15,7 +15,8 @@ from homecam.models import CapturePicture, RecordingVideo
 
 
 class Frame:
-    def __init__(self, client_socket, camid):
+    def __init__(self, client_socket, username, camid):
+        self.username = username
         self.camid = camid
         self.client_socket = client_socket
         self.data_buffer = b""
@@ -67,6 +68,7 @@ class Frame:
 
             if self.check_detect_person or self.check_detect_animal:
                 frame = self.YoloDetector.Detect_person_animal_YOLO(frame=frame, size=320, score_threshold=0.4, nms_threshold=0.4,
+                                                                   username=self.username, camid=self.camid,
                                                   check_detect_person=self.check_detect_person,
                                                   check_detect_animal=self.check_detect_animal)
             if self.check_recognition_face:
