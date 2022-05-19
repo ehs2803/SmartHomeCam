@@ -12,15 +12,15 @@ class EmailSender:
         # 메일 서버와 통신하기 전에 메시지를 만든다.
         self.data = MIMEMultipart()
         # 송신자 설정
-        self.data['From'] = self.sender
+        self.data['From'] = "ehs2803@skuniv.ac.kr" #self.sender
         # 수신자 설정 (복수는 콤마 구분이다.)
-        self.data['To'] = "hr2803@naver.com,ehs1781@gmail.com"
+        self.data['To'] = receiver #"hr2803@naver.com,ehs1781@gmail.com"
         # 메일 제목
-        self.data['Subject'] = "[SmartHomecam] 보안 메일"
+        self.data['Subject'] = subject #"[SmartHomecam] 보안 메일"
 
         # 이미지 파일 추가
-        fp1 = open("data/faceimages/1.jpg", 'rb')
-        fp2 = open("data/faceimages/2.jpg", 'rb')
+        fp1 = open(sendimg1, 'rb') #fp1 = open("data/faceimages/1.jpg", 'rb')
+        fp2 = open(sendimg2, 'rb') #fp2 = open("data/faceimages/2.jpg", 'rb')
         # Name은 메일 수신자에서 설정되는 파일 이름
 
         img1 = MIMEImage(fp1.read(), Name="img1")

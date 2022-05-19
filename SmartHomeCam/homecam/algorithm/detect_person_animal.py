@@ -15,7 +15,7 @@ import django.contrib.sessions
 
 from homecam.models import DetectPerson
 from mypage.models import Family
-
+from django.conf import settings
 
 class YoloDetect(EmailSender, SmsSender):
     def __init__(self):
@@ -115,7 +115,6 @@ class YoloDetect(EmailSender, SmsSender):
             # 10초 후에
             if time.time() - self.detect_person_time > 10:
                 print(1)
-                self.updateContactList(username)
                 self.detect_person_time = time.time()
                 ret1, frame1 = cv2.imencode('.jpg', frame)
                 ret2, frame2 = cv2.imencode('.jpg', copy_frame)
@@ -137,6 +136,14 @@ class YoloDetect(EmailSender, SmsSender):
                 dp.camid = camid
                 dp.save()
 
+                self.updateContactList(username)
+                #filepath1 = settings.MEDIA_ROOT+'/images/detectPerson/AuthUser object (3)/2022-05-19_082716_1.jpg'#'/media/' + str(dp.image1)
+                #filepath2 = settings.MEDIA_ROOT+'/images/detectPerson/AuthUser object (3)/2022-05-19_082716_1.jpg'#'/media/' + str(dp.image2)
+                filepath1 = settings.MEDIA_ROOT+'/'+str(dp.image1)#'/media/' + str(dp.image1)
+                filepath2 = settings.MEDIA_ROOT+'/'+str(dp.image2)#'/media/' + str(dp.image2)
+                print(filepath1)
+                self.sendDetectPersonEmail(filepath1, filepath2)
+
         if check_detect_animal and check_animal == True:
             pass
 
@@ -152,6 +159,16 @@ class YoloDetect(EmailSender, SmsSender):
             self.PhoneNumberList.append(family.tel)
         print(self.EmailAddressList)
         print(self.PhoneNumberList)
+
+    def sendDetectPersonEmail(self, file1, file2):
+        receivers = ''
+        for email in self.EmailAddressList:
+            receivers = receivers+email
+            receivers = receivers+','
+        receivers = receivers[:-1]
+        super().makeContent(receiver=receivers, subject="[SmartHomecam] 사탐 탐지 알림",
+                            sendimg1=file1, sendimg2=file2)
+        super().sendEmail()
 
 
 
