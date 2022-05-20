@@ -32,9 +32,9 @@
     </button>
 </div>
 <div align="center">
-    <button onclick="videorecording()">녹화시작</button>
-    <button onclick="capture()">화면캡처</button>
-    <button onclick="disconnect()">연결끓기</button>
+    <button class="btn btn-lg btn-primary" id="recordingBtn" onclick="videorecording()">녹화시작</button>
+    <button class="btn btn-lg btn-primary" onclick="capture()">화면캡처</button>
+    <button class="btn btn-lg btn-primary" onclick="disconnect()">연결끓기</button>
 </div>
 
 </body>
@@ -43,7 +43,57 @@
     var un = '{{user.username}}';
     var id = '{{ id }}';
 
+    const btnElement
+        = document.getElementById('recordingBtn');
+    $.ajax({
+        url: "/homecam/ajax/config/rc/" + un + "/" + id + "/",
+        type: "POST",
+        dataType: "json",
+        data: {'send_data': un},
+        success: function (data) {
+            if (data['send_data'] == 1) {
+                var html1
+                    = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Recording';
+
+                btnElement.innerHTML = html1;
+            } else {
+                var html1
+                    = '녹화하기';
+
+                btnElement.innerHTML = html1;
+            }
+        },
+        error: function () {
+            alert("에러 발생");
+        }
+    })
+
     function videorecording() {
+        const btnElement
+            = document.getElementById('recordingBtn');
+        $.ajax({
+            url: "/homecam/ajax/config/rc/" + un + "/" + id + "/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (data) {
+                if (data['send_data'] == 1) {
+                    var html1
+                        = '녹화하기';
+
+                    btnElement.innerHTML = html1;
+                } else {
+                    var html1
+                        = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Recording';
+
+                    btnElement.innerHTML = html1;
+                }
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+
         $.ajax({
             url: "/homecam/ajax/videoRC/" + un + "/" + id + "/",
             type: "POST",
@@ -51,7 +101,7 @@
             data: {'send_data': un},
             success: function (result) {
                 if (result) {
-                    alert("저장되었습니다.");
+
                 } else {
                     alert("잠시 후에 시도해주세요.");
                 }

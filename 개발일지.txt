@@ -228,6 +228,7 @@ CREATE TABLE `capture_picture` (
 - 반려동물 탐지 시 데이터 저장할 테이블 detect_animal 만듬
 - 반려동물 탐지시 데이터베이스에 저장 - > 저장은 되는데 좀 코드 좀 수정할 필요있음. 한번에 여러객체가 들어감.
 - live_cam html에서 ajax에대한 url 수정
-
-
+- 실시간 스트리밍 보는 index page, live_cam html에 있는 버튼 디자인.
+- live_cam html에서 ajax이용해 녹화하기 버튼 누르면 스피너 형태로 버튼 바뀌고 녹화 중지하면 녹화하기 글자 나타남.
+- 마이페이지, index페이지에서 만약 연결된 홈캠이 없으면 출력하는 문구 디자인. - 부트스트랩 경고창 이용
 

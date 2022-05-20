@@ -16,6 +16,7 @@ urlpatterns = [
     path('ajax/capture/<username>/<id>/', views.ajax_capture),
     path('ajax/videoRC/<username>/<id>/', views.ajax_video_recording),
     path('ajax/configs/<username>/<id>/', views.config_info),
+    path('ajax/config/rc/<username>/<id>/', views.config_Recording),
     path('ajax/config/detectperson/<username>/<id>/', views.config_detect_person),
     path('ajax/config/recognitionface/<username>/<id>/', views.config_recognition_face),
     path('ajax/config/detectfire/<username>/<id>/', views.config_detect_fire),

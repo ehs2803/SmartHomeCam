@@ -186,3 +186,13 @@ def config_detect_animal(request, username, id):
         client.connections[id].check_detect_animal = True
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
+
+@csrf_exempt
+def config_Recording(request, username, id):
+    client = CAMERA.threads[username]
+    check = client.connections[id].check_current_recording
+    if check:
+        send_message = {'send_data': '1'}
+    else:
+        send_message = {'send_data': '0'}
+    return JsonResponse(send_message)

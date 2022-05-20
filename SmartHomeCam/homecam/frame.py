@@ -34,6 +34,8 @@ class Frame:
         self.check_detect_fire = False
         self.check_detect_animal = False
 
+        self.check_current_recording = False
+
         self.YoloDetector = YoloDetect()
 
     def detect_live(self):
@@ -102,10 +104,12 @@ class Frame:
             print(self.rvfilename)
             self.out = cv2.VideoWriter(self.rvfilename, cv2.VideoWriter_fourcc(*'H264'), 20, (640, 480))
             self.recording_video_check = True
+            self.check_current_recording=True
         else:
             self.recording_video_check = False
             self.out.release()
             self.out = None
+            self.check_current_recording=False
             saved_filename = self.rvfilename
             self.rvfilename = None
             user = puser

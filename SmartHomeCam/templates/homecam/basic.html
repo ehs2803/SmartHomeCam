@@ -62,11 +62,10 @@
         var str_html = '';
 
         if (idsplit.length == 1) {
-            $('#div_btn').html("연결된 기종이 없습니다.------------");
-            //document.getElementById("livecam").style.visibility='hidden';
-            console.log('-------');
+            var html1 = '<div class="alert alert-danger" role="alert">연결된 HomeCam이 없습니다.</div>';
+            $('#div_btn').html(html1);
         } else {
-            for (var i = 0; i < idsplit.length-1; i++) {
+            for (var i = 0; i < idsplit.length - 1; i++) {
                 var str_location = '';
                 str_location += '\'';
                 str_location += un;
@@ -75,7 +74,7 @@
                 str_location += '\'';
                 console.log(str_location)
 
-                var html_btn = '<button onclick="window.open({})" type="button" id="Btn" style="width:100px">버튼</button>';
+                var html_btn = '<button class="btn btn-lg btn-primary" onclick="window.open({})" type="button" id="Btn" style="width:100px">버튼</button>';
                 html_btn = html_btn.replace('{}', str_location);
                 str_html = str_html + html_btn + '\n';
             }
@@ -93,7 +92,6 @@
         document.getElementById("livecam").src = "{% url 'video_basic' 'tempt1' '2' %}";
 
     }
-
 
 
 </script>
