@@ -44,3 +44,14 @@ class DetectPerson(models.Model):
     class Meta:
         managed = False
         db_table = 'detect_person'
+
+class DetectAnimal(models.Model):
+    id = models.AutoField(primary_key=True)
+    uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
+    species = models.IntegerField(blank=True, null=True)
+    location = models.IntegerField(blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'detect_animal'

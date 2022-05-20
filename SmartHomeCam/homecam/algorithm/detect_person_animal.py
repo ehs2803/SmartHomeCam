@@ -13,7 +13,7 @@ from homecam.algorithm.Email import EmailSender
 from homecam.algorithm.SMSMessage import SmsSender
 import django.contrib.sessions
 
-from homecam.models import DetectPerson
+from homecam.models import DetectPerson, DetectAnimal
 from mypage.models import Family
 from django.conf import settings
 
@@ -144,8 +144,43 @@ class YoloDetect(EmailSender, SmsSender):
                 print(filepath1)
                 self.sendDetectPersonEmail(filepath1, filepath2)
 
-        if check_detect_animal and check_animal == True:
-            pass
+        if check_detect_animal and check_animal:
+            if time.time() - self.detect_animal_time >10:
+                print(1)
+                ts = time.time()
+                timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+                for index, id in enumerate(class_ids):
+                    print(confidences[index])
+                    if confidences[index]>0.6:
+                        ap = DetectAnimal()
+                        user = AuthUser.objects.get(username=username)
+
+                        ap.uid = user
+                        ap.time= timestamp
+
+                        ap.species = id
+
+                        midWidth = width/2
+                        midHeight = height/2
+                        x,y,w,h = boxes[index]
+
+                        cx = x+(h/2)
+                        cy = y+(w/2)
+
+                        location = 0
+                        if cx<=midHeight and cy<=midWidth:
+                            location=2
+                        elif cx<=midHeight and cy>=midWidth:
+                            location=1
+                        elif cx>=midHeight and cy>=midWidth:
+                            location=4
+                        else:
+                            location=3
+
+                        ap.location = location
+                        ap.save()
+                        self.detect_animal_time = time.time()
+
 
         return frame
 
