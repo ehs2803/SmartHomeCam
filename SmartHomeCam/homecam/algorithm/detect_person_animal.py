@@ -107,9 +107,10 @@ class YoloDetect(EmailSender, SmsSender):
                 color = self.colors[class_ids[i]]
 
                 # 사각형 테두리 그리기 및 텍스트 쓰기
-                cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-                cv2.rectangle(frame, (x - 1, y), (x + len(class_name) * 13 + 65, y - 25), color, -1)
-                cv2.putText(frame, label, (x, y - 8), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 2)
+                if (class_name=='person' and check_detect_person) or ((class_name=='cat' or class_name=='dog') and check_detect_animal):
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
+                    cv2.rectangle(frame, (x - 1, y), (x + len(class_name) * 13 + 65, y - 25), color, -1)
+                    cv2.putText(frame, label, (x, y - 8), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 2)
 
         if check_detect_person and check_person:
             # 10초 후에
@@ -146,12 +147,24 @@ class YoloDetect(EmailSender, SmsSender):
 
         if check_detect_animal and check_animal:
             if time.time() - self.detect_animal_time >10:
-                print(1)
+                print('10sec after')
                 ts = time.time()
                 timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+                check_record_15=False
+                check_record_16=False
                 for index, id in enumerate(class_ids):
-                    print(confidences[index])
-                    if confidences[index]>0.6:
+                    if confidences[index]>0.6 and (id==15 or id==16):
+                        print(confidences[index], id)
+                        if id==15:
+                            if check_record_15==False:
+                                check_record_15=True
+                            else:
+                                continue
+                        if id==16:
+                            if check_record_16==False:
+                                check_record_16=True
+                            else:
+                                continue
                         ap = DetectAnimal()
                         user = AuthUser.objects.get(username=username)
 
@@ -178,6 +191,7 @@ class YoloDetect(EmailSender, SmsSender):
                             location=3
 
                         ap.location = location
+                        ap.camid = camid
                         ap.save()
                         self.detect_animal_time = time.time()
 

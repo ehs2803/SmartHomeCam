@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here
 from account.models import AuthUser
-from homecam.models import CapturePicture, RecordingVideo
+from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson
 import homecam.views
 from homecam.socket import VideoCamera
 from mypage.models import Family
@@ -259,3 +259,24 @@ def chart(request):
         'user': user
     }
     return render(request, "mypage/chart.html", context=context)
+
+def record_detect_person(request):
+    user = None
+    records_detect_person = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        records_detect_person = DetectPerson.objects.filter(uid=user.id)
+
+    context = {
+        'user': user,
+        'records_detect_person': records_detect_person,
+    }
+    return render(request, "mypage/detect_person_record.html", context=context)
+
+def delete_record_detect_person(request, id):
+    record = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        record = DetectPerson.objects.get(id=id)
+    record.delete()
+    return redirect('/mypage/records/detectPerson')

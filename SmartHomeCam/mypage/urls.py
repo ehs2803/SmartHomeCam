@@ -17,6 +17,8 @@ urlpatterns = [
     path('recordingVideos/', views.user_recording_videos),
     path('video/delete/<id>/', views.delete_video),
     path('connected/config/<id>/', views.config_mode),
+    path('records/detectPerson/', views.record_detect_person),
+    path('records/detectPerson/delete/<id>/', views.delete_record_detect_person),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

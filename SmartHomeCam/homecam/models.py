@@ -51,6 +51,7 @@ class DetectAnimal(models.Model):
     species = models.IntegerField(blank=True, null=True)
     location = models.IntegerField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
+    camid = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
