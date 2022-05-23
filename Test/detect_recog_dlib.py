@@ -54,21 +54,25 @@ images_encoding.append(known_image_encoding[0])
 cam = cv2.VideoCapture(0)
 color_green = (0,255,0)
 line_width = 3
+times = time.time()
 while True:
     ret_val, img = cam.read()
-    rgb_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    unknown_image_rects, unknown_image_encoding = face_encodings(rgb_image)
-    for i, det in enumerate(unknown_image_rects):
-        print(1)
-        cv2.rectangle(img, (det.left(), det.top()), (det.right(), det.bottom()), color_green, line_width)
-        computed_distances_ordered, faces, ordered_names = compare_faces_ordered(images_list,
+
+    if time.time()-times>1:
+        rgb_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        times = time.time()
+        unknown_image_rects, unknown_image_encoding = face_encodings(rgb_image)
+        for i, det in enumerate(unknown_image_rects):
+            print(1)
+            cv2.rectangle(img, (det.left(), det.top()), (det.right(), det.bottom()), color_green, line_width)
+            computed_distances_ordered, faces, ordered_names = compare_faces_ordered(images_list,
                                                                                      images_encoding,
                                                                                      images_label,
                                                                                      unknown_image_encoding[i])  # 비교
-        if computed_distances_ordered[0] < threshold:
-            print('detect: ', computed_distances_ordered[0])
-        else:
-            print('not detect')
+            if computed_distances_ordered[0] < threshold:
+                print('detect: ', computed_distances_ordered[0])
+            else:
+                print('not detect')
     cv2.imshow('my webcam', img)
     if cv2.waitKey(1) == 27:
         break  # esc to quit

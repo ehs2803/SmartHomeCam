@@ -51,7 +51,7 @@ class EmailSender:
         server.ehlo()  # say Hello
         server.starttls()  # TLS 사용시 필요
         # 로그인 한다.
-        server.login('ehs2803@skuniv.ac.kr', '')
+        server.login('ehs2803@skuniv.ac.kr', 'Hr167722!!')
         # MAIL(송신자) 설정
         sender = self.data['From']
         # RCPT(수신자), 리스트로 보낸다.
