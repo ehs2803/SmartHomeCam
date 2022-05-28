@@ -14,7 +14,7 @@ capture = cv2.VideoCapture(0)
 # 프레임 크기 지정
 capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)  # 가로
 capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)  # 세로
-
+print('cam success')
 # 소켓 객체 생성
 # client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -142,7 +142,7 @@ class YoloDetect(EmailSender, SmsSender):
                 #filepath2 = settings.MEDIA_ROOT+'/images/detectPerson/AuthUser object (3)/2022-05-19_082716_1.jpg'#'/media/' + str(dp.image2)
                 filepath1 = settings.MEDIA_ROOT+'/'+str(dp.image1)#'/media/' + str(dp.image1)
                 filepath2 = settings.MEDIA_ROOT+'/'+str(dp.image2)#'/media/' + str(dp.image2)
-                print(filepath1)
+                #print(filepath1)
                 self.sendDetectPersonEmail(filepath1, filepath2)
 
         if check_detect_animal and check_animal:

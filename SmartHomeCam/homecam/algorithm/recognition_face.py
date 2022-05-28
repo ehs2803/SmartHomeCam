@@ -2,6 +2,9 @@ import cv2
 import dlib
 import numpy as np
 
+from homecam.algorithm.Email import EmailSender
+from homecam.algorithm.SMSMessage import SmsSender
+
 '''
 images_list = []
 images_encoding = []
@@ -18,7 +21,7 @@ images_encoding.append(known_image_encoding[0])
 
 '''
 
-class RecognitionFace:
+class RecognitionFace(EmailSender, SmsSender):
     def __init__(self):
         # shape predictor와 사용하는 recognition_model
         self.pose_predictor_5_point = dlib.shape_predictor("homecam/algorithm/data/shape_predictor_5_face_landmarks.dat")
