@@ -1,9 +1,14 @@
+import os
+
 import cv2
 import dlib
 import numpy as np
+from django.contrib.auth.models import User
 
+from django.conf import settings
 from homecam.algorithm.Email import EmailSender
 from homecam.algorithm.SMSMessage import SmsSender
+from mypage.models import Family
 
 '''
 images_list = []
@@ -22,7 +27,7 @@ images_encoding.append(known_image_encoding[0])
 '''
 
 class RecognitionFace(EmailSender, SmsSender):
-    def __init__(self):
+    def __init__(self, username):
         # shape predictor와 사용하는 recognition_model
         self.pose_predictor_5_point = dlib.shape_predictor("homecam/algorithm/data/shape_predictor_5_face_landmarks.dat")
         self.face_encoder = dlib.face_recognition_model_v1("homecam/algorithm/data/dlib_face_recognition_resnet_model_v1.dat")
@@ -32,6 +37,32 @@ class RecognitionFace(EmailSender, SmsSender):
 
         # 얼굴검출 dlib hog face detector 사용.
         self.detector = dlib.get_frontal_face_detector()
+
+        self.username = username
+
+        # 사용자 계정에 등록된 가족 멤버 얼굴 사진들
+        self.faces=[]
+        self.updateFamilyMemberFaces()
+
+    def updateFamilyMemberFaces(self):
+        user = User.objects.get(username=self.username)
+        family_members = Family.objects.filter(uid=user.id)
+        for family in family_members:
+            image1 = family.image1
+            image2 = family.image2
+            image3 = family.image3
+            if image1!='':
+                print(settings.MEDIA_ROOT+'/'+str(image1))
+                image1_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image1), cv2.IMREAD_COLOR)
+                self.faces.append(image1_read)
+            if image2!='':
+                image2_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image2), cv2.IMREAD_COLOR)
+                self.faces.append(image2_read)
+            if image3!='':
+                image3_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image3), cv2.IMREAD_COLOR)
+                self.faces.append(image3_read)
+        for i in self.faces:
+            print(i.shape)
 
     # face_encodings은 128차원의 ndarray 데이터들을 사람 얼굴에 따라 리스트 자료형과 얼굴 위치좌표를 반환
     def face_encodings(self, face_image, number_of_times_to_upsample=1, num_jitters=2):

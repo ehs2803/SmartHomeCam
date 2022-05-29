@@ -11,6 +11,7 @@ from django.core.files.images import ImageFile
 
 from account.models import AuthUser
 from homecam.algorithm.detect_person_animal import YoloDetect
+from homecam.algorithm.recognition_face import RecognitionFace
 from homecam.models import CapturePicture, RecordingVideo
 
 
@@ -37,6 +38,7 @@ class Frame:
         self.check_current_recording = False
 
         self.YoloDetector = YoloDetect()
+        self.RecognitionFace = RecognitionFace(username)
 
     def detect_live(self):
         while True:
