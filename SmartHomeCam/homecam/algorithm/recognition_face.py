@@ -42,6 +42,9 @@ class RecognitionFace(EmailSender, SmsSender):
 
         # 사용자 계정에 등록된 가족 멤버 얼굴 사진들
         self.faces=[]
+        self.images_list=[]
+        self.images_encoding = []
+        self.images_label = []
         self.updateFamilyMemberFaces()
 
     def updateFamilyMemberFaces(self):
@@ -55,14 +58,31 @@ class RecognitionFace(EmailSender, SmsSender):
                 print(settings.MEDIA_ROOT+'/'+str(image1))
                 image1_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image1), cv2.IMREAD_COLOR)
                 self.faces.append(image1_read)
+                faces, known_image_encoding = self.face_encodings(image1_read)
+                for i, face in enumerate(faces):
+                    img_face = image1_read[face.top():face.bottom(), face.left():face.right(), :]
+                    self.images_list.append(img_face)
+                    self.images_encoding.append(known_image_encoding[i])
+                    self.images_label.append(family.name)
             if image2!='':
                 image2_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image2), cv2.IMREAD_COLOR)
                 self.faces.append(image2_read)
+                faces, known_image_encoding = self.face_encodings(image2_read)
+                for i, face in enumerate(faces):
+                    img_face = image2_read[face.top():face.bottom(), face.left():face.right(), :]
+                    self.images_list.append(img_face)
+                    self.images_encoding.append(known_image_encoding[i])
+                    self.images_label.append(family.name)
             if image3!='':
                 image3_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image3), cv2.IMREAD_COLOR)
                 self.faces.append(image3_read)
-        for i in self.faces:
-            print(i.shape)
+                faces, known_image_encoding = self.face_encodings(image3_read)
+                for i, face in enumerate(faces):
+                    img_face = image3_read[face.top():face.bottom(), face.left():face.right(), :]
+                    self.images_list.append(img_face)
+                    self.images_encoding.append(known_image_encoding[i])
+                    self.images_label.append(family.name)
+        print(len(self.images_encoding))
 
     # face_encodings은 128차원의 ndarray 데이터들을 사람 얼굴에 따라 리스트 자료형과 얼굴 위치좌표를 반환
     def face_encodings(self, face_image, number_of_times_to_upsample=1, num_jitters=2):
@@ -88,12 +108,11 @@ class RecognitionFace(EmailSender, SmsSender):
         rgb_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         unknown_image_rects, unknown_image_encoding = self.face_encodings(rgb_image)
         for i, det in enumerate(unknown_image_rects):
-            print(1)
             cv2.rectangle(img, (det.left(), det.top()), (det.right(), det.bottom()), (0,255,0), 3)
-            computed_distances_ordered, faces, ordered_names = self.compare_faces_ordered(images_list,
-                                                                                     images_encoding,
-                                                                                     images_label,
-                                                                                     unknown_image_encoding[i])  # 비교
+            computed_distances_ordered, faces, ordered_names = self.compare_faces_ordered(self.images_list,
+                                                                                     self.images_encoding,
+                                                                                     self.images_label,
+                                                                                    unknown_image_encoding[i])  # 비교
             if computed_distances_ordered[0] < self.threshold:
                 print('detect: ', computed_distances_ordered[0])
             else:

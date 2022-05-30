@@ -76,7 +76,7 @@ class Frame:
                                                   check_detect_person=self.check_detect_person,
                                                   check_detect_animal=self.check_detect_animal)
             if self.check_recognition_face:
-                pass
+                frame = self.RecognitionFace.recognition_face(frame)
 
             if self.recording_video_check==True:
                 self.out.write(frame)
