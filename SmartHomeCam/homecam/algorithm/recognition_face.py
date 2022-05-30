@@ -1,4 +1,6 @@
+import datetime
 import os
+import time
 
 import cv2
 import dlib
@@ -6,27 +8,16 @@ import numpy as np
 from django.contrib.auth.models import User
 
 from django.conf import settings
+from django.core.files.base import ContentFile
+
+from account.models import AuthUser
 from homecam.algorithm.Email import EmailSender
 from homecam.algorithm.SMSMessage import SmsSender
 from mypage.models import Family
 
-'''
-images_list = []
-images_encoding = []
-images_label = ['이현수']
+from homecam.models import RecognitionFace
 
-myimage = cv2.imread('data/my_image.jpg')
-
-faces, known_image_encoding = face_encodings(myimage)
-
-img_face = myimage[faces[0].top():faces[0].bottom(), faces[0].left():faces[0].right(),:]
-images_list.append(img_face)
-
-images_encoding.append(known_image_encoding[0])
-
-'''
-
-class RecognitionFace(EmailSender, SmsSender):
+class unknownFaceDetector(EmailSender, SmsSender):
     def __init__(self, username):
         # shape predictor와 사용하는 recognition_model
         self.pose_predictor_5_point = dlib.shape_predictor("homecam/algorithm/data/shape_predictor_5_face_landmarks.dat")
@@ -46,6 +37,13 @@ class RecognitionFace(EmailSender, SmsSender):
         self.images_encoding = []
         self.images_label = []
         self.updateFamilyMemberFaces()
+
+        # 탐지 시간
+        self.recognition_face_time=time.time()
+
+        # 알림 연락처 정보
+        self.PhoneNumberList=[]
+        self.EmailAddressList=[]
 
     def updateFamilyMemberFaces(self):
         user = User.objects.get(username=self.username)
@@ -104,7 +102,10 @@ class RecognitionFace(EmailSender, SmsSender):
         distances = list(np.linalg.norm(encodings - encoding_to_check, axis=1))
         return zip(*sorted(zip(distances, dbfaces, face_names)))
 
-    def recognition_face(self, img):
+    def recognition_face(self, img, camid):
+        if time.time()-self.recognition_face_time<10:
+            return;
+        copy_image = img.copy()
         rgb_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         unknown_image_rects, unknown_image_encoding = self.face_encodings(rgb_image)
         for i, det in enumerate(unknown_image_rects):
@@ -116,5 +117,52 @@ class RecognitionFace(EmailSender, SmsSender):
             if computed_distances_ordered[0] < self.threshold:
                 print('detect: ', computed_distances_ordered[0])
             else:
-                print('not detect')
+                rfmodel = RecognitionFace()
+
+                ret1, frame1 = cv2.imencode('.jpg', img)
+                ret2, frame2 = cv2.imencode('.jpg', copy_image)
+                user = AuthUser.objects.get(username=self.username)
+                ts = time.time()
+                timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+                rfmodel.uid = user
+                file1 = ContentFile(frame1)
+                file2 = ContentFile(frame2)
+                file1.name = timestamp + '_1' + '.jpg'
+                file2.name = timestamp + '_2' + '.jpg'
+                rfmodel.image1 = file1
+                rfmodel.image2 = file2
+                rfmodel.time = timestamp
+                rfmodel.camid = camid
+                rfmodel.save()
+
+                self.updateContactList(self.username)
+                filepath1 = settings.MEDIA_ROOT + '/' + str(rfmodel.image1)
+                filepath2 = settings.MEDIA_ROOT + '/' + str(rfmodel.image2)
+                self.sendDetectunknownFaceEmail(filepath1, filepath2)
+
+                self.recognition_face_time=time.time()
+                print('unknown detect: ', computed_distances_ordered[0])
+                break
         return img
+
+    def updateContactList(self, username):
+        user = User.objects.get(username=username)
+        family_members = Family.objects.filter(uid=user.id)
+        self.PhoneNumberList.clear()
+        self.EmailAddressList.clear()
+        for family in family_members:
+            self.EmailAddressList.append(family.email)
+            self.PhoneNumberList.append(family.tel)
+        print(self.EmailAddressList)
+        print(self.PhoneNumberList)
+
+    def sendDetectunknownFaceEmail(self, file1, file2):
+        receivers = ''
+        for email in self.EmailAddressList:
+            receivers = receivers+email
+            receivers = receivers+','
+        receivers = receivers[:-1]
+        super().makeContent(receiver=receivers, subject="[SmartHomecam] 확인되지 않은 사람 탐지",
+                            sendimg1=file1, sendimg2=file2)
+        super().sendEmail()

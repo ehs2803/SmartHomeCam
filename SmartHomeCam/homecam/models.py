@@ -11,6 +11,9 @@ def user_directory_path_video_userRequest(instance, filename):
 def user_directory_path_detect_person(instance, filename):
     return 'images/detectPerson/{}/{}'.format(instance.uid, filename)
 
+def user_directory_path_recognition_face(instance, filename):
+    return 'images/recognitionFace/{}/{}'.format(instance.uid, filename)
+
 class CapturePicture(models.Model):
     cpid = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
@@ -56,3 +59,15 @@ class DetectAnimal(models.Model):
     class Meta:
         managed = False
         db_table = 'detect_animal'
+
+class RecognitionFace(models.Model):
+    id = models.AutoField(primary_key=True)
+    uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
+    image1 = models.ImageField(upload_to=user_directory_path_recognition_face)
+    image2 = models.ImageField(upload_to=user_directory_path_recognition_face)
+    time = models.DateTimeField(blank=True, null=True)
+    camid = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'recognition_face'

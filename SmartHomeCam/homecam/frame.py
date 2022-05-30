@@ -11,7 +11,7 @@ from django.core.files.images import ImageFile
 
 from account.models import AuthUser
 from homecam.algorithm.detect_person_animal import YoloDetect
-from homecam.algorithm.recognition_face import RecognitionFace
+from homecam.algorithm.recognition_face import RecognitionFace, unknownFaceDetector
 from homecam.models import CapturePicture, RecordingVideo
 
 
@@ -38,7 +38,7 @@ class Frame:
         self.check_current_recording = False
 
         self.YoloDetector = YoloDetect()
-        self.RecognitionFace = RecognitionFace(username)
+        self.RecognitionFace = unknownFaceDetector(username)
 
     def detect_live(self):
         while True:
@@ -71,12 +71,12 @@ class Frame:
             frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
 
             if self.check_detect_person or self.check_detect_animal:
-                frame = self.YoloDetector.Detect_person_animal_YOLO(frame=frame, size=320, score_threshold=0.4, nms_threshold=0.4,
+                tframe = self.YoloDetector.Detect_person_animal_YOLO(frame=frame, size=320, score_threshold=0.4, nms_threshold=0.4,
                                                                    username=self.username, camid=self.camid,
                                                   check_detect_person=self.check_detect_person,
                                                   check_detect_animal=self.check_detect_animal)
             if self.check_recognition_face:
-                frame = self.RecognitionFace.recognition_face(frame)
+                tframe = self.RecognitionFace.recognition_face(frame, self.camid)
 
             if self.recording_video_check==True:
                 self.out.write(frame)
