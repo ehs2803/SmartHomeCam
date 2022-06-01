@@ -19,6 +19,10 @@ urlpatterns = [
     path('connected/config/<id>/', views.config_mode),
     path('records/detectPerson/', views.record_detect_person),
     path('records/detectPerson/delete/<id>/', views.delete_record_detect_person),
+    path('records/unknownDetect/', views.record_detect_unknown),
+    path('records/unknownDetect/delete/<id>/', views.delete_record_detect_unknown),
+    path('records/detectFire/', views.record_detect_fire),
+    path('records/detectFire/delete/<id>/', views.delete_record_detect_fire),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here
 from account.models import AuthUser
-from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson
+from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, RecognitionFace, DetectFire
 import homecam.views
 from homecam.socket import VideoCamera
 from mypage.models import Family
@@ -280,3 +280,45 @@ def delete_record_detect_person(request, id):
         record = DetectPerson.objects.get(id=id)
     record.delete()
     return redirect('/mypage/records/detectPerson')
+
+def record_detect_unknown(request):
+    user = None
+    records_detect_unknown = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        records_detect_unknown = RecognitionFace.objects.filter(uid=user.id)
+
+    context = {
+        'user': user,
+        'records_detect_unknown': records_detect_unknown,
+    }
+    return render(request, "mypage/detect_unknown_record.html", context=context)
+
+def delete_record_detect_unknown(request, id):
+    record = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        record = RecognitionFace.objects.get(id=id)
+    record.delete()
+    return redirect('/mypage/records/unknownDetect')
+
+def record_detect_fire(request):
+    user = None
+    records_detect_fire = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        records_detect_fire = DetectFire.objects.filter(uid=user.id)
+
+    context = {
+        'user': user,
+        'records_detect_fire': records_detect_fire,
+    }
+    return render(request, "mypage/detect_fire_record.html", context=context)
+
+def delete_record_detect_fire(request, id):
+    record = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        record = DetectFire.objects.get(id=id)
+    record.delete()
+    return redirect('/mypage/records/detectFire')

@@ -11,6 +11,7 @@ from django.core.files.images import ImageFile
 
 from account.models import AuthUser
 from homecam.algorithm.detect_person_animal import YoloDetect
+from homecam.algorithm.fire_detection import FireDetector
 from homecam.algorithm.recognition_face import RecognitionFace, unknownFaceDetector
 from homecam.models import CapturePicture, RecordingVideo
 
@@ -39,6 +40,7 @@ class Frame:
 
         self.YoloDetector = YoloDetect()
         self.RecognitionFace = unknownFaceDetector(username)
+        self.FireDetector = FireDetector(username)
 
     def detect_live(self):
         while True:
@@ -77,6 +79,9 @@ class Frame:
                                                   check_detect_animal=self.check_detect_animal)
             if self.check_recognition_face:
                 tframe = self.RecognitionFace.recognition_face(frame, self.camid)
+
+            if self.check_detect_fire:
+                fframe = self.FireDetector.detect_fire(frame, 320, 0.4, 0.4, self.camid)
 
             if self.recording_video_check==True:
                 self.out.write(frame)
