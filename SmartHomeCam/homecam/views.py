@@ -144,7 +144,9 @@ def config_info(request, username, id):
     check_recognition_face = client.connections[id].check_recognition_face
     check_detect_fire = client.connections[id].check_detect_fire
     check_detect_animal = client.connections[id].check_detect_animal
-    send_message = {'dp':check_deteck_person, 'rf':check_recognition_face, 'df':check_detect_fire, 'da':check_detect_animal}
+    check_on_safemode = client.connections[id].check_on_safemode
+    send_message = {'dp':check_deteck_person, 'rf':check_recognition_face, 'df':check_detect_fire,
+                    'da':check_detect_animal, 'sm':check_on_safemode}
     return JsonResponse(send_message)
 
 @csrf_exempt
@@ -184,6 +186,16 @@ def config_detect_animal(request, username, id):
         client.connections[id].check_detect_animal = False
     else:
         client.connections[id].check_detect_animal = True
+    send_message = {'send_data' : '1'}
+    return JsonResponse(send_message)
+
+@csrf_exempt
+def config_safe_mode(request, username, id):
+    client = CAMERA.threads[username]
+    if (client.connections[id].check_on_safemode):
+        client.connections[id].check_on_safemode = False
+    else:
+        client.connections[id].check_on_safemode = True
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
 

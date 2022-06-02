@@ -39,6 +39,11 @@
         <button onclick="config_detect_animal()" id="dab">반려동물 인식 모드 켜기</button>
         <hr>
 
+        <h1>안심모드 설정</h1>
+        <h3 id="sm">반려동물 인식 기능 OFF</h3>
+        <button onclick="config_safe_mode()" id="smb">반려동물 인식 모드 켜기</button>
+        <hr>
+
     </main>
     {% include "mypage/footer.html" %}
 </div>
@@ -62,7 +67,7 @@
             dataType: "json",
             data: {'send_data': un},
             success: function (result) {
-                if(result) console.log('success-detect-person');
+                if (result) console.log('success-detect-person');
             },
             error: function () {
                 alert("에러 발생");
@@ -77,7 +82,7 @@
             dataType: "json",
             data: {'send_data': un},
             success: function (result) {
-                if(result) console.log('success-recognition-face');
+                if (result) console.log('success-recognition-face');
             },
             error: function () {
                 alert("에러 발생");
@@ -92,7 +97,7 @@
             dataType: "json",
             data: {'send_data': un},
             success: function (result) {
-                if(result) console.log('success-detect-fire');
+                if (result) console.log('success-detect-fire');
             },
             error: function () {
                 alert("에러 발생");
@@ -107,7 +112,22 @@
             dataType: "json",
             data: {'send_data': un},
             success: function (result) {
-                if(result) console.log('success-detect-animal');
+                if (result) console.log('success-detect-animal');
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        })
+    }
+
+    function config_safe_mode() {
+        $.ajax({
+            url: "/homecam/ajax/config/safemode/" + un + "/" + id + "/",
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (result) {
+                if (result) console.log('success-safe-mode');
             },
             error: function () {
                 alert("에러 발생");
@@ -123,37 +143,40 @@
             data: {'send_data': un},
             success: function (data) {
                 console.log(data);
-                if(data['dp']==true){
+                if (data['dp'] == true) {
                     $("#dp").text('사람 인식 기능 ON');
                     $("#dpb").text('사람 인식 기능 끄기');
-                }
-                else{
+                } else {
                     $("#dp").text('사람 인식 기능 OFF');
                     $("#dpb").text('사람 인식 기능 켜기');
                 }
-                if(data['rf']==true){
+                if (data['rf'] == true) {
                     $("#rf").text('얼굴 인식 기능 ON');
                     $("#rfb").text('얼굴 인식 기능 끄기');
-                }
-                else{
+                } else {
                     $("#rf").text('얼굴 인식 기능 OFF');
                     $("#rfb").text('얼굴 인식 기능 켜기');
                 }
-                if(data['df']==true){
+                if (data['df'] == true) {
                     $("#df").text('화재 탐지 기능 ON');
                     $("#dfb").text('화재 탐지 기능 끄기');
-                }
-                else{
+                } else {
                     $("#df").text('화재 탐지 기능 OFF');
                     $("#dfb").text('화재 탐지 기능 켜기');
                 }
-                if(data['da']==true){
+                if (data['da'] == true) {
                     $("#da").text('반려동물 인식 기능 ON');
                     $("#dab").text('반려동물 인식 기능 끄기');
-                }
-                else{
+                } else {
                     $("#da").text('반려동물 인식 기능 OFF');
                     $("#dab").text('반려동물 인식 기능 켜기');
+                }
+                if (data['sm'] == true) {
+                    $("#sm").text('안심모드 ON');
+                    $("#smb").text('안심모드 끄기');
+                } else {
+                    $("#sm").text('안심모드 OFF');
+                    $("#smb").text('안심모드 켜기');
                 }
             }
         })

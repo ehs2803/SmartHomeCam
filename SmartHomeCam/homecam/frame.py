@@ -13,6 +13,7 @@ from account.models import AuthUser
 from homecam.algorithm.detect_person_animal import YoloDetect
 from homecam.algorithm.fire_detection import FireDetector
 from homecam.algorithm.recognition_face import RecognitionFace, unknownFaceDetector
+from homecam.algorithm.safeMode import SafeMode
 from homecam.models import CapturePicture, RecordingVideo
 
 
@@ -35,12 +36,14 @@ class Frame:
         self.check_recognition_face = False
         self.check_detect_fire = False
         self.check_detect_animal = False
+        self.check_on_safemode = False
 
         self.check_current_recording = False
 
         self.YoloDetector = YoloDetect()
         self.RecognitionFace = unknownFaceDetector(username)
         self.FireDetector = FireDetector(username)
+        self.SafeMode = SafeMode(username)
 
     def detect_live(self):
         while True:
@@ -82,6 +85,9 @@ class Frame:
 
             if self.check_detect_fire:
                 fframe = self.FireDetector.detect_fire(frame, 320, 0.4, 0.4, self.camid)
+
+            if self.check_on_safemode:
+                sframe = self.SafeMode.run_safe_mode(frame, self.camid)
 
             if self.recording_video_check==True:
                 self.out.write(frame)
