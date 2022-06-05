@@ -35,7 +35,6 @@ class EmailSender:
         # 텍스트 형식의 본문 내용
         # Html 형식의 본문 내용 (cid로 이미 첨부 파일을 링크했다.)
         msg = MIMEText("""
-            <h1>Hello Test</h1><br/>
             <h2>이미지1</h2>
             <img src='cid:capture1'>
             <h2>이미지2</h2>
