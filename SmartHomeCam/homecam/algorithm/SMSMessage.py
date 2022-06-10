@@ -1,17 +1,3 @@
-import boto3
-
-class SmsSender:
-    def __init__(self):
-        self.client = boto3.client(
-            "sns",
-            aws_access_key_id="",
-            aws_secret_access_key="",
-            region_name="ap-northeast-1"  # 도쿄
-        )
-
-    def sendSMS(self, phoneNumber, messageContent):
-        self.client.publish(
-            PhoneNumber="+8201047862803",
-            Message="AWS SMS 파이썬 테스트"
-        )
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:2d3266c16af2e989f820e989da52094dd0a77881f90e7c9b3bb03cf903f4ddc7
+size 475
