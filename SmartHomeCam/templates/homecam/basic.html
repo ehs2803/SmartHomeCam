@@ -1,3 +1,104 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b1106c35f87f95ee63c74f211c00d6a76c7d71cf51a7ebc46d22e064e8620517
-size 3927
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic mode</title>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/mainpage/styles.css' %}" rel="stylesheet"/>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        #loadingbtn {
+        / / display: none;
+            width: 500px;
+            height: 500px;
+            align-content: center;
+        }
+
+        .live {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container px-5">
+        <a class="navbar-brand" href="/">Smart Supervisor</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                {% if user %}
+                    <li class="nav-item"><a class="nav-link" href="/mypage">mypage</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/account/logout">logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="/account/signup">Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/account">Log In</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<br><br>
+<div align="center" id="div_btn">
+
+</div>
+
+</body>
+</html>
+<script>
+    var un = '{{user.username}}';
+    var idlist = '{{ idList }}';
+    idlist.trim();
+    console.log(idlist);
+    var idsplit = idlist.split(' ');
+
+    $(document).ready(function () {
+        var str_html = '';
+
+        if (idsplit.length == 1) {
+            var html1 = '<div class="alert alert-danger" role="alert">연결된 HomeCam이 없습니다.</div>';
+            $('#div_btn').html(html1);
+        } else {
+            for (var i = 0; i < idsplit.length - 1; i++) {
+                var str_location = '';
+                //str_location += '\'';
+                str_location += un;
+                str_location += '/';
+                str_location += idsplit[i];
+                //str_location += '\'';
+                console.log(str_location)
+
+                var html_btn = '<div class="col-xl-3 col-md-6"><div class="card bg-primary text-white mb-4"><div class="card-body">연결Cam ID : {}</div>' +
+                    '<div class="card-footer d-flex align-items-center justify-content-between">' +
+                    '<a class="small text-white stretched-link" href="/homecam/basic/[]">실시간 스트리밍 보기</a>' +
+                    '<div class="small text-white"><i class="fas fa-angle-right"></i></div></div></div></div>';
+                html_btn = html_btn.replace('{}', idsplit[i]);
+                html_btn = html_btn.replace('[]', str_location);
+
+                //var html_btn = '<button class="btn btn-lg btn-primary" onclick="window.open({})" type="button" id="Btn" style="width:100px">버튼</button>';
+                //html_btn = html_btn.replace('{}', str_location);
+                str_html = str_html + html_btn + '\n';
+            }
+            $('#div_btn').html(str_html);
+
+        }
+
+    });
+</script>
+
+<script>
+
+
+    function imageSrcChangeTest() {
+        document.getElementById("livecam").src = "{% url 'video_basic' 'tempt1' '2' %}";
+
+    }
+
+
+</script>
