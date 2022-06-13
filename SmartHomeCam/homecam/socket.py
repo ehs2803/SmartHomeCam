@@ -11,7 +11,7 @@ class VideoCamera(object):
         return cls._instance                      # Foo._instance를 리턴
 
     def __init__(self):
-        self.ip='127.0.0.1'
+        self.ip=''
         self.port=50002
         self.threads = {} # 복수개의 라즈레리파이 객체
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);

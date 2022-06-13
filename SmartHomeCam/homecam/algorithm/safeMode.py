@@ -3,11 +3,13 @@ import time
 import cv2
 import numpy as np
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 
+from SmartHomeCam import settings
 from account.models import AuthUser
 from homecam.algorithm.Email import EmailSender
 from homecam.algorithm.SMSMessage import SmsSender
-from homecam.models import SafeModeNodetect
+from homecam.models import SafeModeNodetect, SafeModeNoaction
 from mypage.models import Family
 
 
@@ -38,6 +40,8 @@ class SafeMode(EmailSender, SmsSender):
 
     def init_noDetectTime(self):
         self.safe_mode_time=time.time()
+        self.detect_action_time = None
+        self.detect_location=[0,0]
 
     def run_safe_mode(self, frame, camid, size):
         if time.time()-self.safe_mode_time>self.time_noDetect:
@@ -107,9 +111,9 @@ class SafeMode(EmailSender, SmsSender):
             self.detect_location = [-20,-20]
             return
 
-        if len(boxes)>1:
-            print('1more detect',len(boxes))
-            return
+        #if len(boxes)>1:
+        #    print('1more detect',len(boxes))
+        #    return
         for i in range(len(boxes)):
             if i in indexes:
                 x, y, w, h = boxes[i]
@@ -124,6 +128,33 @@ class SafeMode(EmailSender, SmsSender):
                     print('행동미감지 초기화')
                 print('행동미감지 진행중')
                 if time.time()-self.detect_action_time>self.time_noAction:
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (255,0,0), 2)
+
+                    smna = SafeModeNoaction()
+
+                    ret1, frame1 = cv2.imencode('.jpg', frame)
+                    ret2, frame2 = cv2.imencode('.jpg', copy_frame)
+                    user = AuthUser.objects.get(username=self.username)
+                    ts = time.time()
+                    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+                    smna.uid = user
+                    file1 = ContentFile(frame1)
+                    file2 = ContentFile(frame2)
+                    file1.name = timestamp + '_1' + '.jpg'
+                    file2.name = timestamp + '_2' + '.jpg'
+                    smna.image1 = file1
+                    smna.image2 = file2
+                    smna.time = timestamp
+                    smna.camid = camid
+                    smna.period = self.time_noAction
+                    smna.save()
+
+                    self.updateContactList(self.username)
+                    filepath1 = settings.MEDIA_ROOT + '/' + str(smna.image1)
+                    filepath2 = settings.MEDIA_ROOT + '/' + str(smna.image2)
+                    self.sendSafeModeEmail_no_action(filepath1, filepath2)
+
                     self.detect_action_time=None
                     print('행동미감지')
 
@@ -147,4 +178,14 @@ class SafeMode(EmailSender, SmsSender):
         receivers = receivers[:-1]
         super().makeContent_noimage(receiver=receivers, subject="[SmartHomecam] 안심모드 알림 - 사람활동 미감지",
                                     username=username, camid=camid, period=period)
+        super().sendEmail()
+
+    def sendSafeModeEmail_no_action(self, file1, file2):
+        receivers = ''
+        for email in self.EmailAddressList:
+            receivers = receivers+email
+            receivers = receivers+','
+        receivers = receivers[:-1]
+        super().makeContent(receiver=receivers, subject="[SmartHomecam] 안심모드 사람 행동 미감지",
+                            sendimg1=file1, sendimg2=file2)
         super().sendEmail()
