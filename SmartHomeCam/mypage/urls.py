@@ -23,10 +23,12 @@ urlpatterns = [
     path('records/unknownDetect/delete/<id>/', views.delete_record_detect_unknown),
     path('records/detectFire/', views.record_detect_fire),
     path('records/detectFire/delete/<id>/', views.delete_record_detect_fire),
-    path('records/detectAnimal/', views.record_detect_animal),\
+    path('records/detectAnimal/', views.record_detect_animal),
     path('records/safemode/noPerson/', views.record_safemode_noPerson),
     path('records/safemode/noAction/', views.record_safemode_noAction),
+    path('records/safemode/noAction/delete/<id>/', views.record_safemode_noAction_delete),
     path('records/safemode/falldown/', views.record_safemode_falldown),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

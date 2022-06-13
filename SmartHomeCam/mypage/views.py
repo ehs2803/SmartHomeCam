@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 
 # Create your views here
 from account.models import AuthUser
-from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, RecognitionFace, DetectFire
+from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, RecognitionFace, DetectFire, \
+    SafeModeNodetect, SafeModeNoaction, DetectFalldown
 import homecam.views
 from homecam.socket import VideoCamera
 from mypage.models import Family
@@ -338,39 +339,47 @@ def record_detect_animal(request):
 
 def record_safemode_noPerson(request):
     user = None
-    records_detect_aniaml = None
+    records_detect_noPerson = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_aniaml = DetectAnimal.objects.filter(uid=user.id)
+        records_detect_noPerson = SafeModeNodetect.objects.filter(uid=user.id)
 
     context = {
         'user': user,
-        'records_detect_animal': records_detect_aniaml,
+        'records_detect_noPerson': records_detect_noPerson,
     }
     return render(request, "mypage/safemode_detect_noperson.html", context=context)
 
 def record_safemode_noAction(request):
     user = None
-    records_detect_aniaml = None
+    records_detect_noAction = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_aniaml = DetectAnimal.objects.filter(uid=user.id)
+        records_detect_noAction = SafeModeNoaction.objects.filter(uid=user.id)
 
     context = {
         'user': user,
-        'records_detect_animal': records_detect_aniaml,
+        'records_detect_noAction': records_detect_noAction,
     }
     return render(request, "mypage/safemode_detect_noaction.html", context=context)
 
-def record_safemode_falldown(request):
-    user = None
-    records_detect_aniaml = None
+def record_safemode_noAction_delete(request, id):
+    record = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_aniaml = DetectAnimal.objects.filter(uid=user.id)
+        record = SafeModeNoaction.objects.get(id=id)
+    record.delete()
+    return redirect('/mypage/records/safemode/noAction')
+
+def record_safemode_falldown(request):
+    user = None
+    records_detect_falldown = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        records_detect_falldown = DetectFalldown.objects.filter(uid=user.id)
 
     context = {
         'user': user,
-        'records_detect_animal': records_detect_aniaml,
+        'records_detect_falldown': records_detect_falldown,
     }
     return render(request, "mypage/safemode_detect_falldown.html", context=context)

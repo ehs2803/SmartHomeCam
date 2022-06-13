@@ -15,7 +15,19 @@
 {% include "mypage/navbar.html" %}
 <div id="layoutSidenav_content">
     <main>
+        {% load static %}
+        {% for noaction in records_detect_noAction %}
+            <h1>{{ noaction.time }}</h1>
+            <h2>{{ noaction.camid }}</h2>
+            <h2>{{ noaction.period }}</h2>
+            <a href="/mypage/records/safemode/noAction/delete/{{ noaction.id }}/">
+                <button class="btn btn-primary">삭제하기</button>
+            </a><br>
 
+            <img src="{{ noaction.image1.url }}"/><br>
+            <img src="{{ noaction.image2.url }}"/><br>
+            <hr>
+        {% endfor %}
     </main>
     {% include "mypage/footer.html" %}
 </div>

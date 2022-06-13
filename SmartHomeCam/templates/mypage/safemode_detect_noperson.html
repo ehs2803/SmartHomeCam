@@ -15,7 +15,24 @@
 {% include "mypage/navbar.html" %}
 <div id="layoutSidenav_content">
     <main>
-
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">시간</th>
+                <th scope="col">미탐지 시간</th>
+                <th scope="col">홈캠 ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for noperson in records_detect_noPerson %}
+                <tr>
+                    <td>{{ noperson.time }}</td>
+                    <td>{{ noperson.period }}</td>
+                    <td>{{ noperson.camid }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </main>
     {% include "mypage/footer.html" %}
 </div>
