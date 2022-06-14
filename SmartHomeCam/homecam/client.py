@@ -1,6 +1,10 @@
+import datetime
+import time
 from threading import Thread
 
+from account.models import AuthUser
 from homecam.frame import Frame
+from homecam.models import CamConnectHistory
 
 
 class Client:
@@ -19,6 +23,16 @@ class Client:
         live_detect_thread.start()
         self.threads[rpid] = live_detect_thread
 
+        cam_connetct_history = CamConnectHistory()
+        user = AuthUser.objects.get(username=self.username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        cam_connetct_history.uid = user
+        cam_connetct_history.camid = rpid
+        cam_connetct_history.time = timestamp
+        cam_connetct_history.division = 'CONNECT'
+        cam_connetct_history.save()
+
     def add_client(self, client_socket, rpid):
         self.cnt += 1
         conn = Frame(client_socket, self.username, rpid)
@@ -27,11 +41,32 @@ class Client:
         live_detect_thread.start()
         self.threads[rpid] = live_detect_thread
 
+        cam_connetct_history = CamConnectHistory()
+        user = AuthUser.objects.get(username=self.username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        cam_connetct_history.uid = user
+        cam_connetct_history.camid = rpid
+        cam_connetct_history.time = timestamp
+        cam_connetct_history.division = 'CONNECT'
+        cam_connetct_history.save()
+
     def disconnect_socket(self, id):
         self.connections[id].disconnet()
         del self.connections[id]
         #del self.threads[id]
         self.cnt-=1
+
+        cam_connetct_history = CamConnectHistory()
+        user = AuthUser.objects.get(username=self.username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        cam_connetct_history.uid = user
+        cam_connetct_history.camid = id
+        cam_connetct_history.time = timestamp
+        cam_connetct_history.division = 'DISCONNECT'
+        cam_connetct_history.save()
+
         print(111111111111111111111111111)
         print(self.cnt)
 

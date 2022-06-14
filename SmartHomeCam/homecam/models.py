@@ -23,6 +23,17 @@ def user_directory_path_safemode_noaction(instance, filename):
 def user_directory_path_detect_falldown(instance, filename):
     return 'images/detectFalldown/{}/{}'.format(instance.uid, filename)
 
+class CamConnectHistory(models.Model):
+    id = models.AutoField(primary_key=True)
+    uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
+    camid = models.CharField(max_length=45, blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
+    division = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'cam_connect_history'
+
 class CapturePicture(models.Model):
     cpid = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')

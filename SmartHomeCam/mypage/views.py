@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 # Create your views here
 from account.models import AuthUser
 from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, RecognitionFace, DetectFire, \
-    SafeModeNodetect, SafeModeNoaction, DetectFalldown
+    SafeModeNodetect, SafeModeNoaction, DetectFalldown, CamConnectHistory
 import homecam.views
 from homecam.socket import VideoCamera
 from mypage.models import Family
@@ -13,6 +13,7 @@ def landing(request):
     CAMERA = homecam.views.CAMERA
     connectNum = None
     idList = ''
+    cam_connect_history = None
     user = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
@@ -23,12 +24,14 @@ def landing(request):
                 idList+=' '
         else:
             connectNum = 0
+        cam_connect_history = CamConnectHistory.objects.filter(uid=user.id).order_by('-time')
     idList.rstrip()
 
     context = {
         'user': user,
         'cnt': connectNum,
         'idList': idList,
+        'cam_connect_history':cam_connect_history,
     }
     return render(request, "mypage/mypage.html", context=context)
 

@@ -70,6 +70,7 @@ while True:
     print(data)
 
 # 메모리를 해제
+client_socket.sendall("disconnect".encode())
 client_socket.close()
 capture.release()
 
