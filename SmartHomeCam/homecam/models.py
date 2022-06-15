@@ -34,6 +34,18 @@ class CamConnectHistory(models.Model):
         managed = False
         db_table = 'cam_connect_history'
 
+class HomecamModeUseHistory(models.Model):
+    id = models.AutoField(primary_key=True)
+    uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
+    camid = models.CharField(max_length=45, blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
+    mode = models.CharField(max_length=45, blank=True, null=True)
+    division = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'homecam_mode_use_history'
+
 class CapturePicture(models.Model):
     cpid = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')

@@ -1,3 +1,5 @@
+import datetime
+import time
 from threading import Thread
 
 from django.contrib.auth.models import User
@@ -6,6 +8,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from account.models import AuthUser
+from homecam.models import HomecamModeUseHistory
 from homecam.socket import VideoCamera
 
 CAMERA  = None
@@ -136,9 +139,18 @@ def ajax_video_recording(request, username, id):
     return JsonResponse(send_message)
 
 @csrf_exempt
+def config_Recording(request, username, id):
+    client = CAMERA.threads[username]
+    check = client.connections[id].check_current_recording
+    if check:
+        send_message = {'send_data': '1'}
+    else:
+        send_message = {'send_data': '0'}
+    return JsonResponse(send_message)
+
+@csrf_exempt
 def config_info(request, username, id):
     receive_message = request.POST.get('send_data')
-
     client = CAMERA.threads[username]
     check_deteck_person = client.connections[id].check_detect_person
     check_recognition_face = client.connections[id].check_recognition_face
@@ -155,8 +167,28 @@ def config_detect_person(request, username, id):
     client = CAMERA.threads[username]
     if(client.connections[id].check_detect_person):
         client.connections[id].check_detect_person = False
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid=user
+        mode_history.camid=id
+        mode_history.time=timestamp
+        mode_history.mode='DETECT_PERSON'
+        mode_history.division='OFF'
+        mode_history.save()
     else:
         client.connections[id].check_detect_person = True
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'DETECT_PERSON'
+        mode_history.division = 'ON'
+        mode_history.save()
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
 
@@ -165,8 +197,28 @@ def config_recognition_face(request, username, id):
     client = CAMERA.threads[username]
     if (client.connections[id].check_recognition_face):
         client.connections[id].check_recognition_face = False
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'DETECT_UNKNOWNFACE'
+        mode_history.division = 'OFF'
+        mode_history.save()
     else:
         client.connections[id].check_recognition_face = True
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'DETECT_UNKNOWNFACE'
+        mode_history.division = 'ON'
+        mode_history.save()
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
 
@@ -175,8 +227,28 @@ def config_detect_fire(request, username, id):
     client = CAMERA.threads[username]
     if (client.connections[id].check_detect_fire):
         client.connections[id].check_detect_fire = False
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'DETECT_FIRE'
+        mode_history.division = 'OFF'
+        mode_history.save()
     else:
         client.connections[id].check_detect_fire = True
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'DETECT_FIRE'
+        mode_history.division = 'ON'
+        mode_history.save()
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
 
@@ -185,8 +257,28 @@ def config_detect_animal(request, username, id):
     client = CAMERA.threads[username]
     if (client.connections[id].check_detect_animal):
         client.connections[id].check_detect_animal = False
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'DETECT_ANIMAL'
+        mode_history.division = 'OFF'
+        mode_history.save()
     else:
         client.connections[id].check_detect_animal = True
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'DETECT_ANIMAL'
+        mode_history.division = 'ON'
+        mode_history.save()
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
 
@@ -195,21 +287,32 @@ def config_safe_mode(request, username, id):
     client = CAMERA.threads[username]
     if (client.connections[id].check_on_safemode):
         client.connections[id].check_on_safemode = False
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'SAFEMODE'
+        mode_history.division = 'OFF'
+        mode_history.save()
     else:
         client.connections[id].SafeMode.init_noDetectTime()
         client.connections[id].check_on_safemode = True
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = 'SAFEMODE'
+        mode_history.division = 'ON'
+        mode_history.save()
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
 
-@csrf_exempt
-def config_Recording(request, username, id):
-    client = CAMERA.threads[username]
-    check = client.connections[id].check_current_recording
-    if check:
-        send_message = {'send_data': '1'}
-    else:
-        send_message = {'send_data': '0'}
-    return JsonResponse(send_message)
 
 @csrf_exempt
 def config_safe_mode_set_time(request, username, id):

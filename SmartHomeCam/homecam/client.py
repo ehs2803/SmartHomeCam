@@ -4,7 +4,7 @@ from threading import Thread
 
 from account.models import AuthUser
 from homecam.frame import Frame
-from homecam.models import CamConnectHistory
+from homecam.models import CamConnectHistory, HomecamModeUseHistory
 
 
 class Client:
@@ -52,6 +52,17 @@ class Client:
         cam_connetct_history.save()
 
     def disconnect_socket(self, id):
+        if self.connections[id].check_detect_person:
+            self.save_mode_use_off('DETECT_PERSON')
+        if self.connections[id].check_recognition_face:
+            self.save_mode_use_off('DETECT_UNKNOWNFACE')
+        if self.connections[id].check_detect_fire:
+            self.save_mode_use_off('DETECT_FIRE')
+        if self.connections[id].check_detect_animal:
+            self.save_mode_use_off('DETECT_ANIMAL')
+        if self.connections[id].check_on_safemode:
+            self.save_mode_use_off('SAFEMODE')
+
         self.connections[id].disconnet()
         del self.connections[id]
         #del self.threads[id]
@@ -69,4 +80,16 @@ class Client:
 
         print(111111111111111111111111111)
         print(self.cnt)
+
+    def save_mode_use_off(self, mode):
+        mode_history = HomecamModeUseHistory()
+        user = AuthUser.objects.get(username=self.username)
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid = user
+        mode_history.camid = id
+        mode_history.time = timestamp
+        mode_history.mode = mode
+        mode_history.division = 'OFF'
+        mode_history.save()
 
