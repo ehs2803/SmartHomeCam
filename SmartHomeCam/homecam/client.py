@@ -18,11 +18,13 @@ class Client:
         self.cnt+=1
         conn = Frame(client_socket, username,rpid)
         self.connections[rpid]=conn
-
-        live_detect_thread = Thread(target=conn.detect_live)
+        print("=========================1")
+        live_detect_thread = Thread(target=self.thread_func, args=(rpid,conn,))#Thread(target=conn.detect_live)
+        print("=========================2")
         live_detect_thread.start()
+        print("=========================3")
         self.threads[rpid] = live_detect_thread
-
+        print("=========================4")
         cam_connetct_history = CamConnectHistory()
         user = AuthUser.objects.get(username=self.username)
         ts = time.time()
@@ -33,11 +35,17 @@ class Client:
         cam_connetct_history.division = 'CONNECT'
         cam_connetct_history.save()
 
+
+    def thread_func(self, rpid, conn):
+        conn.detect_live()
+        self.disconnect_socket(rpid)
+
     def add_client(self, client_socket, rpid):
+        print('add client')
         self.cnt += 1
         conn = Frame(client_socket, self.username, rpid)
         self.connections[rpid] = conn
-        live_detect_thread = Thread(target=conn.detect_live)
+        live_detect_thread = Thread(target=self.thread_func, args=(rpid,conn,))#Thread(target=conn.detect_live)
         live_detect_thread.start()
         self.threads[rpid] = live_detect_thread
 

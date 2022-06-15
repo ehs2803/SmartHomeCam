@@ -48,11 +48,21 @@ class Frame:
     def detect_live(self):
         while True:
             if self.check == True:
-                break
+                return
             # 설정한 데이터의 크기보다 버퍼에 저장된 데이터의 크기가 작은 경우
             while len(self.data_buffer) < self.data_size:
                 # 데이터 수신
-                self.data_buffer += self.client_socket.recv(4096)
+                try:
+                    self.data_buffer += self.client_socket.recv(4096)
+                except:
+                    return
+                '''
+                temp = self.client_socket.recv(4096)
+                if temp=='disconnect':
+                    print(1)
+                    self.disconnet()
+                self.data_buffer += temp
+                '''
 
             self.client_socket.sendall("10".encode())
             # 버퍼의 저장된 데이터 분할
@@ -63,7 +73,10 @@ class Frame:
             # 프레임 데이터의 크기보다 버퍼에 저장된 데이터의 크기가 작은 경우
             while len(self.data_buffer) < frame_size:
                 # 데이터 수신
-                self.data_buffer += self.client_socket.recv(4096)
+                try:
+                    self.data_buffer += self.client_socket.recv(4096)
+                except:
+                    return
             # 프레임 데이터 분할
             frame_data = self.data_buffer[:frame_size]
             self.data_buffer = self.data_buffer[frame_size:]

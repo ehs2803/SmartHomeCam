@@ -68,7 +68,10 @@ def gen_basic(camera, username, id):
             break
     client = camera.threads[username]
     while True:
-        frame = client.connections[id].get_frame()
+        try:
+            frame = client.connections[id].get_frame()
+        except:
+            pass
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
@@ -118,7 +121,8 @@ def ajax_connect_config(request, username, id):
 @csrf_exempt
 def ajax_disconnect(request, username, id):
     client = CAMERA.threads.get(username)
-    client.disconnect_socket(id)
+    #client.disconnect_socket(id)
+    client.connections[id].check=True
     send_message = {'send_data' : '1'}
     return JsonResponse(send_message)
 
