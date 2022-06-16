@@ -82,9 +82,6 @@ SmartHomeCam
 ![기능](images/mypage1.jpg)
 <hr>
 
-![기능](images/mypage2.jpg)
-홈캠 5가지 모드에 대해서 on/off 할 수 있습니다.
-
 <br>
 <br>
 
