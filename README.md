@@ -54,10 +54,6 @@ SmartHomeCam
 ![기능](images/homecam1.jpg)
 <hr>
 
-![기능](images/homecam2.jpg)
-실시간 스트리밍 기능입니다. 연결된 홈캠을 클릭하면 실시간 스트리밍을 볼 수 있습니다. 녹화하기, 캡처하기, 연결끊기 버튼이 있습니다. 
-<hr>
-
 ![기능](images/homecam3.jpg)
 사람탐지 모드입니다.
 <hr>
@@ -85,9 +81,6 @@ SmartHomeCam
 
 ![기능](images/mypage1.jpg)
 <hr>
-
-![기능](images/mypage2.jpg)
-홈캠 5가지 모드에 대해서 on/off 할 수 있습니다.
 
 <br>
 <br>
