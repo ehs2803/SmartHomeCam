@@ -28,7 +28,6 @@ urlpatterns = [
     path('records/safemode/noAction/', views.record_safemode_noAction),
     path('records/safemode/noAction/delete/<id>/', views.record_safemode_noAction_delete),
     path('records/safemode/falldown/', views.record_safemode_falldown),
-
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

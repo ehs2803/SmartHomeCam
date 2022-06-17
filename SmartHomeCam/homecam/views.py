@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from account.models import AuthUser
-from homecam.models import HomecamModeUseHistory
+from homecam.models import HomecamModeUseHistory, DetectAnimal
 from homecam.socket import VideoCamera
 
 CAMERA  = None
@@ -325,4 +325,16 @@ def config_safe_mode_set_time(request, username, id):
     print(int(receive_message))
     client.connections[id].SafeMode.time_noDetect = int(receive_message)
     send_message = {'send_data' : '1'}
+    return JsonResponse(send_message)
+
+@csrf_exempt
+def ajax_getData_Animal(request):
+    day = request.POST.get('datetime')
+    username = request.POST.get('username')
+    user = AuthUser.objects.get(username=username)
+    print(day, username)
+    detect_animals_data = DetectAnimal.objects.filter(uid=user.id, time__year=day.split('-')[0],
+                                                      time__month=day.split('-')[1],
+                                                      time__day=day.split('-')[2])
+    send_message = {'animal_data' : detect_animals_data}
     return JsonResponse(send_message)

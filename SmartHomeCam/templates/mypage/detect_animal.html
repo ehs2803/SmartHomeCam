@@ -196,72 +196,19 @@
 <script>
     function updateChart() {
         var day = document.getElementById("Day").value;
+        var un = '{{user.username}}';
+        console.log(day);
         var productList = [];
         productList.push(['name', 'cnt']);
         var datalist;
         $.ajax({
-            url: '/statistics/sale/month',
+            url: '/homecam/ajax/data/animal/',
             type: "post",
-            data: {datetime: day, mode: 'price'},
+            data: {datetime: day, username: un},
             dataType: "json",
             success: function (data) {
                 if (data.status == 'NO') {
-                    productList.push(['No Data', 1]);
-                    var data_pie = google.visualization.arrayToDataTable(
-                        productList
-                    );
-                    var options = {
-                        title: day + ' 판매액'
-                    };
-                    var chart6 = new google.visualization.PieChart(document.getElementById('piechart6'));
-                    chart6.draw(data_pie, options);
 
-                    productList_table = [];
-                    for (var i = 0; i < 5; i++) {
-                        productList_table.push(['-', '-', 0]);
-                    }
-                    var data_table = new google.visualization.DataTable();
-                    data_table.addColumn('string', '제품코드');
-                    data_table.addColumn('string', '제품이름');
-                    data_table.addColumn('number', '판매액');
-                    data_table.addRows(productList_table);
-
-                    var table6 = new google.visualization.Table(document.getElementById('table_div6'));
-
-                    table6.draw(data_table, {showRowNumber: true, width: '90%', height: '100%'});
-                } else {
-                    for (var i = 0; i < Object.keys(data['products']).length; i++) {
-                        productList.push([data.products[i].name, data.products[i].SellPrice]);
-
-                    }
-                    var data_pie = google.visualization.arrayToDataTable(
-                        productList
-                    );
-
-                    var options = {
-                        title: day + ' 판매액'
-                    };
-                    var chart6 = new google.visualization.PieChart(document.getElementById('piechart6'));
-                    chart6.draw(data_pie, options);
-
-                    productList_table = [];
-                    for (var i = 0; i < 5; i++) {
-                        if (i < Object.keys(data['products']).length) {
-                            productList_table.push([data.products[i].code, data.products[i].name,
-                                data.products[i].SellPrice]);
-                        } else {
-                            productList_table.push(['-', '-', 0]);
-                        }
-                    }
-                    var data_table = new google.visualization.DataTable();
-                    data_table.addColumn('string', '제품코드');
-                    data_table.addColumn('string', '제품이름');
-                    data_table.addColumn('number', '판매액');
-                    data_table.addRows(productList_table);
-
-                    var table6 = new google.visualization.Table(document.getElementById('table_div6'));
-
-                    table6.draw(data_table, {showRowNumber: true, width: '90%', height: '100%'});
                 }
             }
         });
