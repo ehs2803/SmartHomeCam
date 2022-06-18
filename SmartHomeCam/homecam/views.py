@@ -3,7 +3,8 @@ import time
 from threading import Thread
 
 from django.contrib.auth.models import User
-from django.http import StreamingHttpResponse, JsonResponse
+from django.core import serializers
+from django.http import StreamingHttpResponse, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -332,9 +333,19 @@ def ajax_getData_Animal(request):
     day = request.POST.get('datetime')
     username = request.POST.get('username')
     user = AuthUser.objects.get(username=username)
-    print(day, username)
+    mode_history = HomecamModeUseHistory.objects.filter(uid=user.id, mode='DETECT_ANIMAL',
+                                                        time__year=day.split('-')[0],time__month=day.split('-')[1],
+                                                        time__day=day.split('-')[2])
     detect_animals_data = DetectAnimal.objects.filter(uid=user.id, time__year=day.split('-')[0],
                                                       time__month=day.split('-')[1],
-                                                      time__day=day.split('-')[2])
-    send_message = {'animal_data' : detect_animals_data}
-    return JsonResponse(send_message)
+                                                      time__day=day.split('-')[2]).all()
+    for data in mode_history:
+        print(data.time, data.division)
+    for data in detect_animals_data:
+        print(data.species, data.location, data.time)
+    detect_json = serializers.serialize("json", detect_animals_data)
+    mode_json = serializers.serialize("json", mode_history)
+    data_json = detect_json+mode_json
+    return HttpResponse(data_json, content_type="text/json-comment-filtered")
+    #send_message = {'animal_data' : 1}
+    #return JsonResponse(send_message)

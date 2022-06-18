@@ -1,0 +1,57 @@
+2022-06-18 15:21:56,733 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-06-18 15:23:14,483 [INFO] django.utils.autoreload: C:\Users\nec\Desktop\project\SmartHomeCam\SmartHomeCam\SmartHomeCam\settings.py changed, reloading.
+2022-06-18 15:23:21,214 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-06-18 15:23:26,630 [WARNING] django.request: Not Found: /static/assets/homecam/button_person.jpg
+2022-06-18 15:23:26,631 [WARNING] django.request: Not Found: /static/assets/homecam/button_livecam.jpg
+2022-06-18 15:23:26,676 [WARNING] django.request: Not Found: /static/assets/homecam/button_face.jpg
+2022-06-18 15:23:26,689 [WARNING] django.request: Not Found: /static/assets/homecam/button_fire.jpg
+2022-06-18 15:23:26,699 [WARNING] django.request: Not Found: /static/assets/homecam/button_animal.jpg
+2022-06-18 15:23:26,704 [WARNING] django.request: Not Found: /static/assets/homecam/button_safe.jpg
+2022-06-18 15:23:27,965 [WARNING] django.request: Not Found: /static/js/mypage/chart-area-demo.js
+2022-06-18 15:23:27,971 [WARNING] django.request: Not Found: /static/js/mypage/chart-bar-demo.js
+2022-06-18 15:23:31,142 [WARNING] django.request: Not Found: /static/assets/homecam/button_livecam.jpg
+2022-06-18 15:23:31,145 [WARNING] django.request: Not Found: /static/assets/homecam/button_person.jpg
+2022-06-18 15:23:31,215 [WARNING] django.request: Not Found: /static/assets/homecam/button_face.jpg
+2022-06-18 15:23:31,223 [WARNING] django.request: Not Found: /static/assets/homecam/button_fire.jpg
+2022-06-18 15:23:31,229 [WARNING] django.request: Not Found: /static/assets/homecam/button_animal.jpg
+2022-06-18 15:23:31,241 [WARNING] django.request: Not Found: /static/assets/homecam/button_safe.jpg
+2022-06-18 15:23:34,736 [WARNING] django.request: Not Found: /static/js/mypage/chart-area-demo.js
+2022-06-18 15:23:34,741 [WARNING] django.request: Not Found: /static/js/mypage/chart-bar-demo.js
+2022-06-18 15:23:36,879 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084429_1.jpg
+2022-06-18 15:23:36,889 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084429_2.jpg
+2022-06-18 15:23:37,022 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084734_1.jpg
+2022-06-18 15:23:37,027 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084734_2.jpg
+2022-06-18 15:23:37,039 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-08_134200_1.jpg
+2022-06-18 15:23:37,046 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-08_134200_2.jpg
+2022-06-18 15:23:37,054 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-10_104257_1.jpg
+2022-06-18 15:23:37,064 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-10_105136_1.jpg
+2022-06-18 15:23:37,074 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-10_105136_2.jpg
+2022-06-18 15:23:37,086 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-10_104257_2.jpg
+2022-06-18 15:24:35,516 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-06-18 15:24:42,481 [WARNING] django.request: Not Found: /static/assets/homecam/button_livecam.jpg
+2022-06-18 15:24:42,483 [WARNING] django.request: Not Found: /static/assets/homecam/button_person.jpg
+2022-06-18 15:24:42,537 [WARNING] django.request: Not Found: /static/assets/homecam/button_face.jpg
+2022-06-18 15:24:42,543 [WARNING] django.request: Not Found: /static/assets/homecam/button_fire.jpg
+2022-06-18 15:24:42,553 [WARNING] django.request: Not Found: /static/assets/homecam/button_animal.jpg
+2022-06-18 15:24:42,579 [WARNING] django.request: Not Found: /static/assets/homecam/button_safe.jpg
+2022-06-18 15:27:03,234 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-06-18 15:27:11,621 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084429_1.jpg
+2022-06-18 15:27:11,627 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084429_2.jpg
+2022-06-18 15:27:11,755 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084734_1.jpg
+2022-06-18 15:27:11,761 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084734_2.jpg
+2022-06-18 15:27:11,766 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-08_134200_2.jpg
+2022-06-18 15:27:11,770 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-08_134200_1.jpg
+2022-06-18 15:27:11,784 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-10_104257_1.jpg
+2022-06-18 15:27:11,790 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-10_105136_1.jpg
+2022-06-18 15:27:11,801 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-10_104257_2.jpg
+2022-06-18 15:27:11,824 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-06-10_105136_2.jpg
+2022-06-18 15:27:48,329 [INFO] django.utils.autoreload: C:\Users\nec\Desktop\project\SmartHomeCam\SmartHomeCam\homecam\urls.py changed, reloading.
+2022-06-18 15:27:50,841 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-06-18 15:28:09,749 [INFO] django.utils.autoreload: C:\Users\nec\Desktop\project\SmartHomeCam\SmartHomeCam\homecam\urls.py changed, reloading.
+2022-06-18 15:28:12,259 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-06-18 15:28:21,561 [INFO] django.utils.autoreload: C:\Users\nec\Desktop\project\SmartHomeCam\SmartHomeCam\homecam\urls.py changed, reloading.
+2022-06-18 15:28:23,735 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-06-18 15:29:41,702 [INFO] django.utils.autoreload: C:\Users\nec\Desktop\project\SmartHomeCam\SmartHomeCam\mypage\urls.py changed, reloading.
+2022-06-18 15:29:48,814 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-06-18 15:32:06,905 [INFO] django.utils.autoreload: C:\Users\nec\Desktop\project\SmartHomeCam\SmartHomeCam\mypage\urls.py changed, reloading.
+2022-06-18 15:32:13,201 [INFO] django.utils.autoreload: Watching for file changes with StatReloader

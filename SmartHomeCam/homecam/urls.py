@@ -1,5 +1,7 @@
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.urls import path
+from django.views.static import serve
 
 from SmartHomeCam import settings
 from homecam import views
@@ -27,3 +29,6 @@ urlpatterns = [
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #(?P<username>[^/]+)$
+
+#urlpatterns+=url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT})
+#urlpatterns+=url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT})
