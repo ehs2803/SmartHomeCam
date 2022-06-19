@@ -339,13 +339,45 @@ def ajax_getData_Animal(request):
     detect_animals_data = DetectAnimal.objects.filter(uid=user.id, time__year=day.split('-')[0],
                                                       time__month=day.split('-')[1],
                                                       time__day=day.split('-')[2]).all()
+    mode_history_hour = []
     for data in mode_history:
-        print(data.time, data.division)
+        state = data.division
+        hour = data.time.strftime("%H:%M:%S").split(':')[0]
+        minute = data.time.strftime("%H:%M:%S").split(':')[1]
+        second = data.time.strftime("%H:%M:%S").split(':')[2]
+        mode_history_hour.append([hour, state])
+
+    mode_state = []
+    iter_index = 0
+    check = False
+    for hour in range(0,24):
+        once_on = False
+        while True:
+            if int(mode_history_hour[iter_index][0]) == hour:
+                if mode_history_hour[iter_index][1] == 'ON':
+                    check = True
+                    once_on = True
+                else:
+                    check = False
+                iter_index += 1
+                if iter_index == len(mode_history_hour):
+                    iter_index = 0
+                    break
+            else:
+                break
+        if check or once_on:
+            mode_state.append('ON')
+        else:
+            mode_state.append('OFF')
+
+
+
+
     for data in detect_animals_data:
         print(data.species, data.location, data.time)
     detect_json = serializers.serialize("json", detect_animals_data)
     mode_json = serializers.serialize("json", mode_history)
     data_json = detect_json+mode_json
-    return HttpResponse(data_json, content_type="text/json-comment-filtered")
-    #send_message = {'animal_data' : 1}
-    #return JsonResponse(send_message)
+    #return HttpResponse(data_json, content_type="text/json-comment-filtered")
+    send_message = {'mode_state' : mode_state}
+    return JsonResponse(send_message)
