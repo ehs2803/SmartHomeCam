@@ -350,25 +350,30 @@ def ajax_getData_Animal(request):
     mode_state = []
     iter_index = 0
     check = False
-    for hour in range(0,24):
-        once_on = False
-        while True:
-            if int(mode_history_hour[iter_index][0]) == hour:
-                if mode_history_hour[iter_index][1] == 'ON':
-                    check = True
-                    once_on = True
+    if len(mode_history_hour)>0:
+        for hour in range(0, 24):
+            once_on = False
+            while True:
+                if int(mode_history_hour[iter_index][0]) == hour:
+                    if mode_history_hour[iter_index][1] == 'ON':
+                        check = True
+                        once_on = True
+                    else:
+                        check = False
+                    iter_index += 1
+                    if iter_index == len(mode_history_hour):
+                        iter_index = 0
+                        break
                 else:
-                    check = False
-                iter_index += 1
-                if iter_index == len(mode_history_hour):
-                    iter_index = 0
                     break
+            if check or once_on:
+                mode_state.append('ON')
             else:
-                break
-        if check or once_on:
-            mode_state.append('ON')
-        else:
+                mode_state.append('OFF')
+    else:
+        for i in range(24):
             mode_state.append('OFF')
+
 
 
 

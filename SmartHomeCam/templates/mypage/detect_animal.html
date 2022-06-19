@@ -33,7 +33,7 @@
             <input type="date" id="Day">
             <script>
                 let mychart;
-                const data = {
+                let data = {
                     labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
                     datasets: [
                         {
@@ -66,7 +66,7 @@
                 // </block:setup>
 
                 // <block:config:0>
-                const config = {
+                let config = {
                     type: 'line',
                     data: data,
                     options: {
@@ -102,112 +102,21 @@
                         }
                     },
                 };
-                var myChart = new Chart(
+                mychart = new Chart(
                     document.getElementById('myChart'),
                     config
                 );
-                mychart = myChart;
-                drawChart();
 
-                function drawChart() {
-                    var day = document.getElementById("Day").value;
-                    var un = '{{user.username}}';
-                    var productList;
-                    $.ajax({
-                        url: '/homecam/ajax/data/animal/',
-                        type: "post",
-                        data: {datetime: day, username: un},
-                        dataType: "json",
-                        success: function (datas) {
-                            console.log(datas);
+                function drawChart(datas) {
+                    data.datasets[2].data=datas['mode_state'];
 
-                        }
-
-                    });
-                    console.log(1);
-                    mychart.destroy();
-
-                    const data1 = {
-                        labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-                        datasets: [
-                            {
-                                label: '강아지',
-                                data: [10, 30, 0, 20, 0, 0, 10, 5, 6, 20, 5, 10, 50, 30, 20, 50, 10, 25, 34, 22, 21, 15, 20, 16, 25, 26, 30],
-                                borderColor: '#f67019',
-                                backgroundColor: '#f67019',
-                                cubicInterpolationMode: 'monotone',
-                                tension: 0.4
-                            },
-                            {
-                                label: '고양이',
-                                data: [20, 10, 0, 40, 0, 0, 12, 15, 20, 20, 20, 40, 20, 30, 20, 40, 20, 50, 60, 30, 10, 20, 50, 10, 20, 20, 30, 5, 1, 0, 10],
-                                borderColor: '#537bc4',
-                                backgroundColor: '#537bc4',
-                                cubicInterpolationMode: 'monotone',
-                                tension: 0.4
-                            },
-                            {
-                                label: '모드 ON/OFF',
-                                data: ['ON', 'ON', 'OFF', 'ON', 'OFF', 'OFF', 'ON', 'ON', 'ON', 'ON', 'ON', 'ON',
-                                    'ON', 'ON', 'ON', 'OFF', 'ON', 'OFF', 'ON', 'OFF', 'ON', 'ON', 'ON', 'OFF'],
-                                borderColor: '#2819f6',
-                                backgroundColor: '#2819f6',
-                                stepped: true,
-                                yAxisID: 'y2',
-                            }
-                        ]
-                    };
-                    // </block:setup>
-
-                    // <block:config:0>
-                    const config1 = {
-                        type: 'line',
-                        data: data1,
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: '반려동물 활동성 통계',
-                                },
-                            },
-                            scales: {
-                                y: {
-                                    type: 'linear',
-                                    position: 'left',
-                                    stack: 'demo',
-                                    stackWeight: 2,
-                                    grid: {
-                                        borderColor: '#537bc4'
-                                    },
-
-                                },
-                                y2: {
-                                    type: 'category',
-                                    labels: ['ON', 'OFF'],
-                                    offset: true,
-                                    position: 'left',
-                                    stack: 'demo',
-                                    stackWeight: 1,
-                                    grid: {
-                                        borderColor: '#537bc4'
-                                    }
-                                }
-                            }
-                        },
-                    };
-                    var myChart1 = new Chart(
-                        document.getElementById('myChart'),
-                        config1
-                    );
-
-                    mychart = myChart1;
+                    mychart.update();
 
                 }
 
 
             </script>
-            <button onclick="drawChart()" class="btn btn-primary">조회하기</button>
+            <button onclick="updateChart()" class="btn btn-primary">조회하기</button>
         </div>
         <div class="card mb-4">
             <div class="card-header">
@@ -264,11 +173,11 @@
             dataType: "json",
             success: function (datas) {
                 console.log(datas);
-
+                drawChart(datas);
             }
 
         });
-        drawChart();
+
     }
 
     /*
