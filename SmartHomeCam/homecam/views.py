@@ -336,9 +336,49 @@ def ajax_getData_Animal(request):
     mode_history = HomecamModeUseHistory.objects.filter(uid=user.id, mode='DETECT_ANIMAL',
                                                         time__year=day.split('-')[0],time__month=day.split('-')[1],
                                                         time__day=day.split('-')[2])
-    detect_animals_data = DetectAnimal.objects.filter(uid=user.id, time__year=day.split('-')[0],
+    detect_cat_data = DetectAnimal.objects.filter(uid=user.id, time__year=day.split('-')[0], species=15,
                                                       time__month=day.split('-')[1],
                                                       time__day=day.split('-')[2]).all()
+    detect_dog_data = DetectAnimal.objects.filter(uid=user.id, time__year=day.split('-')[0], species=16,
+                                                  time__month=day.split('-')[1],
+                                                  time__day=day.split('-')[2]).all()
+    cat_hour = []
+    dog_hour = []
+    if len(detect_cat_data)==0:
+        for i in range(25):
+            cat_hour.append(0)
+    else:
+        cat_hour_dic={}
+        for i in range(25):
+            cat_hour_dic[i]=[]
+        for data in detect_cat_data:
+            location = data.location
+            hour = int(data.time.strftime("%H:%M:%S").split(':')[0])
+            cat_hour_dic[hour].append(location)
+        for key in cat_hour_dic:
+            if len(cat_hour_dic[key])==0:
+                cat_hour.append(0)
+            else:
+                cat_hour.append(1)
+
+
+    if len(detect_dog_data)==0:
+        for i in range(25):
+            dog_hour.append(0)
+    else:
+        dog_hour_dic = {}
+        for i in range(25):
+            dog_hour_dic[i]=[]
+        for data in detect_dog_data:
+            location = data.location
+            hour = int(data.time.strftime("%H:%M:%S").split(':')[0])
+            dog_hour_dic[hour].append(location)
+        for key in dog_hour_dic:
+            if len(dog_hour_dic[key]) == 0:
+                dog_hour.append(0)
+            else:
+                dog_hour.append(1)
+
     mode_history_hour = []
     for data in mode_history:
         state = data.division
@@ -374,15 +414,7 @@ def ajax_getData_Animal(request):
         for i in range(24):
             mode_state.append('OFF')
 
-
-
-
-
-    for data in detect_animals_data:
-        print(data.species, data.location, data.time)
-    detect_json = serializers.serialize("json", detect_animals_data)
     mode_json = serializers.serialize("json", mode_history)
-    data_json = detect_json+mode_json
     #return HttpResponse(data_json, content_type="text/json-comment-filtered")
-    send_message = {'mode_state' : mode_state}
+    send_message = {'mode_state' : mode_state, 'cat_activity' : cat_hour, 'dog_activity' : dog_hour}
     return JsonResponse(send_message)

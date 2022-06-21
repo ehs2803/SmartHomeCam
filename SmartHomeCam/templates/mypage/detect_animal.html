@@ -38,7 +38,7 @@
                     datasets: [
                         {
                             label: '강아지',
-                            data: [10, 30, 0, 20, 0, 0, 10, 5, 6, 20, 5, 10, 50, 30, 20, 50, 10, 25, 34, 22, 21, 15, 20, 16, 25, 26, 30],
+                            data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                             borderColor: '#f67019',
                             backgroundColor: '#f67019',
                             cubicInterpolationMode: 'monotone',
@@ -46,7 +46,7 @@
                         },
                         {
                             label: '고양이',
-                            data: [20, 10, 0, 40, 0, 0, 12, 15, 20, 20, 20, 40, 20, 30, 20, 40, 20, 50, 60, 30, 10, 20, 50, 10, 20, 20, 30, 5, 1, 0, 10],
+                            data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                             borderColor: '#537bc4',
                             backgroundColor: '#537bc4',
                             cubicInterpolationMode: 'monotone',
@@ -83,10 +83,12 @@
                                 position: 'left',
                                 stack: 'demo',
                                 stackWeight: 2,
+                                beginAtZero: true,
+                                max: 3,
+                                stepSize: 1,
                                 grid: {
                                     borderColor: '#537bc4'
-                                },
-
+                                }
                             },
                             y2: {
                                 type: 'category',
@@ -108,7 +110,9 @@
                 );
 
                 function drawChart(datas) {
-                    data.datasets[2].data=datas['mode_state'];
+                    data.datasets[2].data = datas['mode_state'];
+                    data.datasets[0].data = datas['dog_activity'];
+                    data.datasets[1].data = datas['cat_activity'];
 
                     mychart.update();
 
