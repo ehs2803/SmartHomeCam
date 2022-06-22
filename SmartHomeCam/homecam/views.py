@@ -359,8 +359,63 @@ def ajax_getData_Animal(request):
             if len(cat_hour_dic[key])==0:
                 cat_hour.append(0)
             else:
-                cat_hour.append(1)
+                total_cnt = len(cat_hour_dic[key])
+                check_sleep=False
+                max_cnt_continuity=0
+                pre_location=-1
+                temp_cnt=0
+                for data in cat_hour_dic[key]:
+                    if data==pre_location:
+                        temp_cnt+=1
+                    else:
+                        temp_cnt=1
+                        if max_cnt_continuity<temp_cnt:
+                            max_cnt_continuity=temp_cnt
+                        pre_location=data
 
+                if max_cnt_continuity>int(total_cnt*0.5):
+                    check_sleep=True
+
+                location_one=0
+                location_two=0
+                location_three=0
+                location_four=0
+                for data in cat_hour_dic[key]:
+                    if data==1:
+                        location_one+=1
+                    elif data==2:
+                        location_two+=1
+                    elif data==3:
+                        location_three+=1
+                    elif data==4:
+                        location_four+=1
+                location_one_percent = int(location_one/total_cnt)
+                location_two_percnet = int(location_two/total_cnt)
+                location_three_percent = int(location_three/total_cnt)
+                location_four_percent = int(location_four/total_cnt)
+
+                # 360
+                if total_cnt<120: #20min - 0,1
+                    if check_sleep and max_cnt_continuity > int(total_cnt * 0.9):
+                        cat_hour.append(0)
+                    else:
+                        cat_hour.append(1)
+                elif total_cnt<240: #40min - 0,1,2
+                    if check_sleep and max_cnt_continuity > int(total_cnt * 0.9):
+                        cat_hour.append(0)
+                    elif location_one_percent>40 or location_two_percnet>40 or location_three_percent>40 or location_four_percent>40:
+                        cat_hour.append(1)
+                    else:
+                        cat_hour.append(2)
+                else: #60min - 0,1,2,3
+                    if check_sleep and max_cnt_continuity > int(total_cnt * 0.9):
+                        cat_hour.append(0)
+                    elif location_one_percent > 60 or location_two_percnet > 60 or location_three_percent > 60 or location_four_percent > 60:
+                        cat_hour.append(1)
+                    elif location_one_percent > 40 or location_two_percnet > 40 or location_three_percent > 40 or location_four_percent > 40:
+                        cat_hour.append(2)
+                    else:
+                        cat_hour.append(3)
 
     if len(detect_dog_data)==0:
         for i in range(25):
@@ -377,7 +432,63 @@ def ajax_getData_Animal(request):
             if len(dog_hour_dic[key]) == 0:
                 dog_hour.append(0)
             else:
-                dog_hour.append(1)
+                total_cnt = len(dog_hour_dic[key])
+                check_sleep = False
+                max_cnt_continuity = 0
+                pre_location = -1
+                temp_cnt = 0
+                for data in dog_hour_dic[key]:
+                    if data == pre_location:
+                        temp_cnt += 1
+                    else:
+                        temp_cnt = 1
+                        if max_cnt_continuity < temp_cnt:
+                            max_cnt_continuity = temp_cnt
+                        pre_location = data
+
+                if max_cnt_continuity > int(total_cnt * 0.5):
+                    check_sleep = True
+
+                location_one = 0
+                location_two = 0
+                location_three = 0
+                location_four = 0
+                for data in dog_hour_dic[key]:
+                    if data == 1:
+                        location_one += 1
+                    elif data == 2:
+                        location_two += 1
+                    elif data == 3:
+                        location_three += 1
+                    elif data == 4:
+                        location_four += 1
+                location_one_percent = int(location_one / total_cnt)
+                location_two_percnet = int(location_two / total_cnt)
+                location_three_percent = int(location_three / total_cnt)
+                location_four_percent = int(location_four / total_cnt)
+
+                # 360
+                if total_cnt < 120:  # 20min - 0,1
+                    if check_sleep and max_cnt_continuity > int(total_cnt * 0.9):
+                        dog_hour.append(0)
+                    else:
+                        dog_hour.append(1)
+                elif total_cnt < 240:  # 40min - 0,1,2
+                    if check_sleep and max_cnt_continuity > int(total_cnt * 0.9):
+                        dog_hour.append(0)
+                    elif location_one_percent > 40 or location_two_percnet > 40 or location_three_percent > 40 or location_four_percent > 40:
+                        dog_hour.append(1)
+                    else:
+                        dog_hour.append(2)
+                else:  # 60min - 0,1,2,3
+                    if check_sleep and max_cnt_continuity > int(total_cnt * 0.9):
+                        dog_hour.append(0)
+                    elif location_one_percent > 60 or location_two_percnet > 60 or location_three_percent > 60 or location_four_percent > 60:
+                        dog_hour.append(1)
+                    elif location_one_percent > 40 or location_two_percnet > 40 or location_three_percent > 40 or location_four_percent > 40:
+                        dog_hour.append(2)
+                    else:
+                        dog_hour.append(3)
 
     mode_history_hour = []
     for data in mode_history:
