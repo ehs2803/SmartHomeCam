@@ -143,6 +143,7 @@ class YoloDetect(EmailSender, SmsSender):
                 filepath2 = settings.MEDIA_ROOT+'/'+str(dp.image2)#'/media/' + str(dp.image2)
                 #print(filepath1)
                 self.sendDetectPersonEmail(filepath1, filepath2)
+                self.sendDetectPersonEmail()
                 self.detect_person_time = time.time()
 
         if check_detect_animal and check_animal:
@@ -218,6 +219,12 @@ class YoloDetect(EmailSender, SmsSender):
         super().makeContent(receiver=receivers, subject="[SmartHomecam] 사탐 탐지 알림",
                             sendimg1=file1, sendimg2=file2)
         super().sendEmail()
+
+    def sendDetectPersonSMS(self):
+        for phone in self.PhoneNumberList:
+            receiver = '82'+phone
+            receiver = receiver.replace('-', "")
+            super().sendSMS(receiver, '[SmartHomeCam] 사람 탐지\n웹사이트에 들어가서 확인해보세요.')
 
 
 

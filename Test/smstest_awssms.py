@@ -22,7 +22,7 @@ Message="파이썬 코드로 문자 보내기"
 '''
 # 주제나 구독자를 정하지 않으면 다음과 같이 간단하게 구현 가능
 client.publish(
-PhoneNumber="+8201047862803",
+PhoneNumber="8201047862803",
 Message="AWS SMS 파이썬 테스트"
 )
 

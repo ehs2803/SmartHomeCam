@@ -140,6 +140,7 @@ class unknownFaceDetector(EmailSender, SmsSender):
                 filepath1 = settings.MEDIA_ROOT + '/' + str(rfmodel.image1)
                 filepath2 = settings.MEDIA_ROOT + '/' + str(rfmodel.image2)
                 self.sendDetectunknownFaceEmail(filepath1, filepath2)
+                self.sendDetectUnknownSMS()
 
                 self.recognition_face_time=time.time()
                 print('unknown detect: ', computed_distances_ordered[0])
@@ -166,3 +167,9 @@ class unknownFaceDetector(EmailSender, SmsSender):
         super().makeContent(receiver=receivers, subject="[SmartHomecam] 확인되지 않은 사람 탐지",
                             sendimg1=file1, sendimg2=file2)
         super().sendEmail()
+
+    def sendDetectUnknownSMS(self):
+        for phone in self.PhoneNumberList:
+            receiver = '82'+phone
+            receiver = receiver.replace('-', "")
+            super().sendSMS(receiver, '[SmartHomeCam] 외부인 탐지\n웹사이트에 들어가서 확인해보세요.')

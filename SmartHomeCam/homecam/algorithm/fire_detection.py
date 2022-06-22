@@ -118,7 +118,8 @@ class FireDetector(EmailSender, SmsSender):
                     self.updateContactList(self.username)
                     filepath1 = settings.MEDIA_ROOT + '/' + str(dfmodel.image1)
                     filepath2 = settings.MEDIA_ROOT + '/' + str(dfmodel.image2)
-                    self.sendDetectunknownFaceEmail(filepath1, filepath2)
+                    self.sendDetectFireEmail(filepath1, filepath2)
+                    self.sendDetectFireSMS()
 
                     self.detect_fire_time=time.time()
                     print('detect fire')
@@ -137,7 +138,7 @@ class FireDetector(EmailSender, SmsSender):
         print(self.EmailAddressList)
         print(self.PhoneNumberList)
 
-    def sendDetectunknownFaceEmail(self, file1, file2):
+    def sendDetectFireEmail(self, file1, file2):
         receivers = ''
         for email in self.EmailAddressList:
             receivers = receivers+email
@@ -146,3 +147,10 @@ class FireDetector(EmailSender, SmsSender):
         super().makeContent(receiver=receivers, subject="[SmartHomecam] 화재 탐지",
                             sendimg1=file1, sendimg2=file2)
         super().sendEmail()
+
+    def sendDetectFireSMS(self):
+        for phone in self.PhoneNumberList:
+            receiver = '82'+phone
+            receiver = receiver.replace('-', "")
+            super().sendSMS(receiver, '[SmartHomeCam] 화재 탐지\n웹사이트에 들어가서 확인해보세요.')
+

@@ -60,6 +60,7 @@ class SafeMode(EmailSender, SmsSender):
 
             self.updateContactList(self.username)
             self.sendSafeModeEmail_no_detect(self.username, camid, self.time_noDetect)
+            self.sendDetectNoDetectPersonSMS()
             print('save')
         if time.time()-self.detect_time<10:
             return
@@ -154,6 +155,7 @@ class SafeMode(EmailSender, SmsSender):
                     filepath1 = settings.MEDIA_ROOT + '/' + str(smna.image1)
                     filepath2 = settings.MEDIA_ROOT + '/' + str(smna.image2)
                     self.sendSafeModeEmail_no_action(filepath1, filepath2)
+                    self.sendDetectNoActionSMS()
 
                     self.detect_action_time=None
                     print('행동미감지')
@@ -189,3 +191,17 @@ class SafeMode(EmailSender, SmsSender):
         super().makeContent(receiver=receivers, subject="[SmartHomecam] 안심모드 사람 행동 미감지",
                             sendimg1=file1, sendimg2=file2)
         super().sendEmail()
+
+    def sendDetectNoDetectPersonSMS(self):
+        day = self.time_noDetect/86400
+        for phone in self.PhoneNumberList:
+            receiver = '82'+phone
+            receiver = receiver.replace('-', "")
+            super().sendSMS(receiver, '[SmartHomeCam] '+str(day)+'일동안 사람인식 않됨\n웹사이트에 들어가서 확인해보세요.')
+
+    def sendDetectNoActionSMS(self):
+        hour = self.time_noAction/3600
+        for phone in self.PhoneNumberList:
+            receiver = '82'+phone
+            receiver = receiver.replace('-', "")
+            super().sendSMS(receiver, '[SmartHomeCam] '+str(hour)+'시간 사람 행동 인식 않됨\n웹사이트에 들어가서 확인해보세요.')
