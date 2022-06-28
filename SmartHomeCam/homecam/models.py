@@ -140,6 +140,7 @@ class SafeModeNoaction(models.Model):
         managed = False
         db_table = 'safe_mode_noaction'
 
+'''
 class DetectFalldown(models.Model):
     id = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
@@ -151,3 +152,5 @@ class DetectFalldown(models.Model):
     class Meta:
         managed = False
         db_table = 'detect_falldown'
+
+'''

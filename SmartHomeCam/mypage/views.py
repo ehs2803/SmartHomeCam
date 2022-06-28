@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 # Create your views here
 from account.models import AuthUser
 from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, RecognitionFace, DetectFire, \
-    SafeModeNodetect, SafeModeNoaction, DetectFalldown, CamConnectHistory
+    SafeModeNodetect, SafeModeNoaction, CamConnectHistory
 import homecam.views
 from homecam.socket import VideoCamera
 from mypage.models import Family
@@ -374,6 +374,7 @@ def record_safemode_noAction_delete(request, id):
     record.delete()
     return redirect('/mypage/records/safemode/noAction')
 
+'''
 def record_safemode_falldown(request):
     user = None
     records_detect_falldown = None
@@ -386,3 +387,4 @@ def record_safemode_falldown(request):
         'records_detect_falldown': records_detect_falldown,
     }
     return render(request, "mypage/safemode_detect_falldown.html", context=context)
+'''
