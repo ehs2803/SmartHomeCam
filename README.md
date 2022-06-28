@@ -89,5 +89,3 @@ SmartHomeCam
 
 ![database](images/mysql.jpg)
 
-<img width="764" alt="image" src="https://user-images.githubusercontent.com/65898555/176060604-89b57304-fc5d-4239-ab81-d2b9080c09a7.png">
-
