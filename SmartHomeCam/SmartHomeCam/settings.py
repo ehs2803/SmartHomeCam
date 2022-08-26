@@ -21,11 +21,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-vtmc*^z@#g=6#l@+pblp74iw@$k!)-48cnk)6!ft*7*bl!#6sm'
+#SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-vtmc*^z@#g=6#l@+pblp74iw@$k!)-48cnk)6!ft*7*bl!#6sm')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#DEBUG = int(os.environ.get('DEBUG',1))
+
+# if os.environ.get('DJANGO_ALLOWED_HOSTS'):
+#     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
+# else:
+#     ALLOWED_HOSTS = []
 
 ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['0.0.0.0']
 
 LOGGING = {
     'version': 1,
@@ -144,15 +152,16 @@ WSGI_APPLICATION = 'SmartHomeCam.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-	'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'smarthomecam',
-    'USER': 'root',
-    'PASSWORD': '1234',
-    'HOST': 'localhost',
-    'PORT': '3306',
-    }
+ 	'default': {
+     'ENGINE': 'django.db.backends.mysql',
+     'NAME': 'smarthomecam',
+     'USER': 'root',
+     'PASSWORD': '1234',
+     'HOST': 'localhost',
+     'PORT': '3306',
+     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
