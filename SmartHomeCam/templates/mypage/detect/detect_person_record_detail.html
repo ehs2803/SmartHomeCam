@@ -18,32 +18,39 @@
 {% include "mypage/navbar.html" %}
 <div id="layoutSidenav_content">
     <main>
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                화재 탐지
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-sm-5 col-md-6">
+                    <h3>탐지 시간 : {{ record_detect_person.time }}</h3>
+                </div>
+                <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
+                    <h3>CAM ID : {{ record_detect_person.camid }}</h3>
+                </div>
             </div>
-            <div class="card-body">
-                <table id="datatablesSimple">
-                    <thead>
-                    <tr>
-                        <th scope="col">시간</th>
-                        <th scope="col">미탐지 시간</th>
-                        <th scope="col">홈캠 ID</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for noperson in records_detect_noPerson %}
-                        <tr>
-                            <td>{{ noperson.time }}</td>
-                            <td>{{ noperson.period }}</td>
-                            <td>{{ noperson.camid }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            <hr>
+            <br>
+
+            <div class="row">
+                <div class="col-sm-6 col-md-5 col-lg-6">
+                    <img class="img-fluid" src="{{ record_detect_person.image1.url }}"/>
+                    <h3>탐지 객체 바운딩 사진</h3>
+                </div>
+                <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
+                    <img class="img-fluid" src="{{ record_detect_person.image2.url }}"/>
+                    <h3>원본사진</h3>
+                </div>
+            </div>
+            <hr>
+            <br>
+
+            <div class="row">
+                <a href="/mypage/records/detectPerson/delete/{{ record_detect_person.id }}/">
+                    <button class="btn btn-primary">삭제하기</button>
+                </a>
             </div>
         </div>
+
     </main>
     {% include "mypage/footer.html" %}
 </div>
