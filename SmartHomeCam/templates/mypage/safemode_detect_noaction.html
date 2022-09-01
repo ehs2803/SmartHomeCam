@@ -8,26 +8,49 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <title>Charts - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
     <link href="{% static 'css/mypage/mypage.css' %}" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
 {% include "mypage/navbar.html" %}
 <div id="layoutSidenav_content">
     <main>
-        {% load static %}
-        {% for noaction in records_detect_noAction %}
-            <h1>{{ noaction.time }}</h1>
-            <h2>{{ noaction.camid }}</h2>
-            <h2>{{ noaction.period }}</h2>
-            <a href="/mypage/records/safemode/noAction/delete/{{ noaction.id }}/">
-                <button class="btn btn-primary">삭제하기</button>
-            </a><br>
-
-            <img src="{{ noaction.image1.url }}"/><br>
-            <img src="{{ noaction.image2.url }}"/><br>
-            <hr>
-        {% endfor %}
+            {% load static %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                사람 행동 미감지
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Cam Id</th>
+                        <th>행동 미감지 시간</th>
+                        <th>자세히보기</th>
+                        <th>삭제</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for noaction in records_detect_noAction %}
+                        <tr>
+                            <td>{{ noaction.time }}</td>
+                            <td>{{ noaction.camid }}</td>
+                            <th>{{ noaction.period }}</th>
+                            <td><a href="/mypage/records/safemode/noAction/{{ noaction.id }}/">
+                                <button class="btn btn-primary">자세히보기</button></a></td>
+                            <td><a href="/mypage/records/safemode/noAction/delete/{{ noaction.id }}/">
+                            <button class="btn btn-primary">삭제하기</button></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
     {% include "mypage/footer.html" %}
 </div>
@@ -36,5 +59,9 @@
         crossorigin="anonymous"></script>
 <script src="{% static 'js/mypage/mypage.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/mypage/chart-area-demo.js' %}"></script>
+<script src="{% static 'js/mypage/chart-bar-demo.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="{% static 'js/mypage/datatables-simple-demo.js' %}"></script>
 </body>
 </html>

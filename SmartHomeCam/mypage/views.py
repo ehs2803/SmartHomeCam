@@ -277,6 +277,19 @@ def record_detect_person(request):
     }
     return render(request, "mypage/detect_person_record.html", context=context)
 
+def record_detect_person_detail(request, id):
+    user = None
+    record_detect_person = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        record_detect_person = DetectPerson.objects.get(id=id)
+
+    context = {
+        'user': user,
+        'record_detect_person': record_detect_person,
+    }
+    return render(request, "mypage/detect/detect_person_record_detail.html", context=context)
+
 def delete_record_detect_person(request, id):
     record = None
     if request.session.get('id'):
@@ -298,6 +311,19 @@ def record_detect_unknown(request):
     }
     return render(request, "mypage/detect_unknown_record.html", context=context)
 
+def record_detect_unknown_detail(request, id):
+    user = None
+    record_detect_unknown = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        record_detect_unknown = RecognitionFace.objects.get(id=id)
+
+    context = {
+        'user': user,
+        'record_detect_unknown': record_detect_unknown,
+    }
+    return render(request, "mypage/detect/detect_unknown_record_detail.html", context=context)
+
 def delete_record_detect_unknown(request, id):
     record = None
     if request.session.get('id'):
@@ -318,6 +344,19 @@ def record_detect_fire(request):
         'records_detect_fire': records_detect_fire,
     }
     return render(request, "mypage/detect_fire_record.html", context=context)
+
+def record_detect_fire_detail(request, id):
+    user = None
+    record_detect_fire = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        record_detect_fire = DetectFire.objects.get(id=id)
+
+    context = {
+        'user': user,
+        'record_detect_fire': record_detect_fire,
+    }
+    return render(request, "mypage/detect/detect_fire_record_detail.html", context=context)
 
 def delete_record_detect_fire(request, id):
     record = None
@@ -365,6 +404,19 @@ def record_safemode_noAction(request):
         'records_detect_noAction': records_detect_noAction,
     }
     return render(request, "mypage/safemode_detect_noaction.html", context=context)
+
+def record_safemode_noAction_detail(request, id):
+    user = None
+    record_detect_noAction = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        record_detect_noAction = SafeModeNoaction.objects.get(id=id)
+
+    context = {
+        'user': user,
+        'record_detect_noAction': record_detect_noAction,
+    }
+    return render(request, "mypage/detect/detect_safemode_noaction_detail.html", context=context)
 
 def record_safemode_noAction_delete(request, id):
     record = None
