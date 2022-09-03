@@ -136,13 +136,6 @@
                         <th>camid</th>
                     </tr>
                     </thead>
-                    <tfoot>
-                    <tr>
-                        <th>종</th>
-                        <th>시간</th>
-                        <th>camid</th>
-                    </tr>
-                    </tfoot>
                     <tbody>
                     {% for record_animal in records_detect_animal %}
                         <tr>
@@ -151,7 +144,7 @@
                             {% else %}
                                 <td>고양이</td>
                             {% endif %}
-                            <td>{{ record_animal.time }}</td>
+                            <td>{{ record_animal.time|date:'Y-m-d H:i' }}</td>
                             <td>{{ record_animal.camid }}</td>
                         </tr>
                     {% endfor %}

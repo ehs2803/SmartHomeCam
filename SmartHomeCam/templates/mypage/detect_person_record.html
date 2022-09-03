@@ -37,7 +37,7 @@
                     <tbody>
                     {% for dp in records_detect_person %}
                         <tr>
-                            <td>{{ dp.time }}</td>
+                            <td>{{ dp.time|date:'Y-m-d H:i' }}</td>
                             <td>{{ dp.camid }}</td>
                             <td><a href="/mypage/records/detectPerson/{{ dp.id }}/">
                                 <button class="btn btn-primary">자세히보기</button></a></td>

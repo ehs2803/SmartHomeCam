@@ -37,7 +37,7 @@
                     <tbody>
                     {% for df in records_detect_fire %}
                         <tr>
-                            <td>{{ df.time }}</td>
+                            <td>{{ df.time|date:'Y-m-d H:i' }}</td>
                             <td>{{ df.camid }}</td>
                             <td><a href="/mypage/records/detectFire/{{ df.id }}/">
                                 <button class="btn btn-primary">자세히보기</button>

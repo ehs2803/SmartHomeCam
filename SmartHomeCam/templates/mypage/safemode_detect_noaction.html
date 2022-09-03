@@ -38,7 +38,7 @@
                     <tbody>
                     {% for noaction in records_detect_noAction %}
                         <tr>
-                            <td>{{ noaction.time }}</td>
+                            <td>{{ noaction.time|date:'Y-m-d H:i' }}</td>
                             <td>{{ noaction.camid }}</td>
                             <th>{{ noaction.period }}</th>
                             <td><a href="/mypage/records/safemode/noAction/{{ noaction.id }}/">

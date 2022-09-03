@@ -35,7 +35,7 @@
                     <tbody>
                     {% for noperson in records_detect_noPerson %}
                         <tr>
-                            <td>{{ noperson.time }}</td>
+                            <td>{{ noperson.time|date:'Y-m-d H:i' }}</td>
                             <td>{{ noperson.period }}</td>
                             <td>{{ noperson.camid }}</td>
                         </tr>
