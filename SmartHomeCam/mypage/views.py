@@ -209,8 +209,20 @@ def user_capture_pictures(request):
         'user': user,
         'capture_pictures': capture_pictures,
     }
-    return render(request, "mypage/capture_picture.html", context=context)
+    return render(request, "mypage/user/media/capture_picture.html", context=context)
 
+def user_capture_picture_detail(request, id):
+    user=None
+    capture_picture = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        capture_picture = CapturePicture.objects.get(cpid=id)
+
+    context = {
+        'user': user,
+        'capture_picture': capture_picture,
+    }
+    return render(request, "mypage/user/media/capture_picture_detail.html", context=context)
 
 def delete_capture(request, id):
     capture_picture = None
@@ -233,7 +245,22 @@ def user_recording_videos(request):
         'recording_videos':recording_videos,
         'mediaa' : media,
     }
-    return render(request, "mypage/recording_video.html", context=context)
+    return render(request, "mypage/user/media/recording_video.html", context=context)
+
+def user_recording_video_detail(request, id):
+    user = None
+    recording_video = None
+    media = '/media/'
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        recording_video = RecordingVideo.objects.get(rvid=id)
+
+    context = {
+        'user': user,
+        'recording_video':recording_video,
+        'mediaa' : media,
+    }
+    return render(request, "mypage/user/media/recording_video_detail.html", context=context)
 
 def delete_video(request, id):
     video = None

@@ -7,41 +7,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Dashboard - SB Admin</title>
+    <title>Charts - SB Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
     <link href="{% static 'css/mypage/mypage.css' %}" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
 {% include "mypage/navbar.html" %}
 <div id="layoutSidenav_content">
     <main>
-        {% load static %}
-        {% for cp in capture_pictures %}
-            <h1>{{ cp.time }}</h1>
-            <h2>{{ cp.camid }}</h2>
-            <a href="/mypage/capture/delete/{{ cp.cpid }}/">
-                <button class="btn btn-primary">삭제하기</button>
-            </a><br>
-
-            <img src="{{ cp.image.url }}"/><br>
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-sm-5 col-md-6">
+                    <h3>저장 시간 : {{ capture_picture.time }}</h3>
+                </div>
+                <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
+                    <h3>CAM ID : {{ capture_picture.camid }}</h3>
+                </div>
+            </div>
             <hr>
-        {% endfor %}
+            <br>
 
-        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="row" style="padding-left: 20%; padding-right:20%; width: 100%">
+                <img class="img-fluid" src="{{ capture_picture.image.url }}"/>
+            </div>
+            <hr>
+            <br>
 
+            <div class="row">
+                <a href="/mypage/capture/delete/{{ capture_picture.cpid }}/">
+                    <button class="btn btn-primary">삭제하기</button>
+                </a>
+            </div>
         </div>
+
 
     </main>
     {% include "mypage/footer.html" %}
 </div>
-
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 <script src="{% static 'js/mypage/mypage.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<script src="assets/demo/chart-area-demo.js"></script>
-<script src="assets/demo/chart-bar-demo.js"></script>
+<script src="{% static 'js/mypage/chart-area-demo.js' %}"></script>
+<script src="{% static 'js/mypage/chart-bar-demo.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="{% static 'js/mypage/datatables-simple-demo.js' %}"></script>
 </body>
