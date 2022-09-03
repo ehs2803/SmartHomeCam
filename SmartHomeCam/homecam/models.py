@@ -23,6 +23,35 @@ def user_directory_path_safemode_noaction(instance, filename):
 def user_directory_path_detect_falldown(instance, filename):
     return 'images/detectFalldown/{}/{}'.format(instance.uid, filename)
 
+class Alarm(models.Model):
+    id = models.AutoField(primary_key=True)
+    uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
+    camid = models.CharField(max_length=45, blank=True, null=True)
+    time = models.DateTimeField()
+    confirm = models.IntegerField()
+    type = models.CharField(max_length=45, blank=True, null=True)
+    did = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'alarm'
+
+class Homecam(models.Model):
+    camid = models.CharField(primary_key=True, max_length=45)
+    uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
+    po_person = models.IntegerField(blank=True, null=True)
+    po_unknown = models.IntegerField(blank=True, null=True)
+    po_animal = models.IntegerField(blank=True, null=True)
+    po_fire = models.IntegerField(blank=True, null=True)
+    po_safe_no_person = models.IntegerField(blank=True, null=True)
+    po_safe_noaction = models.IntegerField(blank=True, null=True)
+    po_safe_no_person_day = models.IntegerField(blank=True, null=True)
+    reg_time = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'homecam'
+
 class CamConnectHistory(models.Model):
     id = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')

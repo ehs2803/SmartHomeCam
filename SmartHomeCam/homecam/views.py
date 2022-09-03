@@ -9,8 +9,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from account.models import AuthUser
+from homecam.connect.socket import VideoCamera
 from homecam.models import HomecamModeUseHistory, DetectAnimal
-from homecam.socket import VideoCamera
+
 
 CAMERA  = None
 
