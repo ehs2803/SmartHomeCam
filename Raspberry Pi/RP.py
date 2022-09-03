@@ -47,7 +47,7 @@ try:
         # [return]
         # 1) 인코딩 결과(True / False)
         # 2) 인코딩된 이미지
-        retval, frame = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 90])
+        retval, frame = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
 
         # dumps : 데이터를 직렬화
         # - 직렬화(serialization) : 효율적으로 저장하거나 스트림으로 전송할 때 데이터를 줄로 세워 저장하는 것

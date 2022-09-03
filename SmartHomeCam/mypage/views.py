@@ -6,7 +6,7 @@ from account.models import AuthUser
 from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, RecognitionFace, DetectFire, \
     SafeModeNodetect, SafeModeNoaction, CamConnectHistory
 import homecam.views
-from homecam.socket import VideoCamera
+from homecam.connect.socket import VideoCamera
 from mypage.models import Family
 
 def landing(request):
