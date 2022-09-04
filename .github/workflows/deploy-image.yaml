@@ -22,6 +22,6 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
     - name: Build the Docker image # push The image to the docker hub
-      run: docker build -t $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }} /SmartHomeCam/
+      run: docker build -t $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }} ./SmartHomeCam/
     - name: Docker Push
       run: docker push $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
