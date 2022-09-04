@@ -11,8 +11,8 @@ env:
 jobs:
   push-image-to-docker-hub:  # job name
     runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
-    env:
-      working-directory: ./SmartHomeCam
+#     env:
+#       working-directory: ./SmartHomeCam
     steps:
     - uses: actions/checkout@v2 # first action : checkout source code
     - name: docker login
@@ -22,6 +22,6 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
     - name: Build the Docker image # push The image to the docker hub
-      run: docker build -t $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
+      run: docker build -t $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }} /SmartHomeCam/
     - name: Docker Push
       run: docker push $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
