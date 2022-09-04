@@ -18,7 +18,7 @@ from homecam.models import CapturePicture, RecordingVideo
 
 
 class Frame:
-    def __init__(self, client_socket, username, camid):
+    def __init__(self, client_socket, username, camid, policy):
         self.username = username
         self.camid = camid
         self.client_socket = client_socket
@@ -32,14 +32,19 @@ class Frame:
         self.out = None
         self.rvfilename = None
 
-        self.check_detect_person = False
-        self.check_recognition_face = False
-        self.check_detect_fire = False
-        self.check_detect_animal = False
-        self.check_on_safemode = False
-
         self.check_current_recording = False
 
+        # policy
+        self.check_detect_person = policy['po_person']
+        self.check_recognition_face = policy['po_unknown']
+        self.check_detect_fire = policy['po_fire']
+        self.check_detect_animal = policy['po_animal']
+        self.check_detect_no_person = policy['po_safe_no_person']
+        self.check_detect_no_action = policy['po_safe_noaction']
+        self.check_detect_no_person_day = policy['po_safe_no_person_day']
+        self.check_on_safemode = False
+
+        # detector
         self.YoloDetector = YoloDetect()
         self.RecognitionFace = unknownFaceDetector(username)
         self.FireDetector = FireDetector(username)
