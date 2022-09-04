@@ -1,5 +1,13 @@
+import datetime
+import time
+
 import socket
+from account.models import AuthUser
 from homecam.connect.client import Client
+
+from django.contrib.auth.models import User
+
+from homecam.models import Homecam
 
 
 class VideoCamera(object):
@@ -32,13 +40,55 @@ class VideoCamera(object):
             # 수신된 데이터를 str형식으로 decode한다.
             msg = data.decode()
             userid, rpid = msg.split(':')
+
+            check_db = False
+            policy = {}
+            user = User.objects.get(username=userid)
+            homecam = Homecam.objects.filter(camid=rpid, uid=user.id)
+            if homecam.count()==0:
+                ts = time.time()
+                timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+                newHomecam = Homecam()
+                newHomecam.camid = rpid
+                newHomecam.uid = AuthUser.objects.get(username=user.username)
+                newHomecam.po_person=0
+                newHomecam.po_unknown=0
+                newHomecam.po_animal=0
+                newHomecam.po_fire=0
+                newHomecam.po_safe_no_person=0
+                newHomecam.po_safe_noaction=0
+                newHomecam.po_safe_no_person_day=1
+                newHomecam.reg_time=timestamp
+                newHomecam.save()
+
+                policy['po_person'] = newHomecam.po_person
+                policy['po_unknown'] = newHomecam.po_unknown
+                policy['po_animal'] = newHomecam.po_animal
+                policy['po_fire'] = newHomecam.po_fire
+                policy['po_safe_no_person'] = newHomecam.po_safe_no_person
+                policy['po_safe_noaction'] = newHomecam.po_safe_noaction
+                policy['po_safe_no_person_day'] = newHomecam.po_safe_no_person_day
+                print(policy)
+            else:
+                check_db=True
+                policy['po_person'] = homecam.get().po_person
+                policy['po_unknown'] = homecam.get().po_unknown
+                policy['po_animal'] = homecam.get().po_animal
+                policy['po_fire'] = homecam.get().po_fire
+                policy['po_safe_no_person'] = homecam.get().po_safe_no_person
+                policy['po_safe_noaction'] = homecam.get().po_safe_noaction
+                policy['po_safe_no_person_day'] = homecam.get().po_safe_no_person_day
+                print(policy)
+                print("존재")
+
             if self.threads.get(userid):
                 client_ = self.threads[userid]
-                client_.add_client(client_socket, rpid)
+                client_.add_client(client_socket, rpid, policy)
                 self.threads[userid] = client_
                 print('#############################')
             else:
-                client = Client(userid, client_socket, rpid)
+                client = Client(userid, client_socket, rpid, policy)
                 self.threads[userid] = client
 
 

@@ -9,7 +9,7 @@ from homecam.models import CamConnectHistory, HomecamModeUseHistory
 
 
 class Client:
-    def __init__(self, username, client_socket, rpid):
+    def __init__(self, username, client_socket, rpid, policy):
         self.cnt = 0
         self.username = username
         self.connections = {}
@@ -17,7 +17,7 @@ class Client:
 
 
         self.cnt+=1
-        conn = Frame(client_socket, username,rpid)
+        conn = Frame(client_socket, username,rpid, policy)
         self.connections[rpid]=conn
         print("=========================1")
         live_detect_thread = Thread(target=self.thread_func, args=(rpid,conn,))#Thread(target=conn.detect_live)
@@ -41,10 +41,10 @@ class Client:
         conn.detect_live()
         self.disconnect_socket(rpid)
 
-    def add_client(self, client_socket, rpid):
+    def add_client(self, client_socket, rpid, policy):
         print('add client')
         self.cnt += 1
-        conn = Frame(client_socket, self.username, rpid)
+        conn = Frame(client_socket, self.username, rpid, policy)
         self.connections[rpid] = conn
         live_detect_thread = Thread(target=self.thread_func, args=(rpid,conn,))#Thread(target=conn.detect_live)
         live_detect_thread.start()
@@ -61,16 +61,16 @@ class Client:
         cam_connetct_history.save()
 
     def disconnect_socket(self, id):
-        if self.connections[id].check_detect_person:
-            self.save_mode_use_off('DETECT_PERSON')
-        if self.connections[id].check_recognition_face:
-            self.save_mode_use_off('DETECT_UNKNOWNFACE')
-        if self.connections[id].check_detect_fire:
-            self.save_mode_use_off('DETECT_FIRE')
-        if self.connections[id].check_detect_animal:
-            self.save_mode_use_off('DETECT_ANIMAL')
-        if self.connections[id].check_on_safemode:
-            self.save_mode_use_off('SAFEMODE')
+        # if self.connections[id].check_detect_person:
+        #     self.save_mode_use_off('DETECT_PERSON')
+        # if self.connections[id].check_recognition_face:
+        #     self.save_mode_use_off('DETECT_UNKNOWNFACE')
+        # if self.connections[id].check_detect_fire:
+        #     self.save_mode_use_off('DETECT_FIRE')
+        # if self.connections[id].check_detect_animal:
+        #     self.save_mode_use_off('DETECT_ANIMAL')
+        # if self.connections[id].check_on_safemode:
+        #     self.save_mode_use_off('SAFEMODE')
 
         self.connections[id].disconnet()
         del self.connections[id]
