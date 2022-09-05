@@ -53,6 +53,29 @@ def basic(request):
     }
     return render(request, "homecam/basic.html", context=context)
 
+def live_list(request):
+    user = None
+    connectNum = None
+    idList = ''
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        if CAMERA.threads.get(user.username):
+            connectNum = CAMERA.threads.get(user.username).cnt
+            for key in CAMERA.threads[user.username].connections:
+                idList+=key
+                idList+=' '
+        else:
+            connectNum = 0
+    idList.rstrip()
+
+    print(idList)
+    context = {
+        'user': user,
+        'cnt' : connectNum,
+        'idList' : idList,
+    }
+    return render(request, "homecam/live_list.html", context=context)
+
 def basic_livecam(request, username, id):
     user = None
     if request.session.get('id'):

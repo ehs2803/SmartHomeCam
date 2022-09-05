@@ -8,6 +8,7 @@ from homecam import views
 
 urlpatterns = [
     path('', views.landing),
+    path('live/list/', views.live_list),
     path('basic/', views.basic),
     path('basic/<username>/<id>/', views.basic_livecam),
     path('video_basic/<username>/<id>/', views.video_basic, name="video_basic"),
