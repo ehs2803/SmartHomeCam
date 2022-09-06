@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Charts - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
+    <link href="{% static 'css/mypage/mypage.css' %}" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+{% include "mypage/navbar.html" %}
+<div id="layoutSidenav_content">
+    <main>
+
+
+        {% for homecam in homecam_list %}
+            <div class="card w-90" style="margin: 5px; border-width: 7px">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col"
+                             style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
+                            <h1 class="card-title">{{ homecam.camid }}</h1><br>
+                            <p>등록 시간 :</p>
+                            <p>{{ homecam.reg_time }}</p>
+                            <br>
+                            <a style="margin: 5px" href="#" class="btn btn-primary btn-lg" tabindex="-1"
+                               role="button"
+                               aria-disabled="true">모드설정</a>
+                            <a style="margin: 5px" href="#" class="btn btn-primary btn-lg" tabindex="-1"
+                               role="button"
+                               aria-disabled="true">알림</a>
+                        </div>
+                        <div class="col order-1">
+                            Third in DOM, with an order of 1
+                        </div>
+                        <div class="col order-2">
+                            Third in DOM, with an order of 1
+                        </div>
+                        <div class="col order-3">
+                            Third in DOM, with an order of 1
+                        </div>
+                        <div class="col order-4">
+                            Third in DOM, with an order of 1
+                        </div>
+                        <div class="col order-5">
+                            Third in DOM, with an order of 1
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        {% endfor %}
+
+
+    </main>
+    {% include "mypage/footer.html" %}
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="{% static 'js/mypage/mypage.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/mypage/chart-area-demo.js' %}"></script>
+<script src="{% static 'js/mypage/chart-bar-demo.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="{% static 'js/mypage/datatables-simple-demo.js' %}"></script>
+</body>
+</html>

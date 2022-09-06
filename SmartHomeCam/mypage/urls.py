@@ -7,6 +7,7 @@ from mypage import views
 
 urlpatterns = [
     path('', views.landing),
+    path('homecam/manage/', views.homecam_manage_list),
     path('chart/', views.chart),
     path('familyInfo/', views.family),
     path('familyInfo/<id>/', views.family_detail),

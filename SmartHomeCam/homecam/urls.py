@@ -27,6 +27,7 @@ urlpatterns = [
     path('ajax/config/safemode/<username>/<id>/', views.config_safe_mode),
     path('ajax/config/safemode/setTime/<username>/<id>/', views.config_safe_mode_set_time),
     path('ajax/data/animal/', views.ajax_getData_Animal),
+    path('ajax/main/', views.main_state),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #(?P<username>[^/]+)$

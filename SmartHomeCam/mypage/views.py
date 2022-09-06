@@ -456,6 +456,18 @@ def record_safemode_noAction_delete(request, id):
     record.delete()
     return redirect('/mypage/records/safemode/noAction')
 
+def homecam_manage_list(request):
+    user=None
+    homecam_list = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        homecam_list = Homecam.objects.filter(uid=user.id)
+    context = {
+        'user': user,
+        'homecam_list': homecam_list,
+    }
+    return render(request, "mypage/homecam/homecam_list.html", context=context)
+
 '''
 def record_safemode_falldown(request):
     user = None

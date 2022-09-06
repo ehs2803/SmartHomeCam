@@ -10,8 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from account.models import AuthUser
 from homecam.connect.socket import VideoCamera
-from homecam.models import HomecamModeUseHistory, DetectAnimal
-
+from homecam.models import HomecamModeUseHistory, DetectAnimal, Homecam, Alarm
 
 CAMERA  = None
 
@@ -552,4 +551,33 @@ def ajax_getData_Animal(request):
     mode_json = serializers.serialize("json", mode_history)
     #return HttpResponse(data_json, content_type="text/json-comment-filtered")
     send_message = {'mode_state' : mode_state, 'cat_activity' : cat_hour, 'dog_activity' : dog_hour}
+    return JsonResponse(send_message)
+
+
+@csrf_exempt
+def main_state(request):
+    user=None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+    uid = request.POST.get('send_data')
+    homecam_list = Homecam.objects.filter(uid=uid)
+    data= {}
+    for homecam in homecam_list:
+        data_dic = {}
+        data_dic['camid'] = homecam.camid
+        data_dic['connect'] = 0
+        data_dic['alarm'] = 0
+        if CAMERA.threads.get(user.username):
+            if CAMERA.threads.get(user.username).cnt > 0:
+                if CAMERA.threads.get(user.username).connections.get(homecam.camid):
+                    data_dic['connect'] = 1
+        alarm_list = Alarm.objects.filter(camid=homecam.camid, confirm=0)
+        if(alarm_list.count()>0):
+            data_dic['alarm']=1
+        if data_dic['connect'] ==0:
+            data_dic['alarm'] = 0
+        data[homecam.camid]=data_dic
+
+    send_message = data
+    print(send_message)
     return JsonResponse(send_message)
