@@ -24,14 +24,17 @@
                 <li class="breadcrumb-item active">사용자 아이디 : {{ user.username }}</li>
             </ol>
             <div class="row" id="connected">
+
                 {% for homecam in homecam_list %}
-                    <div class="card text-white bg-secondary mb-3" style="width: 30%; margin: 5px" id="{{ cctv.camid }}">
+                    <div class="card text-white bg-secondary mb-3" style="width: 30%; margin: 5px" id="{{ homecam.camid }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ homecam.camid }}</h5>
                             <p class="card-text">Some quick example text to build on the card title and make
                                 up</p>
-                            <p class="card-text"><a style="color: white">실시간 CCTV
-                                보기</a></p>
+                            <p class="card-text">
+                                <a target="_blank" style="color: white"
+                                   href="/homecam/basic/{{ user.username }}/{{ homecam.camid }}">실시간 CCTV 보기</a>
+                            </p>
                         </div>
                     </div>
                 {% endfor %}
@@ -113,5 +116,43 @@
 <script src="{% static 'js/mypage/chart-bar-demo.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="{% static 'js/mypage/datatables-simple-demo.js' %}"></script>
+<script>
+    var un = '{{user.id}}';
+    console.log(un);
+    setInterval(function () {
+        $.ajax({
+            url: '/homecam/ajax/main/',
+            type: "POST",
+            dataType: "json",
+            data: {'send_data': un},
+            success: function (data) {
+                console.log(data);
+                for (var key in data) {
+                    var camid = key;
+                    var connect = data[key].connect;
+                    var alarm = data[key].alarm;
+                    var element = document.getElementById(camid);
+                    element.classList.remove('bg-secondary');
+                    element.classList.remove('bg-danger');
+                    element.classList.remove('bg-primary');
+
+                    if (connect == 0) {
+                        element.classList.add('bg-secondary');
+                    } else {
+                        element.classList.add('bg-primary');
+                    }
+                    if (alarm == 1) {
+                        element.classList.remove('bg-secondary');
+                        element.classList.remove('bg-danger');
+                        element.classList.remove('bg-primary');
+                        element.classList.add('bg-danger');
+                    }
+                }
+            }
+        })
+    }, 1000);
+
+
+</script>
 </body>
 </html>
