@@ -56,7 +56,7 @@ class VideoCamera(object):
                 newHomecam.po_unknown=0
                 newHomecam.po_animal=0
                 newHomecam.po_fire=0
-                newHomecam.po_safe_no_person=0
+                newHomecam.po_safe_noperson=0
                 newHomecam.po_safe_noaction=0
                 newHomecam.po_safe_no_person_day=1
                 newHomecam.reg_time=timestamp
@@ -66,7 +66,7 @@ class VideoCamera(object):
                 policy['po_unknown'] = newHomecam.po_unknown
                 policy['po_animal'] = newHomecam.po_animal
                 policy['po_fire'] = newHomecam.po_fire
-                policy['po_safe_no_person'] = newHomecam.po_safe_no_person
+                policy['po_safe_noperson'] = newHomecam.po_safe_noperson
                 policy['po_safe_noaction'] = newHomecam.po_safe_noaction
                 policy['po_safe_no_person_day'] = newHomecam.po_safe_no_person_day
                 print(policy)
@@ -76,7 +76,7 @@ class VideoCamera(object):
                 policy['po_unknown'] = homecam.get().po_unknown
                 policy['po_animal'] = homecam.get().po_animal
                 policy['po_fire'] = homecam.get().po_fire
-                policy['po_safe_no_person'] = homecam.get().po_safe_no_person
+                policy['po_safe_noperson'] = homecam.get().po_safe_noperson
                 policy['po_safe_noaction'] = homecam.get().po_safe_noaction
                 policy['po_safe_no_person_day'] = homecam.get().po_safe_no_person_day
                 print(policy)

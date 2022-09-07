@@ -43,7 +43,7 @@ class Homecam(models.Model):
     po_unknown = models.IntegerField(blank=True, null=True)
     po_animal = models.IntegerField(blank=True, null=True)
     po_fire = models.IntegerField(blank=True, null=True)
-    po_safe_no_person = models.IntegerField(blank=True, null=True)
+    po_safe_noperson = models.IntegerField(blank=True, null=True)
     po_safe_noaction = models.IntegerField(blank=True, null=True)
     po_safe_no_person_day = models.IntegerField(blank=True, null=True)
     reg_time = models.DateTimeField(blank=True, null=True)
@@ -51,6 +51,7 @@ class Homecam(models.Model):
     class Meta:
         managed = False
         db_table = 'homecam'
+        unique_together = (('camid', 'uid'),)
 
 class CamConnectHistory(models.Model):
     id = models.AutoField(primary_key=True)

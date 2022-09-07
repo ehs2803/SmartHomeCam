@@ -5,8 +5,8 @@ from threading import Thread
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import StreamingHttpResponse, JsonResponse, HttpResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, redirect
 
 from account.models import AuthUser
 from homecam.connect.socket import VideoCamera
@@ -124,6 +124,162 @@ def gen_pet(camera):
 def video_pet(request):
     return StreamingHttpResponse(gen_pet(VideoCamera()),
                    content_type='multipart/x-mixed-replace; boundary=frame')
+
+def set_mode_detectPerson(request, id):
+    global CAMERA
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        user = AuthUser.objects.get(username=user.username)
+        homecam = Homecam.objects.get(camid=id, uid=user)
+
+        mode_history = HomecamModeUseHistory()
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid=user
+        mode_history.camid=id
+        mode_history.time=timestamp
+        mode_history.mode='DETECT_PERSON'
+        if homecam.po_person==1: mode_history.division='OFF'
+        else: mode_history.division='ON'
+        mode_history.save()
+
+        homecam.po_person = 1-homecam.po_person
+        homecam.save()
+        if CAMERA.threads.get(user.username):
+            client = CAMERA.threads[user.username]
+            if client.connections[id] != None:
+                client.connections[id].check_detect_person=homecam.po_person
+        return redirect('/mypage/homecam/manage')
+
+def set_mode_detectUnknown(request ,id):
+    global CAMERA
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        user = AuthUser.objects.get(username=user.username)
+        homecam = Homecam.objects.get(camid=id, uid=user)
+
+        mode_history = HomecamModeUseHistory()
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid=user
+        mode_history.camid=id
+        mode_history.time=timestamp
+        mode_history.mode='DETECT_UNKNOWNFACE'
+        if homecam.po_unknown==1: mode_history.division='OFF'
+        else: mode_history.division='ON'
+        mode_history.save()
+
+        homecam.po_unknown = 1-homecam.po_unknown
+        homecam.save()
+        if CAMERA.threads.get(user.username):
+            client = CAMERA.threads[user.username]
+            if client.connections[id] != None:
+                client.connections[id].check_recognition_face=homecam.po_unknown
+        return redirect('/mypage/homecam/manage')
+
+def set_mode_detectFire(request, id):
+    global CAMERA
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        user = AuthUser.objects.get(username=user.username)
+        homecam = Homecam.objects.get(camid=id, uid=user)
+
+        mode_history = HomecamModeUseHistory()
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid=user
+        mode_history.camid=id
+        mode_history.time=timestamp
+        mode_history.mode='DETECT_FIRE'
+        if homecam.po_fire==1: mode_history.division='OFF'
+        else: mode_history.division='ON'
+        mode_history.save()
+
+        homecam.po_fire = 1-homecam.po_fire
+        homecam.save()
+        if CAMERA.threads.get(user.username):
+            client = CAMERA.threads[user.username]
+            if client.connections[id] != None:
+                client.connections[id].check_detect_fire=homecam.po_fire
+        return redirect('/mypage/homecam/manage')
+
+def set_mode_detectAnimal(request, id):
+    global CAMERA
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        user = AuthUser.objects.get(username=user.username)
+        homecam = Homecam.objects.get(camid=id, uid=user)
+
+        mode_history = HomecamModeUseHistory()
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid=user
+        mode_history.camid=id
+        mode_history.time=timestamp
+        mode_history.mode='DETECT_ANIMAL'
+        if homecam.po_animal==1: mode_history.division='OFF'
+        else: mode_history.division='ON'
+        mode_history.save()
+
+        homecam.po_animal = 1-homecam.po_animal
+        homecam.save()
+        if CAMERA.threads.get(user.username):
+            client = CAMERA.threads[user.username]
+            if client.connections[id] != None:
+                client.connections[id].check_detect_animal=homecam.po_animal
+        return redirect('/mypage/homecam/manage')
+
+def set_mode_detectNoPerson(request ,id):
+    global CAMERA
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        user = AuthUser.objects.get(username=user.username)
+        homecam = Homecam.objects.get(camid=id, uid=user)
+
+        mode_history = HomecamModeUseHistory()
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid=user
+        mode_history.camid=id
+        mode_history.time=timestamp
+        mode_history.mode='SAFEMODE_NOPERSON'
+        if homecam.po_safe_noperson==1: mode_history.division='OFF'
+        else: mode_history.division='ON'
+        mode_history.save()
+
+        homecam.po_safe_noperson = 1-homecam.po_safe_noperson
+        homecam.save()
+        if CAMERA.threads.get(user.username):
+            client = CAMERA.threads[user.username]
+            if client.connections[id] != None:
+                client.connections[id].check_detect_animal=homecam.po_safe_noperson
+        return redirect('/mypage/homecam/manage')
+
+def set_mode_detectNoAction(request, id):
+    global CAMERA
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        user = AuthUser.objects.get(username=user.username)
+        homecam = Homecam.objects.get(camid=id, uid=user)
+
+        mode_history = HomecamModeUseHistory()
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        mode_history.uid=user
+        mode_history.camid=id
+        mode_history.time=timestamp
+        mode_history.mode='SAFEMODE_NOACTION'
+        if homecam.po_safe_noaction==1: mode_history.division='OFF'
+        else: mode_history.division='ON'
+        mode_history.save()
+
+        homecam.po_safe_noaction = 1-homecam.po_safe_noaction
+        homecam.save()
+        if CAMERA.threads.get(user.username):
+            client = CAMERA.threads[user.username]
+            if client.connections[id] != None:
+                client.connections[id].check_detect_animal=homecam.po_safe_noaction
+        return redirect('/mypage/homecam/manage')
 
 @csrf_exempt
 def ajax_connect_config(request, username, id):
