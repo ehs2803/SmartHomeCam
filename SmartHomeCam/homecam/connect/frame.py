@@ -39,7 +39,7 @@ class Frame:
         self.check_recognition_face = policy['po_unknown']
         self.check_detect_fire = policy['po_fire']
         self.check_detect_animal = policy['po_animal']
-        self.check_detect_no_person = policy['po_safe_no_person']
+        self.check_detect_no_person = policy['po_safe_noperson']
         self.check_detect_no_action = policy['po_safe_noaction']
         self.check_detect_no_person_day = policy['po_safe_no_person_day']
         self.check_on_safemode = False

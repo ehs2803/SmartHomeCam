@@ -13,6 +13,12 @@
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        .oneLine h3,
+        .oneLine h5 {
+            display: inline;
+        }
+    </style>
 </head>
 <body class="sb-nav-fixed">
 {% include "mypage/navbar.html" %}
@@ -33,25 +39,146 @@
                             <br>
                             <a style="margin: 5px" href="#" class="btn btn-primary btn-lg" tabindex="-1"
                                role="button"
-                               aria-disabled="true">모드설정</a>
-                            <a style="margin: 5px" href="#" class="btn btn-primary btn-lg" tabindex="-1"
-                               role="button"
                                aria-disabled="true">알림</a>
                         </div>
-                        <div class="col order-1">
-                            Third in DOM, with an order of 1
+                        <div class="col"
+                             style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
+                            <br>
+                            <div class="oneLine">
+                                <h3 class="card-title">사람감지</h3>
+                                <h5>
+                                    {% if homecam.po_person %}
+                                        <span class="badge bg-success">ON</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">OFF</span>
+                                    {% endif %}
+                                </h5>
+                            </div>
+
+                            <br>
+                            {% if homecam.po_person %}
+                                <a style="margin: 5px" href="/homecam/mode/set/person/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">OFF</a>
+                            {% else %}
+                                <a style="margin: 5px" href="/homecam/mode/set/person/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">ON</a>
+                            {% endif %}
                         </div>
-                        <div class="col order-2">
-                            Third in DOM, with an order of 1
+                        <div class="col order-1"
+                             style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
+                            <br>
+                            <h4 class="card-title">외부인감지
+                                {% if homecam.po_unknown %}
+                                    <span class="badge bg-success">ON</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">OFF</span>
+                                {% endif %}
+                            </h4><br>
+                            {% if homecam.po_unknown %}
+                                <a style="margin: 5px" href="/homecam/mode/set/unknown/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">OFF</a>
+                            {% else %}
+                                <a style="margin: 5px" href="/homecam/mode/set/unknown/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">ON</a>
+                            {% endif %}
                         </div>
-                        <div class="col order-3">
-                            Third in DOM, with an order of 1
+                        <div class="col order-2"
+                             style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
+                            <br>
+                            <h4 class="card-title">화재감지
+                                {% if homecam.po_fire %}
+                                    <span class="badge bg-success">ON</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">OFF</span>
+                                {% endif %}
+                            </h4><br>
+                            {% if homecam.po_fire %}
+                                <a style="margin: 5px" href="/homecam/mode/set/fire/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">OFF</a>
+                            {% else %}
+                                <a style="margin: 5px" href="/homecam/mode/set/fire/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">ON</a>
+                            {% endif %}
                         </div>
-                        <div class="col order-4">
-                            Third in DOM, with an order of 1
+                        <div class="col order-3"
+                             style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
+                            <br>
+                            <h4 class="card-title">반려동물감지
+                                {% if homecam.po_animal %}
+                                    <span class="badge bg-success">ON</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">OFF</span>
+                                {% endif %}
+                            </h4><br>
+                            {% if homecam.po_animal %}
+                                <a style="margin: 5px" href="/homecam/mode/set/animal/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">OFF</a>
+                            {% else %}
+                                <a style="margin: 5px" href="/homecam/mode/set/animal/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">ON</a>
+                            {% endif %}
                         </div>
-                        <div class="col order-5">
-                            Third in DOM, with an order of 1
+                        <div class="col order-4"
+                             style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
+                            <br>
+                            <h4 class="card-title">사람미감지
+
+                                {% if homecam.po_safe_noperson %}
+                                    <span class="badge bg-success">ON</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">OFF</span>
+                                {% endif %}
+                            </h4><br>
+                            {% if homecam.po_safe_noperson %}
+                                <a style="margin: 5px" href="/homecam/mode/set/noperson/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">OFF</a>
+                            {% else %}
+                                <a style="margin: 5px" href="/homecam/mode/set/noperson/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">ON</a>
+                            {% endif %}
+                        </div>
+                        <div class="col order-5"
+                             style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
+                            <br>
+                            <h4 class="card-title">사람행동미감지
+
+                                {% if homecam.po_safe_noaction %}
+                                    <span class="badge bg-success">ON</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">OFF</span>
+                                {% endif %}
+                            </h4><br>
+                            {% if homecam.po_safe_noaction %}
+                                <a style="margin: 5px" href="/homecam/mode/set/noaction/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">OFF</a>
+                            {% else %}
+                                <a style="margin: 5px" href="/homecam/mode/set/noaction/{{ homecam.camid }}/"
+                                   class="btn btn-primary btn-lg" tabindex="-1"
+                                   role="button"
+                                   aria-disabled="true">ON</a>
+                            {% endif %}
                         </div>
                     </div>
 
