@@ -55,7 +55,7 @@
                                 </h5>
                             </div>
 
-                            <br>
+                            <hr>
                             {% if homecam.po_person %}
                                 <a style="margin: 5px" href="/homecam/mode/set/person/{{ homecam.camid }}/"
                                    class="btn btn-primary btn-lg" tabindex="-1"
@@ -71,13 +71,17 @@
                         <div class="col order-1"
                              style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
                             <br>
-                            <h4 class="card-title">외부인감지
-                                {% if homecam.po_unknown %}
-                                    <span class="badge bg-success">ON</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">OFF</span>
-                                {% endif %}
-                            </h4><br>
+                            <div class="oneLine">
+                                <h3 class="card-title">외부인감지</h3>
+                                <h5>
+                                    {% if homecam.po_unknown %}
+                                        <span class="badge bg-success">ON</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">OFF</span>
+                                    {% endif %}
+                                </h5>
+                            </div>
+                            <hr>
                             {% if homecam.po_unknown %}
                                 <a style="margin: 5px" href="/homecam/mode/set/unknown/{{ homecam.camid }}/"
                                    class="btn btn-primary btn-lg" tabindex="-1"
@@ -99,7 +103,8 @@
                                 {% else %}
                                     <span class="badge bg-secondary">OFF</span>
                                 {% endif %}
-                            </h4><br>
+                            </h4>
+                            <hr>
                             {% if homecam.po_fire %}
                                 <a style="margin: 5px" href="/homecam/mode/set/fire/{{ homecam.camid }}/"
                                    class="btn btn-primary btn-lg" tabindex="-1"
@@ -121,7 +126,16 @@
                                 {% else %}
                                     <span class="badge bg-secondary">OFF</span>
                                 {% endif %}
-                            </h4><br>
+                            </h4>
+                            <hr>
+                            {#                            <h4>ON/OFF :#}
+                            {#                                {% if homecam.po_animal %}#}
+                            {#                                    <span class="badge bg-success">ON</span>#}
+                            {#                                {% else %}#}
+                            {#                                    <span class="badge bg-secondary">OFF</span>#}
+                            {#                                {% endif %}#}
+                            {#                            </h4>#}
+
                             {% if homecam.po_animal %}
                                 <a style="margin: 5px" href="/homecam/mode/set/animal/{{ homecam.camid }}/"
                                    class="btn btn-primary btn-lg" tabindex="-1"
@@ -144,7 +158,8 @@
                                 {% else %}
                                     <span class="badge bg-secondary">OFF</span>
                                 {% endif %}
-                            </h4><br>
+                            </h4>
+                            <hr>
                             {% if homecam.po_safe_noperson %}
                                 <a style="margin: 5px" href="/homecam/mode/set/noperson/{{ homecam.camid }}/"
                                    class="btn btn-primary btn-lg" tabindex="-1"
@@ -156,18 +171,28 @@
                                    role="button"
                                    aria-disabled="true">ON</a>
                             {% endif %}
+                            <hr>
+                            <div id="sm_time">미감지 알림 시간 : {{ homecam.po_safe_no_person_day }}</div>
+                            <form action="/homecam/mode/set/noperson/day/{{ homecam.camid }}/" method="post">
+                                {% csrf_token %}
+                                <input id="input_time" name="time" type="number" min="1" max="7"
+                                       value="{{ homecam.po_safe_no_person_day }}">
+                                <input class="btn btn-primary" type="submit" value="시간설정하기">
+                            </form>
+
                         </div>
                         <div class="col order-5"
                              style="border-style: solid; border-color: #0a53be;border-width: 0px 1px 0px 0px">
                             <br>
-                            <h4 class="card-title">사람행동미감지
+                            <h4 class="card-title">행동미감지
 
                                 {% if homecam.po_safe_noaction %}
                                     <span class="badge bg-success">ON</span>
                                 {% else %}
                                     <span class="badge bg-secondary">OFF</span>
                                 {% endif %}
-                            </h4><br>
+                            </h4>
+                            <hr>
                             {% if homecam.po_safe_noaction %}
                                 <a style="margin: 5px" href="/homecam/mode/set/noaction/{{ homecam.camid }}/"
                                    class="btn btn-primary btn-lg" tabindex="-1"

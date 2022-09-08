@@ -18,6 +18,7 @@ urlpatterns = [
     path('mode/set/animal/<id>/', views.set_mode_detectAnimal),
     path('mode/set/noperson/<id>/', views.set_mode_detectNoPerson),
     path('mode/set/noaction/<id>/', views.set_mode_detectNoAction),
+    path('mode/set/noperson/day/<id>/', views.set_mode_detectNoPerson_Day),
     path('ajax/config/<username>/<id>/', views.ajax_connect_config),
     path('ajax/disconnect/<username>/<id>/', views.ajax_disconnect),
     path('ajax/capture/<username>/<id>/', views.ajax_capture),
