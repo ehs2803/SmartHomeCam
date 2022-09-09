@@ -54,10 +54,12 @@ def basic(request):
 
 def live_list(request):
     user = None
+    alarmCnt = None
     connectNum = None
     idList = ''
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         if CAMERA.threads.get(user.username):
             connectNum = CAMERA.threads.get(user.username).cnt
             for key in CAMERA.threads[user.username].connections:
@@ -69,6 +71,7 @@ def live_list(request):
 
     print(idList)
     context = {
+        'alarmCnt':alarmCnt,
         'user': user,
         'cnt' : connectNum,
         'idList' : idList,

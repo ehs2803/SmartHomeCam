@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.landing),
     path('homecam/manage/', views.homecam_manage_list),
     path('alarm/list/', views.alarm_list),
+    path('alarm/list/<id>/', views.alarm_list_homecam),
     path('chart/', views.chart),
     path('familyInfo/', views.family),
     path('familyInfo/<id>/', views.family_detail),

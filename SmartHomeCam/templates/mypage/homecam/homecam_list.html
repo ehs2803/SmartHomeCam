@@ -24,8 +24,6 @@
 {% include "mypage/navbar.html" %}
 <div id="layoutSidenav_content">
     <main>
-
-
         {% for homecam in homecam_list %}
             <div class="card w-90" style="margin: 5px; border-width: 7px">
                 <div class="card-body">
@@ -37,7 +35,7 @@
                             <p>등록 시간 :</p>
                             <p>{{ homecam.reg_time }}</p>
                             <br>
-                            <a style="margin: 5px" href="#" class="btn btn-primary btn-lg" tabindex="-1"
+                            <a style="margin: 5px" href="/mypage/alarm/list/{{ homecam.camid }}" class="btn btn-primary btn-lg" tabindex="-1"
                                role="button"
                                aria-disabled="true">알림</a>
                         </div>

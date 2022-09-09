@@ -10,6 +10,7 @@ from homecam.connect.socket import VideoCamera
 from mypage.models import Family
 
 def landing(request):
+    alarmCnt = None
     CAMERA = homecam.views.CAMERA
     connectNum = None
     idList = ''
@@ -18,6 +19,7 @@ def landing(request):
     homecam_list = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         homecam_list = Homecam.objects.filter(uid=user.id)
         if CAMERA.threads.get(user.username):
             connectNum = CAMERA.threads.get(user.username).cnt
@@ -30,6 +32,7 @@ def landing(request):
     idList.rstrip()
 
     context = {
+        'alarmCnt':alarmCnt,
         'user': user,
         'cnt': connectNum,
         'idList': idList,
@@ -40,12 +43,15 @@ def landing(request):
 
 def family(request):
     user = None
+    alarmCnt=None
     family_members = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         family_members = Family.objects.filter(uid=user.id)
 
     context = {
+        'alarmCnt':alarmCnt,
         'user': user,
         'family_members' : family_members,
     }
@@ -53,12 +59,15 @@ def family(request):
 
 def family_detail(request, id):
     user = None
+    alarmCnt = None
     family_members = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         family_member = Family.objects.get(uid=user.id, fid=id)
 
     context = {
+        'alarmCnt':alarmCnt,
         'user': user,
         'family_member' : family_member,
     }
@@ -66,10 +75,13 @@ def family_detail(request, id):
 
 def register_family(request):
     global errorMsg  # 에러메시지
+    alarmCnt = None
     user = None
     if request.session.get('id'):                                     # 로그인 중이면
         user = AuthUser.objects.get(pk=request.session.get('id'))       # 사용자 정보 저장
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
     context = {
+        'alarmCnt':alarmCnt,
         'user': user
     }
     # POST 요청 시 입력된 데이터(사용자 정보) 저장
@@ -126,12 +138,15 @@ def register_family(request):
 def update_family(request, id):
     global errorMsg  # 에러메시지
     user = None
+    alarmCnt=None
     family_member = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         family_member = Family.objects.get(uid=user.id, fid=id)
 
     context = {
+        'alarmCnt':alarmCnt,
         'user': user,
         'family_member': family_member
     }
@@ -203,12 +218,15 @@ def delete_family(request, id):
 
 def user_capture_pictures(request):
     user=None
+    alarmCnt=None
     capture_pictures = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         capture_pictures = CapturePicture.objects.filter(uid=user.id)
 
     context = {
+        'alarmCnt':alarmCnt,
         'user': user,
         'capture_pictures': capture_pictures,
     }
@@ -216,12 +234,15 @@ def user_capture_pictures(request):
 
 def user_capture_picture_detail(request, id):
     user=None
+    alarmCnt=None
     capture_picture = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         capture_picture = CapturePicture.objects.get(cpid=id)
 
     context = {
+        'alarmCnt':alarmCnt,
         'user': user,
         'capture_picture': capture_picture,
     }
@@ -237,13 +258,16 @@ def delete_capture(request, id):
 
 def user_recording_videos(request):
     user = None
+    alarmCnt = None
     recording_videos = None
     media = '/media/'
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         recording_videos = RecordingVideo.objects.filter(uid=user.id)
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'recording_videos':recording_videos,
         'mediaa' : media,
@@ -252,13 +276,16 @@ def user_recording_videos(request):
 
 def user_recording_video_detail(request, id):
     user = None
+    alarmCnt = None
     recording_video = None
     media = '/media/'
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         recording_video = RecordingVideo.objects.get(rvid=id)
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'recording_video':recording_video,
         'mediaa' : media,
@@ -275,10 +302,12 @@ def delete_video(request, id):
 
 def config_mode(request, id):
     user = None
+    alarmCnt = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
     camid = id
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'id': camid,
     }
@@ -286,22 +315,27 @@ def config_mode(request, id):
 
 def chart(request):
     user = None
+    alarmCnt = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user
     }
     return render(request, "mypage/chart.html", context=context)
 
 def record_detect_person(request):
     user = None
+    alarmCnt = None
     records_detect_person = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_person = DetectPerson.objects.filter(uid=user.id)
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
+        records_detect_person = DetectPerson.objects.filter(uid=user.id).order_by('-time')
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'records_detect_person': records_detect_person,
     }
@@ -309,12 +343,18 @@ def record_detect_person(request):
 
 def record_detect_person_detail(request, id):
     user = None
+    alarmCnt = None
     record_detect_person = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         record_detect_person = DetectPerson.objects.get(id=id)
+        alarm = Alarm.objects.get(uid=user.id, did=id, type='PERSON')
+        alarm.confirm=1
+        alarm.save()
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'record_detect_person': record_detect_person,
     }
@@ -330,12 +370,15 @@ def delete_record_detect_person(request, id):
 
 def record_detect_unknown(request):
     user = None
+    alarmCnt = None
     records_detect_unknown = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_unknown = RecognitionFace.objects.filter(uid=user.id)
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
+        records_detect_unknown = RecognitionFace.objects.filter(uid=user.id).order_by('-time')
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'records_detect_unknown': records_detect_unknown,
     }
@@ -343,12 +386,18 @@ def record_detect_unknown(request):
 
 def record_detect_unknown_detail(request, id):
     user = None
+    alarmCnt = None
     record_detect_unknown = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         record_detect_unknown = RecognitionFace.objects.get(id=id)
+        alarm = Alarm.objects.get(uid=user.id, did=id, type='UNKNOWN')
+        alarm.confirm=1
+        alarm.save()
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'record_detect_unknown': record_detect_unknown,
     }
@@ -364,12 +413,15 @@ def delete_record_detect_unknown(request, id):
 
 def record_detect_fire(request):
     user = None
+    alarmCnt = None
     records_detect_fire = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_fire = DetectFire.objects.filter(uid=user.id)
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
+        records_detect_fire = DetectFire.objects.filter(uid=user.id).order_by('-time')
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'records_detect_fire': records_detect_fire,
     }
@@ -377,12 +429,18 @@ def record_detect_fire(request):
 
 def record_detect_fire_detail(request, id):
     user = None
+    alarmCnt = None
     record_detect_fire = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         record_detect_fire = DetectFire.objects.get(id=id)
+        alarm = Alarm.objects.get(uid=user.id, did=id, type='FIRE')
+        alarm.confirm=1
+        alarm.save()
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'record_detect_fire': record_detect_fire,
     }
@@ -398,12 +456,15 @@ def delete_record_detect_fire(request, id):
 
 def record_detect_animal(request):
     user = None
+    alarmCnt = None
     records_detect_aniaml = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_aniaml = DetectAnimal.objects.filter(uid=user.id)
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
+        records_detect_aniaml = DetectAnimal.objects.filter(uid=user.id).order_by('-time')
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'records_detect_animal': records_detect_aniaml,
     }
@@ -411,12 +472,19 @@ def record_detect_animal(request):
 
 def record_safemode_noPerson(request):
     user = None
+    alarmCnt = None
     records_detect_noPerson = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_noPerson = SafeModeNodetect.objects.filter(uid=user.id)
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
+        records_detect_noPerson = SafeModeNodetect.objects.filter(uid=user.id).order_by('-time')
+        alarm_list = Alarm.objects.filter(uid=user.id, type='NOPERSON', confirm=0)
+        for alarm in alarm_list:
+            alarm.confirm=1
+            alarm.save()
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'records_detect_noPerson': records_detect_noPerson,
     }
@@ -424,12 +492,15 @@ def record_safemode_noPerson(request):
 
 def record_safemode_noAction(request):
     user = None
+    alarmCnt = None
     records_detect_noAction = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        records_detect_noAction = SafeModeNoaction.objects.filter(uid=user.id)
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
+        records_detect_noAction = SafeModeNoaction.objects.filter(uid=user.id).order_by('-time')
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'records_detect_noAction': records_detect_noAction,
     }
@@ -437,12 +508,18 @@ def record_safemode_noAction(request):
 
 def record_safemode_noAction_detail(request, id):
     user = None
+    alarmCnt = None
     record_detect_noAction = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         record_detect_noAction = SafeModeNoaction.objects.get(id=id)
+        alarm = Alarm.objects.get(uid=user.id, did=id, type='NOACTION')
+        alarm.confirm=1
+        alarm.save()
 
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'record_detect_noAction': record_detect_noAction,
     }
@@ -458,11 +535,14 @@ def record_safemode_noAction_delete(request, id):
 
 def homecam_manage_list(request):
     user=None
+    alarmCnt = None
     homecam_list = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         homecam_list = Homecam.objects.filter(uid=user.id)
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'homecam_list': homecam_list,
     }
@@ -470,15 +550,36 @@ def homecam_manage_list(request):
 
 def alarm_list(request):
     user=None
+    alarmCnt = None
     alarm_list = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         alarm_list = Alarm.objects.filter(uid=user.id, confirm=0)
     context = {
+        'alarmCnt': alarmCnt,
         'user': user,
         'alarm_list': alarm_list,
     }
     return render(request, "mypage/alarm/alarm_all_list.html", context=context)
+
+def alarm_list_homecam(request, id):
+    user=None
+    alarmCnt = None
+    alarm_confirm_list = None
+    alarm_noconfirm_list=None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
+        alarm_confirm_list = Alarm.objects.filter(uid=user.id, camid=id, confirm=1).order_by('-time')
+        alarm_noconfirm_list = Alarm.objects.filter(uid=user.id, camid=id, confirm=0).order_by('-time')
+    context = {
+        'alarmCnt': alarmCnt,
+        'user': user,
+        'alarm_confirm_list': alarm_confirm_list,
+        'alarm_noconfirm_list': alarm_noconfirm_list,
+    }
+    return render(request, "mypage/alarm/alarm_list_homecam.html", context=context)
 
 '''
 def record_safemode_falldown(request):
