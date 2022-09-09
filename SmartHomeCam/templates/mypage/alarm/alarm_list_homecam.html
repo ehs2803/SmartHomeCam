@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Dashboard - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
+    <link href="{% static 'css/mypage/mypage.css' %}" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+{% include "mypage/navbar.html" %}
+<div id="layoutSidenav_content">
+    <main>
+
+        <h1>미확인 알림</h1>
+        <div style="overflow:scroll; width:100%; height:400px">
+            {% for alarm in alarm_noconfirm_list %}
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">{{ alarm.type }}</h4>
+                    <p>탐지 시간 : {{ alarm.time|date:'Y-m-d H:i' }}</p>
+                    <hr>
+                    {% if alarm.type == 'FIRE' %}
+                        <p class="mb-0"><a href="/mypage/records/detectFire/{{ alarm.did }}">자세한 내용 보기</a></p>
+                    {% elif alarm.type == 'PERSON' %}
+                        <p class="mb-0"><a href="/mypage/records/detectPerson/{{ alarm.did }}">자세한 내용 보기</a></p>
+                    {% elif alarm.type == 'UNKNOWN' %}
+                        <p class="mb-0"><a href="/mypage/records/unknownDetect/{{ alarm.did }}">자세한 내용 보기</a></p>
+                    {% elif alarm.type == 'NOPERSON' %}
+                        <p class="mb-0"><a href="/mypage/records/safemode/noPerson">자세한 내용 보기</a></p>
+                    {% elif alarm.type == 'NOACTION' %}
+                        <p class="mb-0"><a href="/mypage/records/safemode/noAction/{{ alarm.did }}">자세한 내용 보기</a></p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
+        <h1>확인 알림</h1>
+        <div style="overflow:scroll; width:100%; height:200px;">
+            {% for alarm in alarm_confirm_list %}
+                <div class="alert alert-dark" role="alert">
+                    <h4 class="alert-heading">{{ alarm.type }}</h4>
+                    <p>탐지 시간 : {{ alarm.time|date:'Y-m-d H:i' }}</p>
+                    <hr>
+                    {% if alarm.type == 'FIRE' %}
+                        <p class="mb-0"><a href="/mypage/records/detectFire/{{ alarm.did }}">자세한 내용 보기</a></p>
+                    {% elif alarm.type == 'PERSON' %}
+                        <p class="mb-0"><a href="/mypage/records/detectPerson/{{ alarm.did }}">자세한 내용 보기</a></p>
+                    {% elif alarm.type == 'UNKNOWN' %}
+                        <p class="mb-0"><a href="/mypage/records/unknownDetect/{{ alarm.did }}">자세한 내용 보기</a></p>
+                    {% elif alarm.type == 'NOPERSON' %}
+                        <p class="mb-0"><a href="/mypage/records/safemode/noPerson">자세한 내용 보기</a></p>
+                    {% elif alarm.type == 'NOACTION' %}
+                        <p class="mb-0"><a href="/mypage/records/safemode/noAction/{{ alarm.did }}">자세한 내용 보기</a></p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+    </main>
+    {% include "mypage/footer.html" %}
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="{% static 'js/mypage/mypage.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="assets/demo/chart-area-demo.js"></script>
+<script src="assets/demo/chart-bar-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="{% static 'js/mypage/datatables-simple-demo.js' %}"></script>
+</body>
+</html>
