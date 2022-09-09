@@ -22,7 +22,7 @@
             <br>
             <div class="row">
                 <div class="col">
-                    <h4>탐지 시간 : {{ record_detect_noAction.time }}</h4>
+                    <h4>탐지 시간 : {{ record_detect_noAction.time|date:'Y-m-d H:i'  }}</h4>
                 </div>
                 <div class="col">
                     <h4>CAM ID : {{ record_detect_noAction.camid }}</h4>

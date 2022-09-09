@@ -12,7 +12,7 @@ from account.models import AuthUser
 
 import django.contrib.sessions
 
-from homecam.models import DetectPerson, DetectAnimal
+from homecam.models import DetectPerson, DetectAnimal, Alarm
 from homecam.sns.Email import EmailSender
 from homecam.sns.SMSMessage import SmsSender
 from mypage.models import Family
@@ -136,6 +136,15 @@ class YoloDetect(EmailSender, SmsSender):
                 dp.time = timestamp
                 dp.camid = camid
                 dp.save()
+
+                alarm = Alarm()
+                alarm.uid=user
+                alarm.camid=camid
+                alarm.time=timestamp
+                alarm.confirm=0
+                alarm.type='PERSON'
+                alarm.did=dp.id
+                alarm.save()
 
                 self.updateContactList(username)
                 #filepath1 = settings.MEDIA_ROOT+'/images/detectPerson/AuthUser object (3)/2022-05-19_082716_1.jpg'#'/media/' + str(dp.image1)

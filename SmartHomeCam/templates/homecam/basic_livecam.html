@@ -25,7 +25,7 @@
 <body>
 
 <div align="center">
-    <img id="livecam" class="live" src="{% url 'video_basic' user.username id %}">
+    <img id="livecam" width="50%" class="live" src="{% url 'video_basic' user.username id %}">
     <button class="btn btn-primary" id="loadingbtn" type="button" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Loading...
@@ -34,7 +34,7 @@
 <div align="center">
     <button class="btn btn-lg btn-primary" id="recordingBtn" onclick="videorecording()">녹화시작</button>
     <button class="btn btn-lg btn-primary" onclick="capture()">화면캡처</button>
-    <button class="btn btn-lg btn-primary" onclick="disconnect()">연결끓기</button>
+    <button class="btn btn-lg btn-primary" onclick="disconnect()">연결끊기</button>
 </div>
 
 </body>
