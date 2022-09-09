@@ -15,7 +15,8 @@ from homecam.sns.Email import EmailSender
 from homecam.sns.SMSMessage import SmsSender
 from mypage.models import Family
 
-from homecam.models import RecognitionFace
+from homecam.models import RecognitionFace, Alarm
+
 
 class unknownFaceDetector(EmailSender, SmsSender):
     def __init__(self, username):
@@ -135,6 +136,15 @@ class unknownFaceDetector(EmailSender, SmsSender):
                 rfmodel.time = timestamp
                 rfmodel.camid = camid
                 rfmodel.save()
+
+                alarm = Alarm()
+                alarm.uid = user
+                alarm.camid = camid
+                alarm.time = timestamp
+                alarm.confirm = 0
+                alarm.type = 'UNKNOWN'
+                alarm.did = rfmodel.id
+                alarm.save()
 
                 self.updateContactList(self.username)
                 filepath1 = settings.MEDIA_ROOT + '/' + str(rfmodel.image1)

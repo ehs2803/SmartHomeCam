@@ -281,6 +281,24 @@ def set_mode_detectNoAction(request, id):
                 client.connections[id].check_detect_animal=homecam.po_safe_noaction
         return redirect('/mypage/homecam/manage')
 
+def set_mode_detectNoPerson_Day(request, id):
+    if request.method == 'POST':
+        input_time = request.POST['time']
+        print(input_time)
+
+        if request.session.get('id'):
+            user = User.objects.get(id=request.session.get('id'))
+            user = AuthUser.objects.get(username=user.username)
+            homecam = Homecam.objects.get(camid=id, uid=user)
+            homecam.po_safe_no_person_day = input_time
+            homecam.save()
+            if CAMERA.threads.get(user.username):
+                client = CAMERA.threads[user.username]
+                if client.connections[id] != None:
+                    client.connections[id].check_detect_no_person_day = homecam.po_safe_no_person_day
+
+        return redirect('/mypage/homecam/manage')
+
 @csrf_exempt
 def ajax_connect_config(request, username, id):
     sendmessage = ""

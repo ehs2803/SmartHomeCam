@@ -9,7 +9,7 @@ from SmartHomeCam import settings
 from account.models import AuthUser
 from homecam.sns.Email import EmailSender
 from homecam.sns.SMSMessage import SmsSender
-from homecam.models import SafeModeNodetect, SafeModeNoaction
+from homecam.models import SafeModeNodetect, SafeModeNoaction, Alarm
 from mypage.models import Family
 
 
@@ -55,6 +55,15 @@ class SafeMode(EmailSender, SmsSender):
             smnd.period = self.time_noDetect
             smnd.camid = camid
             smnd.save()
+
+            alarm = Alarm()
+            alarm.uid = user
+            alarm.camid = camid
+            alarm.time = timestamp
+            alarm.confirm = 0
+            alarm.type = 'NOPERSON'
+            alarm.did = smnd.id
+            alarm.save()
 
             self.safe_mode_time=time.time()
 
@@ -150,6 +159,15 @@ class SafeMode(EmailSender, SmsSender):
                     smna.camid = camid
                     smna.period = self.time_noAction
                     smna.save()
+
+                    alarm = Alarm()
+                    alarm.uid = user
+                    alarm.camid = camid
+                    alarm.time = timestamp
+                    alarm.confirm = 0
+                    alarm.type = 'NOACTION'
+                    alarm.did = smna.id
+                    alarm.save()
 
                     self.updateContactList(self.username)
                     filepath1 = settings.MEDIA_ROOT + '/' + str(smna.image1)

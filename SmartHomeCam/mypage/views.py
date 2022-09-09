@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 # Create your views here
 from account.models import AuthUser
 from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, RecognitionFace, DetectFire, \
-    SafeModeNodetect, SafeModeNoaction, CamConnectHistory, Homecam
+    SafeModeNodetect, SafeModeNoaction, CamConnectHistory, Homecam, Alarm
 import homecam.views
 from homecam.connect.socket import VideoCamera
 from mypage.models import Family
@@ -467,6 +467,18 @@ def homecam_manage_list(request):
         'homecam_list': homecam_list,
     }
     return render(request, "mypage/homecam/homecam_list.html", context=context)
+
+def alarm_list(request):
+    user=None
+    alarm_list = None
+    if request.session.get('id'):
+        user = User.objects.get(id=request.session.get('id'))
+        alarm_list = Alarm.objects.filter(uid=user.id, confirm=0)
+    context = {
+        'user': user,
+        'alarm_list': alarm_list,
+    }
+    return render(request, "mypage/alarm/alarm_all_list.html", context=context)
 
 '''
 def record_safemode_falldown(request):

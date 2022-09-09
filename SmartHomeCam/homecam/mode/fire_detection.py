@@ -12,7 +12,7 @@ import cv2
 import numpy as np
 import time
 
-from homecam.models import DetectFire
+from homecam.models import DetectFire, Alarm
 from mypage.models import Family
 
 
@@ -114,6 +114,15 @@ class FireDetector(EmailSender, SmsSender):
                     dfmodel.time = timestamp
                     dfmodel.camid = camid
                     dfmodel.save()
+
+                    alarm = Alarm()
+                    alarm.uid = user
+                    alarm.camid = camid
+                    alarm.time = timestamp
+                    alarm.confirm = 0
+                    alarm.type = 'FIRE'
+                    alarm.did = dfmodel.id
+                    alarm.save()
 
                     self.updateContactList(self.username)
                     filepath1 = settings.MEDIA_ROOT + '/' + str(dfmodel.image1)
