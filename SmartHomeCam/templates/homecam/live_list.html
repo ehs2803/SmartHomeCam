@@ -19,9 +19,7 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="row" id="connected">
-            {{ user.username }}
 
-            {{ idList }}
 
         </div>
         <script>
@@ -47,11 +45,16 @@
                         str_location += '\'';
                         console.log(str_location)
 
-                        var html_btn = '<div class="col-xl-3 col-md-6"><div class="card bg-primary text-white mb-4"><div class="card-body">연결Cam ID : {}</div>' +
-                            '<div class="card-footer d-flex align-items-center justify-content-between">' +
-                            '<a class="small text-white stretched-link" href="()">실시간 스트리밍 보기</a>' +
-                            '<a class="small text-white stretched-link" href="/mypage/connected/config/[]/">모드 설정하기</a>' +
-                            '<div class="small text-white"><i class="fas fa-angle-right"></i></div></div></div></div>';
+                        {#var html_btn = '<div class="col-xl-3 col-md-6"><div class="card bg-primary text-white mb-4"><div class="card-body">연결Cam ID : {}</div>' +#}
+                        {#    '<div class="card-footer d-flex align-items-center justify-content-between">' +#}
+                        {#    '<a class="small text-white stretched-link" href="()">실시간 스트리밍 보기</a>' +#}
+                        {#    '<a class="small text-white stretched-link" href="/mypage/connected/config/[]/">모드 설정하기</a>' +#}
+                        {#    '<div class="small text-white"><i class="fas fa-angle-right"></i></div></div></div></div>';#}
+
+                        var html_btn= '<br><div class="card" style="border-width: 7px; width: 80%; margin: auto;"><div class="card-body">'+
+                                    '<h5 class="card-title">{}</h5>'+
+                                    '<a target="_blank" href="/homecam/basic/{}/[]/" class="btn btn-primary">실시간 스트리밍 보기</a></div></div><br>';
+
                         html_btn = html_btn.replace('()', str_location);
                         html_btn = html_btn.replace('{}', idsplit[i]);
                         html_btn = html_btn.replace('[]', idsplit[i]);
