@@ -542,6 +542,8 @@ def ajax_getData_Animal(request):
     detect_dog_data = DetectAnimal.objects.filter(uid=user.id, time__year=day.split('-')[0], species=16,
                                                   time__month=day.split('-')[1],
                                                   time__day=day.split('-')[2]).all()
+
+    print(detect_dog_data, detect_cat_data)
     cat_hour = []
     dog_hour = []
     if len(detect_cat_data)==0:

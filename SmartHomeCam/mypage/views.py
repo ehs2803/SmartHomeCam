@@ -133,7 +133,7 @@ def register_family(request):
             errorMsg = '빈칸이 존재합니다!'
         return render(request, 'mypage/family_register.html', {'error': errorMsg})
     # GET
-    return render(request, "mypage/family_register.html")
+    return render(request, "mypage/family_register.html", context=context)
 
 def update_family(request, id):
     global errorMsg  # 에러메시지
@@ -349,9 +349,12 @@ def record_detect_person_detail(request, id):
         user = User.objects.get(id=request.session.get('id'))
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         record_detect_person = DetectPerson.objects.get(id=id)
-        alarm = Alarm.objects.get(uid=user.id, did=id, type='PERSON')
-        alarm.confirm=1
-        alarm.save()
+        try:
+            alarm = Alarm.objects.get(uid=user.id, did=id, type='PERSON')
+            alarm.confirm=1
+            alarm.save()
+        except:
+            print('해당 alarm 존재하지 않음')
 
     context = {
         'alarmCnt': alarmCnt,
@@ -392,9 +395,12 @@ def record_detect_unknown_detail(request, id):
         user = User.objects.get(id=request.session.get('id'))
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         record_detect_unknown = RecognitionFace.objects.get(id=id)
-        alarm = Alarm.objects.get(uid=user.id, did=id, type='UNKNOWN')
-        alarm.confirm=1
-        alarm.save()
+        try:
+            alarm = Alarm.objects.get(uid=user.id, did=id, type='UNKNOWN')
+            alarm.confirm=1
+            alarm.save()
+        except:
+            print('해당 alarm 존재하지 않음')
 
     context = {
         'alarmCnt': alarmCnt,
@@ -435,9 +441,12 @@ def record_detect_fire_detail(request, id):
         user = User.objects.get(id=request.session.get('id'))
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         record_detect_fire = DetectFire.objects.get(id=id)
-        alarm = Alarm.objects.get(uid=user.id, did=id, type='FIRE')
-        alarm.confirm=1
-        alarm.save()
+        try:
+            alarm = Alarm.objects.get(uid=user.id, did=id, type='FIRE')
+            alarm.confirm=1
+            alarm.save()
+        except:
+            print('해당 alarm 존재하지 않음')
 
     context = {
         'alarmCnt': alarmCnt,
@@ -514,9 +523,13 @@ def record_safemode_noAction_detail(request, id):
         user = User.objects.get(id=request.session.get('id'))
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         record_detect_noAction = SafeModeNoaction.objects.get(id=id)
-        alarm = Alarm.objects.get(uid=user.id, did=id, type='NOACTION')
-        alarm.confirm=1
-        alarm.save()
+        try:
+            alarm = Alarm.objects.get(uid=user.id, did=id, type='NOACTION')
+            alarm.confirm=1
+            alarm.save()
+        except:
+            print('해당 alarm 존재하지 않음')
+
 
     context = {
         'alarmCnt': alarmCnt,
