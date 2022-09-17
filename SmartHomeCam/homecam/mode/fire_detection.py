@@ -162,4 +162,5 @@ class FireDetector(EmailSender, SmsSender):
             receiver = '82'+phone
             receiver = receiver.replace('-', "")
             super().sendSMS(receiver, '[SmartHomeCam] 화재 탐지\n웹사이트에 들어가서 확인해보세요.')
+            print("send sms")
 
