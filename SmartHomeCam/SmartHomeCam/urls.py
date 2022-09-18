@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.static import serve
 
-from SmartHomeCam import settings
+from SmartHomeCam.settings import base
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,7 +28,7 @@ urlpatterns = [
     path('mypage/', include("mypage.urls")),
     path('homecam/', include("homecam.urls")),
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
 
 #urlpatterns+=url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT})
 #urlpatterns+=url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT})

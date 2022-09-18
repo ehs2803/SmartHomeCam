@@ -2,7 +2,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from django.views.static import serve
 
-from SmartHomeCam import settings
+from SmartHomeCam.settings import base
 from mypage import views
 
 urlpatterns = [
@@ -40,7 +40,7 @@ urlpatterns = [
     #path('records/safemode/falldown/', views.record_safemode_falldown),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
 
 #urlpatterns+=url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT})
 #urlpatterns+=url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT})

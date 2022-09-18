@@ -3,7 +3,8 @@ from django.conf.urls.static import static
 from django.urls import path
 from django.views.static import serve
 
-from SmartHomeCam import settings
+from SmartHomeCam.settings import base
+
 from homecam import views
 
 urlpatterns = [
@@ -34,7 +35,7 @@ urlpatterns = [
     path('ajax/data/animal/', views.ajax_getData_Animal),
     path('ajax/main/', views.main_state),
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
 #(?P<username>[^/]+)$
 
 #urlpatterns+=url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT})
