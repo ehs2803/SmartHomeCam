@@ -20,7 +20,7 @@ SmartHomeCam
 
 1. 서비스 구성도
 
-![https://github.com/ehs2803/SmartHomeCam/raw/main/images/smarthomecam.jpg](https://github.com/ehs2803/SmartHomeCam/raw/main/images/smarthomecam.jpg)
+![image](https://user-images.githubusercontent.com/65898555/191146007-48bb232a-000f-4004-967f-fca434258757.png)
 
 ## **데이터베이스**
 
@@ -28,7 +28,21 @@ SmartHomeCam
 
 ![Untitled](images/Untitled.png)
 
-![Untitled](images/Untitled%201.png)
+- auth_user : 사용자 정보
+- homecam : 사용자 계정에 연결된 홈캠 정보
+- family : 가구원 등록 정보
+- capture_picture : 사용자 캡처 저장 정보
+- recording_video : 사용자 녹화 영상 저장 정보
+- homecam_mode_use_history : 홈캠 5가지 모드 on, off 기록
+- cam_connect_history : 라즈베리파이 연결, 해제 기록
+- alarm : 알림 저장
+- detect_person : 홈캠 사람탐지모드 저장
+- detect_aniaml : 홈캠 반려동물탐지 모드 저장
+- detect_fire : 홈캠 화재탐지 모드 저장
+- recognition_face : 홈캠 외부인 탐지 모드 저장
+- safe_mode_nodetect : 홈캠 안심모드 사람 미탐지 저장
+- safe_mode_noaction : 홈캠 안심모드 사람 행동 미감지 저장
+
 
 ## **작품 기능**
 
@@ -72,7 +86,13 @@ SmartHomeCam
 
 ![https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam7.jpg](https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam7.jpg)
 
+
+
+### **마이페이지**
+
 ---
+
+![image](https://user-images.githubusercontent.com/65898555/191146536-3558a416-246b-49aa-bed1-aed60eb21097.png)
 
 ### **기능 - 가족관리**
 
@@ -80,9 +100,9 @@ SmartHomeCam
 
 ![Untitled](images/Untitled%204.png)
 
-![Untitled](images/Untitled%205.png)
+![image](https://user-images.githubusercontent.com/65898555/191146203-99b3491a-0199-47dc-8e0b-1c5f4090f2cb.png)
 
-![Untitled](images/Untitled%206.png)
+![image](https://user-images.githubusercontent.com/65898555/191146179-bc241a0e-c8aa-4f25-80f7-2327ad67f3cf.png)
 
 가구원을 등록, 조회, 수정, 삭제할 수 있습니다. 가구원을 등록할 때 이메일, 전화번호, 최대 3장의 얼굴사진을 등록할 수 있습니다.
 
@@ -145,7 +165,7 @@ SmartHomeCam
 ---
 
 ![Untitled](images/Untitled%2014.png)
-![Untitled](images/Untitled%2015.png)
+![image](https://user-images.githubusercontent.com/65898555/191146301-ba7b9d3d-15ad-4408-bb96-a2115d34d5d2.png)
 
 5가지 홈캠 모드에서 탐지한 것들을 각 페이지에서 확인이 가능합니다. 자세히보기 버튼을 누르면 하단의 사진 페이지로 이동합니다. 삭제하기 버튼을 누르면 삭제됩니다.
 
@@ -166,7 +186,7 @@ SmartHomeCam
 
 ---
 
-![Untitled](images/Untitled%2018.png)
+![image](https://user-images.githubusercontent.com/65898555/191146438-e58a6991-9afc-47b5-8d7d-2d883777de71.png)
 
 ![Untitled](images/Untitled%2019.png)
 
