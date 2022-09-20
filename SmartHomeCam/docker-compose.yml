@@ -1,12 +1,27 @@
 version: '3'
 
 services:
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/usr/src/app/_static
+      - media_volume:/usr/src/app/_media
+    ports:
+      - 80:80
+    depends_on:
+      - web
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn SmartHomeCam.wsgi:application --bind 0.0.0.0:8000
     volumes:
+      - static_volume:/usr/src/app/_static
+      - media_volume:/usr/src/app/_media
       - ./:/usr/src/app/
     ports:
       - 8000
     env_file:
-      - ./.env.dev
+      - ./.env.prod
+
+volumes:
+  static_volume:
+  media_volume:

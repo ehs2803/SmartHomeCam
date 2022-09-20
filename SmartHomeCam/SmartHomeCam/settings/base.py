@@ -44,6 +44,9 @@ SECRET_KEY = 'django-insecure-vtmc*^z@#g=6#l@+pblp74iw@$k!)-48cnk)6!ft*7*bl!#6sm
 #     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 # else:
 
+AWS_ACCESS_KEY_ID_SNS = os.environ.get('AWS_ACCESS_KEY_ID_SNS','temp')
+AWS_SECRET_ACCESS_KEY_SNS = os.environ.get('AWS_SECRET_ACCESS_KEY_SNS','temp')
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD','temp')
 
 # Application definition
 INSTALLED_APPS = [
@@ -127,14 +130,16 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '_static')
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
 # 미디어 파일을 관리할 루트 media 디렉터리
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '_media')
 # 각 media file에 대한 URL prefix
 MEDIA_URL = '/media/'
+
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 # Default primary key field type

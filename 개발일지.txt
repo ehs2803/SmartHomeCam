@@ -432,3 +432,10 @@ json으로 html로 보내는거 성공.
 ==================================================================================
 2022.09.18.일
 - settings 파일 local, prod 분리
+
+==================================================================================
+2022.09.20.화
+- .env.prod 파일로 환경변수 관리
+- aws sns, email password base.py에서 불러와 사용.
+* prod 실행 명령어 : python manage.py runserver --settings=SmartHomeCam.settings.prod
+

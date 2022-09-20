@@ -55,3 +55,4 @@
 2022-06-18 15:29:48,814 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2022-06-18 15:32:06,905 [INFO] django.utils.autoreload: C:\Users\nec\Desktop\project\SmartHomeCam\SmartHomeCam\mypage\urls.py changed, reloading.
 2022-06-18 15:32:13,201 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-09-20 09:16:22,339 [INFO] django.utils.autoreload: Watching for file changes with StatReloader

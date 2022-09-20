@@ -41,6 +41,6 @@ urlpatterns = [
 ]
 
 urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
-
+urlpatterns += static(base.STATIC_URL, document_root=base.STATIC_ROOT)
 #urlpatterns+=url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT})
 #urlpatterns+=url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT})

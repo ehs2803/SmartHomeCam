@@ -3,6 +3,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 
+from SmartHomeCam.settings.base import EMAIL_PASSWORD
+
+
 class EmailSender:
     def __init__(self):
         self.data = None
@@ -68,7 +71,7 @@ class EmailSender:
         server.ehlo()  # say Hello
         server.starttls()  # TLS 사용시 필요
         # 로그인 한다.
-        server.login('ehs2803@skuniv.ac.kr', '')
+        server.login('ehs2803@skuniv.ac.kr', EMAIL_PASSWORD)
         # MAIL(송신자) 설정
         sender = self.data['From']
         # RCPT(수신자), 리스트로 보낸다.
