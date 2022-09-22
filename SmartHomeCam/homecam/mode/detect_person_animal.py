@@ -37,7 +37,7 @@ class YoloDetect(EmailSender, SmsSender):
         # YOLO 네트워크 불러오기
         self.net = cv2.dnn.readNet("homecam/data/yolov4-tiny.weights", "homecam/data/yolov4-tiny.cfg")
         self.layer_names = self.net.getLayerNames()
-        self.output_layers = [self.layer_names[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
+        self.output_layers = [self.layer_names[i - 1] for i in self.net.getUnconnectedOutLayers()]
         # 클래스의 갯수만큼 랜덤 RGB 배열을 생성
         self.colors = np.random.uniform(0, 255, size=(len(self.classes), 3))
 
