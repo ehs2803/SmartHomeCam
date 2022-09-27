@@ -61,7 +61,7 @@ class EmailSender:
         # 텍스트 형식의 본문 내용
         # Html 형식의 본문 내용 (cid로 이미 첨부 파일을 링크했다.)
         msg = MIMEText("<h2>사람 활동 미감지</h2><br>SmartHomeCam Username : {0}<br>"
-                       "Cam id : {1}<br>미감지 시간 : {2}동안 미감지".format(username, camid, period) , 'html')
+                       "Cam id : {1}<br>미감지 시간 : {2}일 동안 미감지".format(username, camid, period) , 'html')
         # Data 영역의 메시지에 바운더리 추가
         self.data.attach(msg)
 

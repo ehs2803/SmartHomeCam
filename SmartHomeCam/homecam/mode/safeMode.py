@@ -43,8 +43,15 @@ class SafeMode(EmailSender, SmsSender):
         self.detect_action_time = None
         self.detect_location=[0,0]
 
-    def run_safe_mode(self, frame, camid, size):
-        if time.time()-self.safe_mode_time>self.time_noDetect:
+    def init_noPerson(self):
+        self.safe_mode_time = time.time()
+
+    def init_noAction(self):
+        self.detect_action_time = None
+        self.detect_location=[0,0]
+
+    def run_safe_mode(self, frame, camid, size, check_no_person, check_no_action, day_no_person):
+        if check_no_person and time.time()-self.safe_mode_time>self.time_noDetect*day_no_person:
             smnd = SafeModeNodetect()
             ts = time.time()
             timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
@@ -52,7 +59,7 @@ class SafeMode(EmailSender, SmsSender):
 
             smnd.uid = user
             smnd.time = timestamp
-            smnd.period = self.time_noDetect
+            smnd.period = day_no_person
             smnd.camid = camid
             smnd.save()
 
@@ -68,9 +75,13 @@ class SafeMode(EmailSender, SmsSender):
             self.safe_mode_time=time.time()
 
             self.updateContactList(self.username)
-            self.sendSafeModeEmail_no_detect(self.username, camid, self.time_noDetect)
+            self.sendSafeModeEmail_no_detect(self.username, camid, day_no_person)
             self.sendDetectNoDetectPersonSMS()
             print('save')
+
+        if check_no_action==False:
+            return
+        # 10초마다 행동 미감지 판단
         if time.time()-self.detect_time<10:
             return
         self.detect_time = time.time()
@@ -121,9 +132,6 @@ class SafeMode(EmailSender, SmsSender):
             self.detect_location = [-20,-20]
             return
 
-        #if len(boxes)>1:
-        #    print('1more detect',len(boxes))
-        #    return
         for i in range(len(boxes)):
             if i in indexes:
                 x, y, w, h = boxes[i]

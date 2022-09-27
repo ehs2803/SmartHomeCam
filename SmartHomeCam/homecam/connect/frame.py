@@ -104,8 +104,11 @@ class Frame:
             if self.check_detect_fire:
                 fframe = self.FireDetector.detect_fire(frame, 320, 0.4, 0.4, self.camid)
 
-            if self.check_on_safemode:
-                sframe = self.SafeMode.run_safe_mode(frame, self.camid, 320)
+            if self.check_detect_no_action or self.check_detect_no_person:
+                sframe = self.SafeMode.run_safe_mode(frame, self.camid, 320,
+                                                     self.check_detect_no_person,
+                                                     self.check_detect_no_action,
+                                                     self.check_detect_no_person_day)
 
             if self.recording_video_check==True:
                 self.out.write(frame)
