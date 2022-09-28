@@ -15,6 +15,18 @@ jobs:
 #       working-directory: ./SmartHomeCam
     steps:
     - uses: actions/checkout@v2 # first action : checkout source code
+    
+    - name: Setting .env.prod
+      run: |
+        echo "NAME=${{ secrets.NAME }}" >> .env.prod
+        echo "USER=${{ secrets.USER }}" >> .env.prod
+        echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env.prod
+        echo "HOST=${{ secrets.HOST }}" >> .env.prod
+        echo "PORT=${{ secrets.PORT }}" >> .env.prod
+        echo "AWS_ACCESS_KEY_ID_SNS=${{ secrets.AWS_ACCESS_KEY_ID_SNS }}" >> .env.prod
+        echo "AWS_SECRET_ACCESS_KEY_SNS=${{ secrets.AWS_SECRET_ACCESS_KEY_SNS }}" >> .env.prod
+        echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env.prod
+
     - name: docker login
       run: | # log into docker hub account
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
