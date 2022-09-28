@@ -29,11 +29,20 @@ jobs:
 
     - name: docker login
       run: | # log into docker hub account
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
-    - name: Get current date # get the date of the build
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
-    - name: Build the Docker image # push The image to the docker hub
-      run: docker build -t $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }} ./SmartHomeCam/
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+        
+    - name: Build the Docker image # push The image to the docker hub  
+      run: docker-compose build
+    
     - name: Docker Push
-      run: docker push $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
+      run: |
+        docker push $DOCKER_USER/smarthomecam_nginx
+        docker push $DOCKER_USER/smarthomecam_web
+      
+#     - name: Get current date # get the date of the build
+#       id: date
+#       run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
+#     - name: Build the Docker image # push The image to the docker hub
+#       run: docker build -t $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }} ./SmartHomeCam/
+#     - name: Docker Push
+#       run: docker push $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
