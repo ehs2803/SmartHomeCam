@@ -1,12 +1,14 @@
 # SmartHomeCam (졸업작품)
 
-작품 주제 : 라즈베리파이와 인공지능을 이용한 스마트 홈캠 웹 서비스
+작품 주제 : 라즈베리파이와 인공지능을 이용한 스마트 라카메라 웹 서비스
 
-주제 선정 배경 : 1인 가구의 증가와 반려가구 1500만 시대에 따라 외출 중에 카메라를 통해 집안상황 확인, 방범 서비스, 화재감지, 반려동물을 확인을 할 수 있습니다.
+주제 선정 배경 : 1인 가구의 증가와 반려가구 1500만 시대에 외출 중에 카메라를 통해 집안상황 확인, 방범 서비스, 화재감지, 반려동물을 확인을 할 수 있습니다.
 
 작품명 : SmartHomeCam
 
 개발기간 : 2022.03 ~ 개발 중(90%)
+
+<br>
 
 ## **작품 구성도**
 
@@ -14,29 +16,98 @@
 
 ![image](https://user-images.githubusercontent.com/65898555/191146007-48bb232a-000f-4004-967f-fca434258757.png)
 
+<br>
+
 ## **데이터베이스**
 
 
 ![Untitled](images/Untitled.png)
 
 - auth_user : 사용자 정보
-- homecam : 사용자 계정에 연결된 홈캠 정보
+- homecam : 사용자 계정에 연결된 홈카메라 정보
 - family : 가구원 등록 정보
 - capture_picture : 사용자 캡처 저장 정보
 - recording_video : 사용자 녹화 영상 저장 정보
-- homecam_mode_use_history : 홈캠 5가지 모드 on, off 기록
+- homecam_mode_use_history : 홈카메라 5가지 모드 on, off 기록
 - cam_connect_history : 라즈베리파이 연결, 해제 기록
 - alarm : 알림 저장
-- detect_person : 홈캠 사람탐지모드 저장
-- detect_aniaml : 홈캠 반려동물탐지 모드 저장
-- detect_fire : 홈캠 화재탐지 모드 저장
-- recognition_face : 홈캠 외부인 탐지 모드 저장
-- safe_mode_nodetect : 홈캠 안심모드 사람 미탐지 저장
-- safe_mode_noaction : 홈캠 안심모드 사람 행동 미감지 저장
+- detect_person : 홈카메라 사람탐지모드 저장
+- detect_aniaml : 홈카메라 반려동물탐지 모드 저장
+- detect_fire : 홈카메라 화재탐지 모드 저장
+- recognition_face : 홈카메라 외부인 탐지 모드 저장
+- safe_mode_nodetect : 홈카메라 안심모드 사람 미탐지 저장
+- safe_mode_noaction : 홈카메라 안심모드 사람 행동 미감지 저장
+
+<br>
+
+## **기능**
+
+### - 회원 기능
+회원가입과 로그인을 할 수 있습니다.
+### - 홈카메라 실시간 모니터링
+서버에 연결된 라즈베리파이의 카메라 영상을 실시간 모니터링할 수 있고, 동시에 이미지 캡처, 영상 녹화가 가능합니다. 저장된 이미지, 영상은 마이페이지에서 확인이 가능합니다.
+### - 홈카메라 모드
+사람탐지, 화재탐지, 외부인탐지, 반려동물 탐지, 안심모드(일정시간 사람미탐지, 행동미감지) 모드가 있습니다.
+### - 모드 설정
+연결된 각 라즈베리파이에 대해서 홈카메라 모드를 ON/OFF 할 수 있습니다.
+### - 알림 확인
+반려동물 탐지를 제외한 홈카메라 모드에 대해서 특정 상황 발생 시 알림이 생성되고, 마이페이지에서 확인이 가능합니다.
+### - 이메일, SMS 알림
+반려동물 탐지를 제외한 홈카메라 모드에 대해서 특정 상황 발생 시 등록된 이메일, 전화번호로 알림이 전송됩니다.
+### - 가족관리
+집에 거주중인 가족의 사진, 이메일, 전화번호를 등록합니다. 사진은 외부인 탐지 모드에 사용되고, 이메일과 전화번호는 알림에 사용됩니다.
+### - 탐지기록 확인
+홈카메라 모드 탐지기록을 각각 확인이 가능합니다.
+
+<br>
+<br>
+
+## **홈카메라 모드**
+
+![image](https://user-images.githubusercontent.com/65898555/192663525-0be5010b-7712-4aa3-b392-5b94581dc136.png)
+
+사람탐지는 사람이 탐지되면 이미지 저장, 이메일, SMS 알림이 전송됩니다.
+
+사람을 탐지할 때 YOLO 알고리즘을 사용합니다. 모델은 YOLO v4 Tiny를 사용합니다.
 
 
-## **작품 기능**
 
+![image](https://user-images.githubusercontent.com/65898555/192663769-dd9fb5a2-5cc5-43de-863d-b01aea24dbe2.png)
+
+외부인 탐지는 데이터베이스에 저장된 가족멤버 사진과 실시간으로 인식되는 얼굴 사진을 비교해 외부인이라 판단되면 이미지 저장, 이메일, SMS 알림이 전송됩니다.
+
+hog 기반의 dlib face detector를 사용해 얼굴을 인식하고 dlib을 이용한 facial landmark detection(5-point facial landmark)을 통해 DNN을 이용해 얼굴을 128개 벡터로 수치화한다. 데이터베이스에 저장된 얼굴 벡터와 실시간으로 인식된 얼굴 벡터의 유클리디안 거리가 0.5 미만일 경우 외부인으로 판단합니다.
+
+
+
+![image](https://user-images.githubusercontent.com/65898555/192663809-d9de470a-a929-4a26-8e19-653e77660ac9.png)
+
+화재탐지는 화재가 탐지되면 이미지 저장, 이메일, SMS 알림이 전송됩니다.
+
+화재 탐지 시 YOLO 알고리즘을 사용합니다. 모델은 YOLO v3를 사용합니다.
+
+
+
+![image](https://user-images.githubusercontent.com/65898555/192663447-b503d6d4-b0d1-43e9-a476-653ea8413e18.png)
+
+반려동물탐지는 강아지, 고양이를 탐지해 탐지 시간, 탐지 위치를 저장해 이를 기반으로 마이페이지에서 활동성 통계 그래프를 볼 수 있습니다.
+
+반려동물 탐지시 YOLO 알고리즘을 사용합니다. 모델은 YOLO v4 Tiny를 사용합니다.
+
+
+
+![image](https://user-images.githubusercontent.com/65898555/192663993-e85c3135-0e55-481f-a6f7-3902926c4dbf.png)
+
+안심모드는 일정 시간 사람 미감지, 사람 객체 움직임 미감지를 탐지합니다. 사람 탐지 시 YOLO 알고리즘을 사용합니다. 모델은 YOLO v4 Tiny를 사용합니다.
+
+일정 시간 사람 미감지는 사용자가 지정한 시간동안 사람 객체를 미감지하면 이메일, SMS 알림이 전송됩니다.
+
+사람 객체 움직임 미감지는 사람 객체 탐지 위치를 고려해 6시간 동안 행동이 미감지되면 사진이 저장되고, 이메일, SMS 알림이 전송됩니다.
+
+<br>
+<br>
+
+## **동작 화면**
 
 ### **기능 - 계정**
 
@@ -47,34 +118,6 @@
 ![Untitled](images/Untitled%203.png)
 
 회원가입과 로그인을 할 수 있습니다.
-
-### **기능 - 홈캠 모드**
-
----
-
-![https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam3.jpg](https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam3.jpg)
-
-사람탐지 모드입니다. 사람이 탐지되면 이미지, 탐지시간 등이 데이터베이스에 저장됩니다.
-
-탐지 즉시 메일, 메시지 알림이 전송됩니다. 마이페이지에서 탐지 기록을 확인할 수 있습니다.
-
-사람을 탐지할 때 YOLO 모델을 사용했습니다.
-
----
-
-![https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam4.jpg](https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam4.jpg)
-
----
-
-![https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam5.jpg](https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam5.jpg)
-
----
-
-![https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam6.jpg](https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam6.jpg)
-
----
-
-![https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam7.jpg](https://github.com/ehs2803/SmartHomeCam/raw/main/images/homecam7.jpg)
 
 
 
