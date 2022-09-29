@@ -39,6 +39,7 @@ jobs:
       
     - name: Build the Docker image # push The image to the docker hub  
       run: |
+        cd SmartHomeCam
         ls
         docker-compose.yml build
     
