@@ -42,12 +42,13 @@ jobs:
         cd SmartHomeCam
         ls
         docker-compose build
-        docker ps
+        docker images
     
     - name: Docker Push
       run: |
         docker push $DOCKER_USER/smarthomecam_nginx
         docker push $DOCKER_USER/smarthomecam_web
+      
       
 #     - name: Get current date # get the date of the build
 #       id: date
