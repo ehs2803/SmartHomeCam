@@ -48,14 +48,14 @@ jobs:
         cd SmartHomeCam
         ls
         docker-compose build
-        docker image tag $DOCKER_USER/smarthomecam_nginx:latest $DOCKER_USER/smarthomecam_nginx:${{ steps.date.outputs.date }}
-        docker image tag $DOCKER_USER/smarthomecam_web:latest $DOCKER_USER/smarthomecam_web:${{ steps.date.outputs.date }}
+        docker image tag smarthomecam_nginx $DOCKER_USER/smarthomecam_nginx:${{ steps.date.outputs.date }}
+        docker image tag smarthomecam_web $DOCKER_USER/smarthomecam_web:${{ steps.date.outputs.date }}
         docker images
     
     - name: Docker Push
       run: |
-        docker push $DOCKER_USER/smarthomecam_nginx:latest
-        docker push $DOCKER_USER/smarthomecam_web:latest
+        docker push $DOCKER_USER/smarthomecam_nginx:${{ steps.date.outputs.date }}
+        docker push $DOCKER_USER/smarthomecam_web:${{ steps.date.outputs.date }}
       
       
 #     - name: Get current date # get the date of the build
