@@ -35,7 +35,7 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
         
     - name: Build the Docker image # push The image to the docker hub  
-      run: docker-compose.yaml build ./SmartHomeCam/
+      run: docker-compose build
     
     - name: Docker Push
       run: |
