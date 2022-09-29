@@ -11,18 +11,19 @@ env:
 jobs:
   push-image-to-docker-hub:  # job name
     runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
-    env:
-      working-directory: ./SmartHomeCam/SmartHomeCam/
+#     env:
+#       working-directory: ./SmartHomeCam/SmartHomeCam/
     steps:
     - uses: actions/checkout@v2 # first action : checkout source code
     
     - name : install docker-compose
       run : |
-        ls
         sudo apt install docker-compose
       
     - name: Setting .env.prod
       run: |
+        cd SmartHomeCam
+        ls
         echo "NAME=${{ secrets.NAME }}" >> .env.prod
         echo "USER=${{ secrets.USER }}" >> .env.prod
         echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env.prod
