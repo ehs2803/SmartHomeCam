@@ -41,7 +41,8 @@ jobs:
       run: |
         cd SmartHomeCam
         ls
-        docker-compose build web,nginx
+        docker-compose build
+        docker ps
     
     - name: Docker Push
       run: |
