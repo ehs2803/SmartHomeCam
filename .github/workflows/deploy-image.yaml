@@ -12,7 +12,7 @@ jobs:
   push-image-to-docker-hub:  # job name
     runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
     env:
-      working-directory: ./SmartHomeCam/
+      working-directory: ./SmartHomeCam/SmartHomeCam/
     steps:
     - uses: actions/checkout@v2 # first action : checkout source code
     
