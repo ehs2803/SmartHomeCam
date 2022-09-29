@@ -3,6 +3,7 @@ version: '3'
 services:
   nginx:
     build: ./nginx
+    image: hr2803/smarthomecam_nginx:latest
     volumes:
       - static_volume:/usr/src/app/_static
       - media_volume:/usr/src/app/_media
@@ -12,6 +13,7 @@ services:
       - web
   web:
     build: .
+    image: hr2803/smarthomecam_web:latest
     command: gunicorn SmartHomeCam.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/usr/src/app/_static
