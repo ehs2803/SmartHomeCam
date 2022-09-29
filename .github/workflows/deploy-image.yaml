@@ -11,8 +11,8 @@ env:
 jobs:
   push-image-to-docker-hub:  # job name
     runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
-#     env:
-#       working-directory: ./SmartHomeCam/
+    env:
+      working-directory: ./SmartHomeCam/
     steps:
     - uses: actions/checkout@v2 # first action : checkout source code
     
@@ -33,7 +33,7 @@ jobs:
     - name: docker login
       run: | # log into docker hub account
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
-        
+      
     - name: Build the Docker image # push The image to the docker hub  
       run: docker-compose.yml build
     
