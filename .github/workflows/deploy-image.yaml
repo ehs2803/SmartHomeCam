@@ -24,6 +24,9 @@ jobs:
       run: |
         cd SmartHomeCam
         ls
+        cat .env.dev
+        echo "NAME=${{ secrets.NAME }}" >> .env.test
+        cat .env.test
         echo "NAME=${{ secrets.NAME }}" >> .env.prod
         echo "USER=${{ secrets.USER }}" >> .env.prod
         echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env.prod
