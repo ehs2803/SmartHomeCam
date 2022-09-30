@@ -7,6 +7,7 @@ env:
   DOCKER_USER: ${{secrets.DOCKER_USER}}
   DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
   REPO_NAME: ${{secrets.REPO_NAME}}
+
   
 jobs:
   push-image-to-docker-hub:  # job name
@@ -21,11 +22,13 @@ jobs:
         sudo apt install docker-compose
       
     - name: Setting .env.prod
+      env:
+        NAME: ${{ secrets.NAME }}
       run: |
         cd SmartHomeCam
         ls
         cat .env.dev
-        echo "NAME=${{ secrets.NAME }}" >> .env.test
+        echo "NAME=$NAME" >> .env.test
         echo "NAME2=${{ secrets.NAME }}" >> .env.test
         cat .env.test
         echo "NAME=${{ secrets.NAME }}" >> .env.prod
@@ -37,6 +40,7 @@ jobs:
         echo "AWS_SECRET_ACCESS_KEY_SNS=${{ secrets.AWS_SECRET_ACCESS_KEY_SNS }}" >> .env.prod
         echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env.prod
         ls
+
         
     - name: Get current date # get the date of the build
       id: date
