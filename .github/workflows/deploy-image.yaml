@@ -26,6 +26,7 @@ jobs:
         ls
         cat .env.dev
         echo "NAME=${{ secrets.NAME }}" >> .env.test
+        echo "NAME2=${{ secrets.NAME }}" >> .env.test
         cat .env.test
         echo "NAME=${{ secrets.NAME }}" >> .env.prod
         echo "USER=${{ secrets.USER }}" >> .env.prod
