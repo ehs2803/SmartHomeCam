@@ -32,6 +32,7 @@ jobs:
         echo "AWS_ACCESS_KEY_ID_SNS=${{ secrets.AWS_ACCESS_KEY_ID_SNS }}" >> .env.prod
         echo "AWS_SECRET_ACCESS_KEY_SNS=${{ secrets.AWS_SECRET_ACCESS_KEY_SNS }}" >> .env.prod
         echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env.prod
+        ls
         
     - name: Get current date # get the date of the build
       id: date
