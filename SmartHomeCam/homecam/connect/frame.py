@@ -1,3 +1,4 @@
+import copy
 import time
 
 from PIL import Image
@@ -9,6 +10,7 @@ import datetime
 from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
 
+from SmartHomeCam.storages import FileUpload, s3_client
 from account.models import AuthUser
 from homecam.mode.detect_person_animal import YoloDetect
 from homecam.mode.fire_detection import FireDetector
@@ -122,10 +124,15 @@ class Frame:
         cp = CapturePicture()
         cp.uid = user
         file = ContentFile(self.imagesave)
+
+        file_s3 = copy.deepcopy(file)
+        image_url = FileUpload(s3_client).upload(file_s3, 'capture/')
+
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         file.name = timestamp + '.jpg'
         cp.image = file
+        cp.image_s3=image_url
         cp.time = timestamp
         cp.camid = self.camid
         cp.save()
@@ -135,7 +142,6 @@ class Frame:
             ts = time.time()
             timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y_%m_%d_%H_%M_%S')
             self.rvfilename = 'media/tempVideoRepository/'+timestamp + '.mp4'
-            print(self.rvfilename)
             self.out = cv2.VideoWriter(self.rvfilename, cv2.VideoWriter_fourcc(*'H264'), 20, (640, 480))
             self.recording_video_check = True
             self.check_current_recording=True
@@ -155,9 +161,15 @@ class Frame:
 
             fp = open(saved_filename, 'rb')
             vf = fp.read()
+
             file = ContentFile(vf)
+
+            file_s3 = copy.deepcopy(file)
+            video_url = FileUpload(s3_client).upload_video(file_s3, 'recording/')
+
             file.name = timestamp + '.mp4'
             rv.video = file
+            rv.video_s3=video_url
             rv.camid = self.camid
             rv.save()
 

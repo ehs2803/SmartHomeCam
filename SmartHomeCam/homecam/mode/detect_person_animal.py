@@ -1,3 +1,4 @@
+import copy
 import datetime
 
 import cv2
@@ -8,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages.storage import session
 from django.core.files.base import ContentFile
 
+from SmartHomeCam.storages import FileUpload, s3_client
 from account.models import AuthUser
 
 import django.contrib.sessions
@@ -131,6 +133,14 @@ class YoloDetect(EmailSender, SmsSender):
                 file2 = ContentFile(frame2)
                 file1.name = timestamp+'_1' + '.jpg'
                 file2.name = timestamp+'_2' + '.jpg'
+
+                file1_s3 = copy.deepcopy(file1)
+                file2_s3 = copy.deepcopy(file2)
+                image1_url = FileUpload(s3_client).upload(file1_s3, 'person/')
+                image2_url = FileUpload(s3_client).upload(file2_s3, 'person/')
+                dp.image1_s3=image1_url
+                dp.image2_s3=image2_url
+
                 dp.image1 = file1
                 dp.image2 = file2
                 dp.time = timestamp
@@ -151,9 +161,14 @@ class YoloDetect(EmailSender, SmsSender):
                 #filepath2 = settings.MEDIA_ROOT+'/images/detectPerson/AuthUser object (3)/2022-05-19_082716_1.jpg'#'/media/' + str(dp.image2)
                 filepath1 = settings.MEDIA_ROOT+'/'+str(dp.image1)#'/media/' + str(dp.image1)
                 filepath2 = settings.MEDIA_ROOT+'/'+str(dp.image2)#'/media/' + str(dp.image2)
-                #print(filepath1)
-                self.sendDetectPersonEmail(filepath1, filepath2)
-                self.sendDetectPersonEmail()
+                try:
+                    self.sendDetectPersonEmail(filepath1, filepath2)
+                except Exception as e:
+                    print(e)
+                try:
+                    self.sendDetectPersonSMS()
+                except Exception as e:
+                    print(e)
                 self.detect_person_time = time.time()
 
         if check_detect_animal and check_animal:

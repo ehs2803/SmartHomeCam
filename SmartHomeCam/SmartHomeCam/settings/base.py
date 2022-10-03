@@ -126,6 +126,13 @@ USE_L10N = True
 
 USE_TZ = False
 
+# s3
+AWS_ACCESS_KEY_S3 = os.environ.get('AWS_ACCESS_KEY_S3')
+AWS_SECRET_KEY_S3 = os.environ.get('AWS_SECRET_KEY_S3')
+S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
+S3_BUCKET_REGION = os.environ.get('3_BUCKET_REGION')
+S3_BUCKET_DIR = os.environ.get('S3_BUCKET_DIR')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 

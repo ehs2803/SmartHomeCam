@@ -15,7 +15,7 @@ from homecam.sns.Email import EmailSender
 from homecam.sns.SMSMessage import SmsSender
 from mypage.models import Family
 
-from homecam.models import RecognitionFace, Alarm
+from homecam.models import DetectUnknown, Alarm
 
 
 class unknownFaceDetector(EmailSender, SmsSender):
@@ -118,7 +118,7 @@ class unknownFaceDetector(EmailSender, SmsSender):
             if computed_distances_ordered[0] < self.threshold:
                 print('detect: ', computed_distances_ordered[0])
             else:
-                rfmodel = RecognitionFace()
+                rfmodel = DetectUnknown()
 
                 ret1, frame1 = cv2.imencode('.jpg', img)
                 ret2, frame2 = cv2.imencode('.jpg', copy_image)

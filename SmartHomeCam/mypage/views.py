@@ -1,15 +1,23 @@
+import copy
+
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 # Create your views here
+from SmartHomeCam.storages import FileUpload, s3_client
 from account.models import AuthUser
-from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, RecognitionFace, DetectFire, \
+from homecam.models import CapturePicture, RecordingVideo, DetectAnimal, DetectPerson, DetectUnknown, DetectFire, \
     SafeModeNodetect, SafeModeNoaction, CamConnectHistory, Homecam, Alarm
 import homecam.views
 from homecam.connect.socket import VideoCamera
 from mypage.models import Family
 
 def landing(request):
+    fireCnt = None
+    personCnt = None
+    unknownCnt = None
+    nopersonCnt = None
+    noactionCnt = None
     alarmCnt = None
     CAMERA = homecam.views.CAMERA
     connectNum = None
@@ -19,6 +27,11 @@ def landing(request):
     homecam_list = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
+        fireCnt = DetectFire.objects.filter(uid=user.id).count()
+        personCnt = DetectPerson.objects.filter(uid=user.id).count()
+        unknownCnt = DetectUnknown.objects.filter(uid=user.id).count()
+        nopersonCnt = SafeModeNodetect.objects.filter(uid=user.id).count()
+        noactionCnt = SafeModeNoaction.objects.filter(uid=user.id).count()
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
         homecam_list = Homecam.objects.filter(uid=user.id)
         if CAMERA.threads.get(user.username):
@@ -32,6 +45,11 @@ def landing(request):
     idList.rstrip()
 
     context = {
+        'fireCnt' : fireCnt,
+        'personCnt' : personCnt,
+        'unknownCnt' : unknownCnt,
+        'nopersonCnt' : nopersonCnt,
+        'noactionCnt' : noactionCnt,
         'alarmCnt':alarmCnt,
         'user': user,
         'cnt': connectNum,
@@ -90,13 +108,19 @@ def register_family(request):
         email = request.POST['email']
         tel = request.POST['tel']
         image1 = request.FILES['image1']
+        image1_s3 = copy.deepcopy(image1)
+        image1_url = FileUpload(s3_client).upload(image1_s3, 'family/')
         try:
             image2 = request.FILES['image2']
+            image2_s3 = copy.deepcopy(image2)
+            image2_url = FileUpload(s3_client).upload(image2_s3 ,'family/')
         except:
             pass
 
         try:
             image3 = request.FILES['image3']
+            image3_s3 = copy.deepcopy(image3)
+            image3_url = FileUpload(s3_client).upload(image3_s3, 'family/')
         except:
             pass
 
@@ -111,6 +135,8 @@ def register_family(request):
                 regfamily.uid = user
                 regfamily.name = name
                 regfamily.image1 = image1
+                regfamily.image1_s3 = image1_url
+
                 try:
                     regfamily.email=email
                 except:
@@ -121,13 +147,19 @@ def register_family(request):
                     pass
                 try:
                     regfamily.image2 = image2
+                    regfamily.image2_s3 = image2_url
                 except:
                     pass
                 try:
                     regfamily.image3 = image3
+                    regfamily.image3_s3 = image3_url
                 except:
                     pass
-                regfamily.save()
+                print('sc111')
+                try:
+                    regfamily.save()
+                except Exception as e:
+                    print(e)
                 return redirect('/mypage/familyInfo')         # 회원가입 성공했다는 메시지 출력 후 로그인 페이지로 이동(예정)
         except:
             errorMsg = '빈칸이 존재합니다!'
@@ -223,7 +255,7 @@ def user_capture_pictures(request):
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
-        capture_pictures = CapturePicture.objects.filter(uid=user.id)
+        capture_pictures = CapturePicture.objects.filter(uid=user.id).order_by('-time')
 
     context = {
         'alarmCnt':alarmCnt,
@@ -264,7 +296,7 @@ def user_recording_videos(request):
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
-        recording_videos = RecordingVideo.objects.filter(uid=user.id)
+        recording_videos = RecordingVideo.objects.filter(uid=user.id).order_by('-time')
 
     context = {
         'alarmCnt': alarmCnt,
@@ -378,7 +410,7 @@ def record_detect_unknown(request):
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
-        records_detect_unknown = RecognitionFace.objects.filter(uid=user.id).order_by('-time')
+        records_detect_unknown = DetectUnknown.objects.filter(uid=user.id).order_by('-time')
 
     context = {
         'alarmCnt': alarmCnt,
@@ -394,7 +426,7 @@ def record_detect_unknown_detail(request, id):
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
         alarmCnt = Alarm.objects.filter(uid=user.id, confirm=0).count()
-        record_detect_unknown = RecognitionFace.objects.get(id=id)
+        record_detect_unknown = DetectUnknown.objects.get(id=id)
         try:
             alarm = Alarm.objects.get(uid=user.id, did=id, type='UNKNOWN')
             alarm.confirm=1
@@ -413,7 +445,7 @@ def delete_record_detect_unknown(request, id):
     record = None
     if request.session.get('id'):
         user = User.objects.get(id=request.session.get('id'))
-        record = RecognitionFace.objects.get(id=id)
+        record = DetectUnknown.objects.get(id=id)
     record.delete()
     return redirect('/mypage/records/unknownDetect')
 

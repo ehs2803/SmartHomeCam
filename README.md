@@ -14,7 +14,7 @@
 
 1. 서비스 구성도
 
-![image](https://user-images.githubusercontent.com/65898555/191146007-48bb232a-000f-4004-967f-fca434258757.png)
+![Untitled](images/struc.jpg)
 
 <br>
 
@@ -125,7 +125,7 @@ hog 기반의 dlib face detector를 사용해 얼굴을 인식하고 dlib을 이
 
 ---
 
-![image](https://user-images.githubusercontent.com/65898555/191146536-3558a416-246b-49aa-bed1-aed60eb21097.png)
+![Untitled](images/dashboard.jpg)
 
 ### **기능 - 가족관리**
 

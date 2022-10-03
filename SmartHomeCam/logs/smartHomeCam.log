@@ -8,7 +8,7 @@
 2022-06-18 15:23:26,699 [WARNING] django.request: Not Found: /static/assets/homecam/button_animal.jpg
 2022-06-18 15:23:26,704 [WARNING] django.request: Not Found: /static/assets/homecam/button_safe.jpg
 2022-06-18 15:23:27,965 [WARNING] django.request: Not Found: /static/js/mypage/chart-area-demo.js
-2022-06-18 15:23:27,971 [WARNING] django.request: Not Found: /static/js/mypage/chart-bar-demo.js
+2022-06-18 15:23:27,971 [WARNING] django.request: Not Found: /static/js/mypage/chart_bar_dashboard.js
 2022-06-18 15:23:31,142 [WARNING] django.request: Not Found: /static/assets/homecam/button_livecam.jpg
 2022-06-18 15:23:31,145 [WARNING] django.request: Not Found: /static/assets/homecam/button_person.jpg
 2022-06-18 15:23:31,215 [WARNING] django.request: Not Found: /static/assets/homecam/button_face.jpg
@@ -16,7 +16,7 @@
 2022-06-18 15:23:31,229 [WARNING] django.request: Not Found: /static/assets/homecam/button_animal.jpg
 2022-06-18 15:23:31,241 [WARNING] django.request: Not Found: /static/assets/homecam/button_safe.jpg
 2022-06-18 15:23:34,736 [WARNING] django.request: Not Found: /static/js/mypage/chart-area-demo.js
-2022-06-18 15:23:34,741 [WARNING] django.request: Not Found: /static/js/mypage/chart-bar-demo.js
+2022-06-18 15:23:34,741 [WARNING] django.request: Not Found: /static/js/mypage/chart_bar_dashboard.js
 2022-06-18 15:23:36,879 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084429_1.jpg
 2022-06-18 15:23:36,889 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084429_2.jpg
 2022-06-18 15:23:37,022 [WARNING] django.request: Not Found: /media/images/recognitionFace/AuthUser object (3)/2022-05-31_084734_1.jpg

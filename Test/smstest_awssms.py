@@ -1,3 +1,5 @@
+import base64
+
 import boto3
 
 client = boto3.client(
@@ -25,4 +27,6 @@ client.publish(
 PhoneNumber="8201047862803",
 Message="AWS SMS 파이썬 테스트"
 )
+
+
 

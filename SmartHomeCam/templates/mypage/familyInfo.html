@@ -21,7 +21,7 @@
                 {% load static %}
                 {% for family_member in family_members %}
                     <div class="card" style="width: 18rem;">
-                        <img src="{{ family_member.image1.url }}" class="card-img-top" alt="..." height="280" width="180">
+                        <img src="{{ family_member.image1_s3 }}" class="card-img-top" alt="..." height="280" width="180">
                         <div class="card-body">
                             <h5 class="card-title">{{ family_member.name }}</h5>
                             <a href="{{ family_member.fid }}" class="btn btn-primary">자세히보기</a>

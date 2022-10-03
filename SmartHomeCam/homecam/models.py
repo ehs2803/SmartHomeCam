@@ -80,6 +80,7 @@ class CapturePicture(models.Model):
     cpid = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
     image = models.ImageField(upload_to=user_directory_path)
+    image_s3 = models.TextField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
     camid = models.CharField(max_length=45, blank=True, null=True)
 
@@ -91,6 +92,7 @@ class RecordingVideo(models.Model):
     rvid = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
     video = models.FileField(upload_to=user_directory_path_video_userRequest)
+    video_s3 = models.TextField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
     camid = models.CharField(max_length=45, blank=True, null=True)
 
@@ -103,6 +105,8 @@ class DetectPerson(models.Model):
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
     image1 = models.ImageField(upload_to=user_directory_path_detect_person)
     image2 = models.ImageField(upload_to=user_directory_path_detect_person)
+    image1_s3 = models.TextField(blank=True, null=True)
+    image2_s3 = models.TextField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
     camid = models.CharField(max_length=45, blank=True, null=True)
 
@@ -122,23 +126,27 @@ class DetectAnimal(models.Model):
         managed = False
         db_table = 'detect_animal'
 
-class RecognitionFace(models.Model):
+class DetectUnknown(models.Model):
     id = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
     image1 = models.ImageField(upload_to=user_directory_path_recognition_face)
     image2 = models.ImageField(upload_to=user_directory_path_recognition_face)
+    image1_s3 = models.TextField(blank=True, null=True) # TextField
+    image2_s3 = models.TextField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
     camid = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'recognition_face'
+        db_table = 'detect_unknown'
 
 class DetectFire(models.Model):
     id = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
     image1 = models.ImageField(upload_to=user_directory_path_detect_fire)
     image2 = models.ImageField(upload_to=user_directory_path_detect_fire)
+    image1_s3 = models.TextField(blank=True, null=True)
+    image2_s3 = models.TextField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
     camid = models.CharField(max_length=45, blank=True, null=True)
 
@@ -162,6 +170,8 @@ class SafeModeNoaction(models.Model):
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
     image1 = models.ImageField(upload_to=user_directory_path_safemode_noaction)
     image2 = models.ImageField(upload_to=user_directory_path_safemode_noaction)
+    image1_s3 = models.TextField(blank=True, null=True)
+    image2_s3 = models.TextField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
     period = models.IntegerField(blank=True, null=True)
     camid = models.CharField(max_length=45, blank=True, null=True)
