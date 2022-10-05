@@ -1,9 +1,11 @@
+import copy
 import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 
+from SmartHomeCam.storages import s3_client, FileUpload
 from account.models import AuthUser
 from homecam.sns.Email import EmailSender
 from homecam.sns.SMSMessage import SmsSender
@@ -109,6 +111,14 @@ class FireDetector(EmailSender, SmsSender):
                     file2 = ContentFile(frame2)
                     file1.name = timestamp + '_1' + '.jpg'
                     file2.name = timestamp + '_2' + '.jpg'
+
+                    file1_s3 = copy.deepcopy(file1)
+                    file2_s3 = copy.deepcopy(file2)
+                    image1_url = FileUpload(s3_client).upload(file1_s3, 'fire/')
+                    image2_url = FileUpload(s3_client).upload(file2_s3, 'fire/')
+                    dfmodel.image1_s3 = image1_url
+                    dfmodel.image2_s3 = image2_url
+
                     dfmodel.image1 = file1
                     dfmodel.image2 = file2
                     dfmodel.time = timestamp
@@ -127,8 +137,11 @@ class FireDetector(EmailSender, SmsSender):
                     self.updateContactList(self.username)
                     filepath1 = settings.MEDIA_ROOT + '/' + str(dfmodel.image1)
                     filepath2 = settings.MEDIA_ROOT + '/' + str(dfmodel.image2)
-                    self.sendDetectFireEmail(filepath1, filepath2)
-                    self.sendDetectFireSMS()
+                    try:
+                        self.sendDetectFireEmail(filepath1, filepath2)
+                        self.sendDetectFireSMS()
+                    except Exception as e:
+                        print(e)
 
                     self.detect_fire_time=time.time()
                     print('detect fire')

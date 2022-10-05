@@ -1,17 +1,14 @@
 import copy
 import time
 
-from PIL import Image
-from django.core.files import File
+
 import cv2
 import struct
 import pickle
 import datetime
 from django.core.files.base import ContentFile
-from django.core.files.images import ImageFile
 
 from SmartHomeCam.storages import FileUpload, s3_client
-from account.models import AuthUser
 from homecam.mode.detect_person_animal import YoloDetect
 from homecam.mode.fire_detection import FireDetector
 from homecam.mode.recognition_face import unknownFaceDetector
@@ -76,7 +73,7 @@ class Frame:
             packed_data_size = self.data_buffer[:self.data_size]
             self.data_buffer = self.data_buffer[self.data_size:]
             # struct.unpack : 변환된 바이트 객체를 원래의 데이터로 변환
-            frame_size = struct.unpack(">L", packed_data_size)[0]
+            frame_size = struct.unpack(">Q", packed_data_size)[0]
             # 프레임 데이터의 크기보다 버퍼에 저장된 데이터의 크기가 작은 경우
             while len(self.data_buffer) < frame_size:
                 # 데이터 수신

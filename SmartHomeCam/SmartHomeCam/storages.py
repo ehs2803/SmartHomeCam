@@ -1,6 +1,9 @@
 import boto3
 import uuid
 
+import numpy as np
+from PIL import Image
+
 from SmartHomeCam.settings.base import AWS_ACCESS_KEY_S3, AWS_SECRET_KEY_S3, S3_BUCKET_NAME, S3_BUCKET_REGION, S3_BUCKET_DIR
 
 class FileUpload:
@@ -13,6 +16,9 @@ class FileUpload:
     def upload_video(self, file, dir):
         return self.client.upload_video(file,dir)
 
+    def read_image(self,filename):
+        return self.client.read_image_from_s3(filename)
+
 class MyS3Client:
     def __init__(self, access_key, secret_key, bucket_name, region, dir):
         boto3_s3 = boto3.client(
@@ -20,6 +26,11 @@ class MyS3Client:
             aws_access_key_id=access_key,
             aws_secret_access_key=secret_key
         )
+        resource_s3 = boto3.resource('s3',
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key
+        )
+        self.s3_client_get = resource_s3
         self.s3_client = boto3_s3
         self.bucket_name = bucket_name
         self.region = region
@@ -56,6 +67,15 @@ class MyS3Client:
         except Exception as e:
             print(e)
             return None
+
+    def read_image_from_s3(self, filename):
+        bucket = self.s3_client_get.Bucket(self.bucket_name)
+        object = bucket.Object(self.dir+filename)
+        response = object.get()
+        file_stream = response['Body']
+        img = Image.open(file_stream)
+        img = np.array(img)
+        return img
 
 
 # MyS3Client instance

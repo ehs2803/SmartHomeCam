@@ -4,7 +4,7 @@ from django.db import models
 from account.models import AuthUser
 
 def user_directory_path(instance, filename):
-    return 'images/family/{}/{}'.format(instance.uid, filename)
+    return 'images/family/{}/{}'.format(instance.uid.username, filename)
 
 
 class Family(models.Model):

@@ -1,3 +1,4 @@
+import copy
 import datetime
 import os
 import time
@@ -10,6 +11,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.files.base import ContentFile
 
+from SmartHomeCam.storages import FileUpload, s3_client
 from account.models import AuthUser
 from homecam.sns.Email import EmailSender
 from homecam.sns.SMSMessage import SmsSender
@@ -53,35 +55,56 @@ class unknownFaceDetector(EmailSender, SmsSender):
             image1 = family.image1
             image2 = family.image2
             image3 = family.image3
+            print(image1)
             if image1!='':
-                print(settings.MEDIA_ROOT+'/'+str(image1))
-                image1_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image1), cv2.IMREAD_COLOR)
-                self.faces.append(image1_read)
-                faces, known_image_encoding = self.face_encodings(image1_read)
-                for i, face in enumerate(faces):
-                    img_face = image1_read[face.top():face.bottom(), face.left():face.right(), :]
-                    self.images_list.append(img_face)
-                    self.images_encoding.append(known_image_encoding[i])
-                    self.images_label.append(family.name)
+                try:
+                    index = family.image1_s3.rfind('/')
+                    temp = str(family.image1_s3)[index+1:]
+                    filename = 'family/'+temp
+                    image1_read = FileUpload(s3_client).read_image(filename)
+                    #image1_read = cv2.imread(settings.MEDIA_ROOT + '/' + str(image1), cv2.IMREAD_COLOR)
+                    self.faces.append(image1_read)
+                    faces, known_image_encoding = self.face_encodings(image1_read)
+                    for i, face in enumerate(faces):
+                        img_face = image1_read[face.top():face.bottom(), face.left():face.right(), :]
+                        self.images_list.append(img_face)
+                        self.images_encoding.append(known_image_encoding[i])
+                        self.images_label.append(family.name)
+                except Exception as e:
+                    print(e)
             if image2!='':
-                image2_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image2), cv2.IMREAD_COLOR)
-                self.faces.append(image2_read)
-                faces, known_image_encoding = self.face_encodings(image2_read)
-                for i, face in enumerate(faces):
-                    img_face = image2_read[face.top():face.bottom(), face.left():face.right(), :]
-                    self.images_list.append(img_face)
-                    self.images_encoding.append(known_image_encoding[i])
-                    self.images_label.append(family.name)
+                try:
+                    index = family.image2_s3.rfind('/')
+                    temp = str(family.image2_s3)[index+1:]
+                    filename = 'family/'+temp
+                    image2_read = FileUpload(s3_client).read_image(filename)
+                    #image2_read = cv2.imread(settings.MEDIA_ROOT + '/' + str(image2), cv2.IMREAD_COLOR)
+                    self.faces.append(image2_read)
+                    faces, known_image_encoding = self.face_encodings(image2_read)
+                    for i, face in enumerate(faces):
+                        img_face = image2_read[face.top():face.bottom(), face.left():face.right(), :]
+                        self.images_list.append(img_face)
+                        self.images_encoding.append(known_image_encoding[i])
+                        self.images_label.append(family.name)
+                except Exception as e:
+                    print(e)
             if image3!='':
-                image3_read = cv2.imread(settings.MEDIA_ROOT+'/'+str(image3), cv2.IMREAD_COLOR)
-                self.faces.append(image3_read)
-                faces, known_image_encoding = self.face_encodings(image3_read)
-                for i, face in enumerate(faces):
-                    img_face = image3_read[face.top():face.bottom(), face.left():face.right(), :]
-                    self.images_list.append(img_face)
-                    self.images_encoding.append(known_image_encoding[i])
-                    self.images_label.append(family.name)
-        print(len(self.images_encoding))
+                try:
+                    index = family.image3_s3.rfind('/')
+                    temp = str(family.image3_s3)[index+1:]
+                    filename = 'family/'+temp
+                    image3_read = FileUpload(s3_client).read_image(filename)
+                    #image3_read = cv2.imread(settings.MEDIA_ROOT + '/' + str(image3), cv2.IMREAD_COLOR)
+                    self.faces.append(image3_read)
+                    faces, known_image_encoding = self.face_encodings(image3_read)
+                    for i, face in enumerate(faces):
+                        img_face = image3_read[face.top():face.bottom(), face.left():face.right(), :]
+                        self.images_list.append(img_face)
+                        self.images_encoding.append(known_image_encoding[i])
+                        self.images_label.append(family.name)
+                except Exception as e:
+                    print(e)
+        print("얼굴수:");print(len(self.images_encoding))
 
     # face_encodings은 128차원의 ndarray 데이터들을 사람 얼굴에 따라 리스트 자료형과 얼굴 위치좌표를 반환
     def face_encodings(self, face_image, number_of_times_to_upsample=1, num_jitters=2):
@@ -131,6 +154,14 @@ class unknownFaceDetector(EmailSender, SmsSender):
                 file2 = ContentFile(frame2)
                 file1.name = timestamp + '_1' + '.jpg'
                 file2.name = timestamp + '_2' + '.jpg'
+
+                file1_s3 = copy.deepcopy(file1)
+                file2_s3 = copy.deepcopy(file2)
+                image1_url = FileUpload(s3_client).upload(file1_s3, 'unknown/')
+                image2_url = FileUpload(s3_client).upload(file2_s3, 'unknown/')
+                rfmodel.image1_s3 = image1_url
+                rfmodel.image2_s3 = image2_url
+
                 rfmodel.image1 = file1
                 rfmodel.image2 = file2
                 rfmodel.time = timestamp
@@ -149,8 +180,11 @@ class unknownFaceDetector(EmailSender, SmsSender):
                 self.updateContactList(self.username)
                 filepath1 = settings.MEDIA_ROOT + '/' + str(rfmodel.image1)
                 filepath2 = settings.MEDIA_ROOT + '/' + str(rfmodel.image2)
-                self.sendDetectunknownFaceEmail(filepath1, filepath2)
-                self.sendDetectUnknownSMS()
+                try:
+                    self.sendDetectunknownFaceEmail(filepath1, filepath2)
+                    self.sendDetectUnknownSMS()
+                except Exception as e:
+                    print(e)
 
                 self.recognition_face_time=time.time()
                 print('unknown detect: ', computed_distances_ordered[0])

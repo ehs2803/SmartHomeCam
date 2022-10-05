@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Charts - SB Admin</title>
+        <title>SmartHomeCam</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/mainpage/favicon.ico' %}" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
     <link href="{% static 'css/mypage/mypage.css' %}" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -36,11 +37,11 @@
 
             <div class="row">
                 <div class="col-sm-6 col-md-5 col-lg-6">
-                    <img class="img-fluid" src="{{ record_detect_noAction.image1.url }}"/>
+                    <img class="img-fluid" src="{{ record_detect_noAction.image1_s3 }}"/>
                     <h3>탐지 객체 바운딩 사진</h3>
                 </div>
                 <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-                    <img class="img-fluid" src="{{ record_detect_noAction.image2.url }}"/>
+                    <img class="img-fluid" src="{{ record_detect_noAction.image2_s3 }}"/>
                     <h3>원본사진</h3>
                 </div>
             </div>

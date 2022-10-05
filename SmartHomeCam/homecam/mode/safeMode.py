@@ -1,3 +1,4 @@
+import copy
 import datetime
 import time
 import cv2
@@ -6,6 +7,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 
 from SmartHomeCam import settings
+from SmartHomeCam.storages import FileUpload, s3_client
 from account.models import AuthUser
 from homecam.sns.Email import EmailSender
 from homecam.sns.SMSMessage import SmsSender
@@ -75,8 +77,11 @@ class SafeMode(EmailSender, SmsSender):
             self.safe_mode_time=time.time()
 
             self.updateContactList(self.username)
-            self.sendSafeModeEmail_no_detect(self.username, camid, day_no_person)
-            self.sendDetectNoDetectPersonSMS()
+            try:
+                self.sendSafeModeEmail_no_detect(self.username, camid, day_no_person)
+                self.sendDetectNoDetectPersonSMS()
+            except Exception as e:
+                print(e)
             print('save')
 
         if check_no_action==False:
@@ -161,6 +166,14 @@ class SafeMode(EmailSender, SmsSender):
                     file2 = ContentFile(frame2)
                     file1.name = timestamp + '_1' + '.jpg'
                     file2.name = timestamp + '_2' + '.jpg'
+
+                    file1_s3 = copy.deepcopy(file1)
+                    file2_s3 = copy.deepcopy(file2)
+                    image1_url = FileUpload(s3_client).upload(file1_s3, 'noaction/')
+                    image2_url = FileUpload(s3_client).upload(file2_s3, 'noaction/')
+                    smna.image1_s3 = image1_url
+                    smna.image2_s3 = image2_url
+
                     smna.image1 = file1
                     smna.image2 = file2
                     smna.time = timestamp
@@ -180,8 +193,11 @@ class SafeMode(EmailSender, SmsSender):
                     self.updateContactList(self.username)
                     filepath1 = settings.MEDIA_ROOT + '/' + str(smna.image1)
                     filepath2 = settings.MEDIA_ROOT + '/' + str(smna.image2)
-                    self.sendSafeModeEmail_no_action(filepath1, filepath2)
-                    self.sendDetectNoActionSMS()
+                    try:
+                        self.sendSafeModeEmail_no_action(filepath1, filepath2)
+                        self.sendDetectNoActionSMS()
+                    except Exception as e:
+                        print(e)
 
                     self.detect_action_time=None
                     print('행동미감지')
