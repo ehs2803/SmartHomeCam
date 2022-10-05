@@ -32,16 +32,16 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="10000">
-                        <img src="{{ family_member.image1.url }}" width="100%" alt="...">
+                        <img src="{{ family_member.image1_s3 }}" width="100%" alt="...">
                     </div>
                     {% if family_member.image2 %}
                     <div class="carousel-item" data-bs-interval="2000">
-                        <img src="{{ family_member.image2.url }}" width="100%" alt="...">
+                        <img src="{{ family_member.image2_s3 }}" width="100%" alt="...">
                     </div>
                     {% endif %}
                     {% if family_member.image3 %}
                     <div class="carousel-item">
-                        <img src="{{ family_member.image3.url }}" width="100%" alt="...">
+                        <img src="{{ family_member.image3_s3 }}" width="100%" alt="...">
                     </div>
                     {% endif %}
                 </div>

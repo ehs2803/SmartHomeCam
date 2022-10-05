@@ -19,7 +19,7 @@ class VideoCamera(object):
 
     def __init__(self):
         self.ip=''
-        self.port=50002
+        self.port=50000
         self.threads = {} # 복수개의 라즈레리파이 객체
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.server_socket.bind((self.ip, self.port))
