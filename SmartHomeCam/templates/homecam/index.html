@@ -64,8 +64,8 @@
             <p>import struct # 바이트(bytes) 형식의 데이터 처리 모듈
 
             <p># 서버 ip 주소 및 port 번호
-            <p>ip = '127.0.0.1'
-            <p>port = 50002
+            <p>ip = '43.200.29.147'
+            <p>port = 50000
 
             <p># 카메라 또는 동영상
             <p>capture = cv2.VideoCapture(0)
@@ -122,7 +122,7 @@
             <p># - 빅 엔디안(big endian) : 최상위 바이트부터 차례대로 저장
             <p># - L : 부호없는 긴 정수(unsigned long) 4 bytes
             <p>try:
-            <p>client_socket.sendall(struct.pack(">L", len(frame)) + frame)
+            <p>client_socket.sendall(struct.pack(">Q", len(frame)) + frame)
             <p>except:
             <p>break
             <p>data = client_socket.recv(4);

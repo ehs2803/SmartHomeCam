@@ -21,7 +21,7 @@ services:
       - ./:/usr/src/app/
     ports:
       - 8000
-      - 50002:50002
+      - 50000:50000
     env_file:
       - ./.env.prod
 
