@@ -14,7 +14,7 @@ services:
   web:
     build: .
     image: smarthomecam_web
-    command: gunicorn SmartHomeCam.wsgi:application --bind 0.0.0.0:8000 -w 3 --threads 3
+    command: gunicorn SmartHomeCam.wsgi:application --bind 0.0.0.0:8000 -w 3
     volumes:
       - static_volume:/usr/src/app/_static
       - media_volume:/usr/src/app/_media
