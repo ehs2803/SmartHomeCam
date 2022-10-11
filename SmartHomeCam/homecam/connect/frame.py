@@ -1,4 +1,5 @@
 import copy
+import os
 import time
 
 
@@ -73,7 +74,7 @@ class Frame:
             packed_data_size = self.data_buffer[:self.data_size]
             self.data_buffer = self.data_buffer[self.data_size:]
             # struct.unpack : 변환된 바이트 객체를 원래의 데이터로 변환
-            frame_size = struct.unpack(">Q", packed_data_size)[0]
+            frame_size = struct.unpack(">L", packed_data_size)[0]
             # 프레임 데이터의 크기보다 버퍼에 저장된 데이터의 크기가 작은 경우
             while len(self.data_buffer) < frame_size:
                 # 데이터 수신
@@ -139,7 +140,7 @@ class Frame:
             ts = time.time()
             timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y_%m_%d_%H_%M_%S')
             self.rvfilename = 'media/tempVideoRepository/'+timestamp + '.mp4'
-            self.out = cv2.VideoWriter(self.rvfilename, cv2.VideoWriter_fourcc(*'H264'), 20, (640, 480))
+            self.out = cv2.VideoWriter(self.rvfilename, cv2.VideoWriter_fourcc(*'H264'), 20, (640, 480)) # *'H264'
             self.recording_video_check = True
             self.check_current_recording=True
         else:
@@ -155,6 +156,11 @@ class Frame:
             ts = time.time()
             timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
             rv.time = timestamp
+
+            try:
+                os.system(f"ffmpeg -i {saved_filename} -vcodec libx264 {saved_filename}")
+            except Exception as e:
+                print(e)
 
             fp = open(saved_filename, 'rb')
             vf = fp.read()

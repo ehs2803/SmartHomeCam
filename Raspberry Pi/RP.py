@@ -5,7 +5,7 @@ import pickle  # 바이트(bytes) 형식의 데이터 변환 모듈
 import struct  # 바이트(bytes) 형식의 데이터 처리 모듈
 
 # 서버 ip 주소 및 port 번호
-ip = '43.200.29.147' #'127.0.0.1'
+ip = '127.0.0.1' #'43.200.29.147' #'127.0.0.1'
 port = 50000
 
 # 카메라 또는 동영상
@@ -22,7 +22,7 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((ip, port))
 print("연결 성공")
 # 메시지는 hello로 보낸다.
-msg = 'temp2:home1'
+msg = 'temp1:home1'
 # 메시지를 바이너리(byte)형식으로 변환한다.
 data = msg.encode();
 # 메시지 길이를 구한다.
@@ -64,7 +64,7 @@ try:
         #   - 빅 엔디안(big endian) : 최상위 바이트부터 차례대로 저장
         # - L : 부호없는 긴 정수(unsigned long) 4 bytes
         try:
-            client_socket.sendall(struct.pack(">Q", len(frame)) + frame)
+            client_socket.sendall(struct.pack(">L", len(frame)) + frame)
             print("send")
         except:
             break
