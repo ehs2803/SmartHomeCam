@@ -9,6 +9,7 @@ import pickle
 import datetime
 from django.core.files.base import ContentFile
 
+from SmartHomeCam.settings.base import BASE_DIR
 from SmartHomeCam.storages import FileUpload, s3_client
 from homecam.mode.detect_person_animal import YoloDetect
 from homecam.mode.fire_detection import FireDetector
@@ -157,12 +158,16 @@ class Frame:
             timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
             rv.time = timestamp
 
+            savedFile = str(BASE_DIR)+"/"+saved_filename
+            newFile = str(BASE_DIR)+"/"+saved_filename+".mp4"
+            print(savedFile+" "+newFile)
+
             try:
-                os.system(f"ffmpeg -i {saved_filename} -vcodec libx264 {saved_filename}")
+                os.system(f"ffmpeg -i {savedFile} -vcodec libx264 {newFile}")
             except Exception as e:
                 print(e)
 
-            fp = open(saved_filename, 'rb')
+            fp = open(saved_filename+".mp4", 'rb')
             vf = fp.read()
 
             file = ContentFile(vf)
