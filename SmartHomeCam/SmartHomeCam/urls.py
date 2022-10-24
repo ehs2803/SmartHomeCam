@@ -13,7 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-#from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
@@ -22,10 +21,10 @@ from SmartHomeCam.settings import base
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("mainpage.urls")),
-    path('account/', include("account.urls")),
-    path('mypage/', include("mypage.urls")),
-    path('homecam/', include("homecam.urls")),
+    path('', include("mainpage.urls")), # 메인페이지
+    path('account/', include("account.urls")), # 계정
+    path('mypage/', include("mypage.urls")), # 마이페이지
+    path('homecam/', include("homecam.urls")), # 홈카메라
 ]
 urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
 urlpatterns += static(base.STATIC_URL, document_root=base.STATIC_ROOT)

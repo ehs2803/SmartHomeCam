@@ -6,6 +6,7 @@ from PIL import Image
 
 from SmartHomeCam.settings.base import AWS_ACCESS_KEY_S3, AWS_SECRET_KEY_S3, S3_BUCKET_NAME, S3_BUCKET_REGION, S3_BUCKET_DIR
 
+# s3 bucket 파일 업로드(이미지, 동영상)
 class FileUpload:
     def __init__(self, client):
         self.client = client

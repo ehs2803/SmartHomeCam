@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
 
-
 # Create your views here
 
+# 메인페이지
 def landing(request):
     user = None
     if request.session.get('id'):

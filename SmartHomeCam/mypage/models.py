@@ -6,7 +6,7 @@ from account.models import AuthUser
 def user_directory_path(instance, filename):
     return 'images/family/{}/{}'.format(instance.uid.username, filename)
 
-
+# 가족 정보 저장
 class Family(models.Model):
     fid = models.AutoField(primary_key=True)
     uid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='uid')
