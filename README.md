@@ -14,7 +14,7 @@
 
 1. 서비스 구성도
 
-![Untitled](images/struc.jpg)
+![Untitled](https://user-images.githubusercontent.com/65898555/197448840-59cdccf5-24c0-4fd9-91d7-a2f4a9c5447f.png)
 
 <br>
 
