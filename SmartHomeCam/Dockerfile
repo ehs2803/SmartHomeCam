@@ -34,10 +34,10 @@ WORKDIR /usr/src/app
 RUN apt-get -y update
 RUN pip install --upgrade setuptools
 RUN apt-get install -y libmariadb-dev
-#RUN apt-get install libgl1-mesa-glx -y
-#RUN apt-get install libglib2.0-0 -y
-#RUN apt-get install ffmpeg x264 libx264-dev -y
-#RUN apt-get install watch -y
+RUN apt-get install libgl1-mesa-glx -y # video recording
+RUN apt-get install libglib2.0-0 -y # video recording
+RUN apt-get install ffmpeg x264 libx264-dev -y # video recording
+RUN apt-get install watch -y # video recording
 RUN apt-get install -y --fix-missing \
     build-essential \
     cmake \
