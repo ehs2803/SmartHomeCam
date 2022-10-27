@@ -37,7 +37,7 @@ class YoloDetect(EmailSender, SmsSender):
            "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator",
            "book", "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
         # YOLO 네트워크 불러오기
-        self.net = cv2.dnn.readNet("homecam/data/yolov4-tiny.weights", "homecam/data/yolov4-tiny.cfg")
+        self.net = cv2.dnn.readNet("homecam/data/PersonAnimalDetectorYOLO.weights", "homecam/data/PersonAnimalDetectorYOLO.cfg")
         self.layer_names = self.net.getLayerNames()
         self.output_layers = [self.layer_names[i - 1] for i in self.net.getUnconnectedOutLayers()]
         # 클래스의 갯수만큼 랜덤 RGB 배열을 생성

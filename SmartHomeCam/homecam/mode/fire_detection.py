@@ -21,8 +21,8 @@ from mypage.models import Family
 class FireDetector(EmailSender, SmsSender):
     def __init__(self, username):
         self.username = username
-        self.net = cv2.dnn.readNet("homecam/data/yolov3_custom1_1000.weights",
-                                   "homecam/data/yolov3_custom.cfg")
+        self.net = cv2.dnn.readNet("homecam/data/FireDetectorYOLO.weights",
+                                   "homecam/data/FireDetectorYOLO.cfg")
         self.classes = ["fire"]
         # YOLO 네트워크 불러오기
         self.layer_names = self.net.getLayerNames()
