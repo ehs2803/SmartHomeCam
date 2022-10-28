@@ -19,7 +19,7 @@ class EmailSender:
         # 수신자 설정 (복수는 콤마 구분이다.)
         self.data['To'] = receiver #"hr2803@naver.com,ehs1781@gmail.com"
         # 메일 제목
-        self.data['Subject'] = subject #"[SmartHomecam] 보안 메일"
+        self.data['Subject'] = subject
 
         # 이미지 파일 추가
         fp1 = open(sendimg1, 'rb') #fp1 = open("data/faceimages/1.jpg", 'rb')
@@ -81,7 +81,3 @@ class EmailSender:
         server.sendmail(sender, receiver, self.data.as_string())
         # QUIT을 보내고 접속을 종료하고 메일을 보낸다.
         server.quit()
-
-
-
-

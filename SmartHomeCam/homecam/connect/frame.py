@@ -94,23 +94,27 @@ class Frame:
             # imdecode : 이미지(프레임) 디코딩
             frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
 
+            # 사람/반려동물 탐지
             if self.check_detect_person or self.check_detect_animal:
                 tframe = self.YoloDetector.Detect_person_animal_YOLO(frame=frame, size=320, score_threshold=0.4, nms_threshold=0.4,
                                                                    username=self.username, camid=self.camid,
                                                   check_detect_person=self.check_detect_person,
                                                   check_detect_animal=self.check_detect_animal)
+            # 외부인탐지
             if self.check_recognition_face:
                 tframe = self.RecognitionFace.recognition_face(frame, self.camid)
 
+            # 화재탐지
             if self.check_detect_fire:
                 fframe = self.FireDetector.detect_fire(frame, 320, 0.4, 0.4, self.camid)
 
+            # 일정시간 사람 미감지, 사람 행동 미감지 탐지
             if self.check_detect_no_action or self.check_detect_no_person:
                 sframe = self.SafeMode.run_safe_mode(frame, self.camid, 320,
                                                      self.check_detect_no_person,
                                                      self.check_detect_no_action,
                                                      self.check_detect_no_person_day)
-
+            # 동영상 녹화
             if self.recording_video_check==True:
                 self.out.write(frame)
 
@@ -118,6 +122,7 @@ class Frame:
             self.imagesave = frame
             self.imageFrame = frame.tobytes()
 
+    # 이미지 캡처
     def capture_picture(self, puser):
         user = puser
         cp = CapturePicture()
@@ -136,6 +141,7 @@ class Frame:
         cp.camid = self.camid
         cp.save()
 
+    # 동영상 녹화
     def recording_video(self, puser):
         if self.recording_video_check == False:
             ts = time.time()
@@ -162,6 +168,7 @@ class Frame:
             newFile = str(BASE_DIR)+"/"+saved_filename+".mp4"
             print(savedFile+" "+newFile)
 
+            # 코덱 변경
             try:
                 os.system(f"ffmpeg -i {savedFile} -vcodec libx264 {newFile}")
             except Exception as e:
@@ -181,9 +188,11 @@ class Frame:
             rv.camid = self.camid
             rv.save()
 
+    # 동영상 프레임 얻기
     def get_frame(self):
         return self.imageFrame
 
+    # 연결 해제
     def disconnet(self):
         self.check = True
         self.client_socket.close()
