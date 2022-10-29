@@ -20,6 +20,7 @@ from homecam.sns.SMSMessage import SmsSender
 from mypage.models import Family
 from django.conf import settings
 
+# 사람, 동물 탐지
 class YoloDetect(EmailSender, SmsSender):
     def __init__(self):
         self.size_list = [320, 416, 608]
@@ -46,9 +47,10 @@ class YoloDetect(EmailSender, SmsSender):
         self.detect_person_time = time.time()
         self.detect_animal_time = time.time()
 
-        self.PhoneNumberList = []
-        self.EmailAddressList = []
+        self.PhoneNumberList = [] # 가족멤버 전화번호 목록
+        self.EmailAddressList = [] # 가족멤버 이메일 목록
 
+    # 사람, 반려동물 탐지
     def Detect_person_animal_YOLO(self, frame, size, score_threshold, nms_threshold, username, camid,
                                   check_detect_person,check_detect_animal):
         copy_frame = frame.copy()
@@ -116,9 +118,8 @@ class YoloDetect(EmailSender, SmsSender):
                     cv2.putText(frame, label, (x, y - 8), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 2)
 
         if check_detect_person and check_person:
-            # 10초 후에
+            # 사람탐지 이후 최소 10초 이후에
             if time.time() - self.detect_person_time > 10:
-                print(1)
                 ret1, frame1 = cv2.imencode('.jpg', frame)
                 ret2, frame2 = cv2.imencode('.jpg', copy_frame)
 
@@ -172,15 +173,14 @@ class YoloDetect(EmailSender, SmsSender):
                 self.detect_person_time = time.time()
 
         if check_detect_animal and check_animal:
+            # 반려동물탐지 이후 최소 10초 이후에
             if time.time() - self.detect_animal_time >10:
-                print('10sec after')
                 ts = time.time()
                 timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
                 check_record_15=False
                 check_record_16=False
                 for index, id in enumerate(class_ids):
-                    if confidences[index]>0.6 and (id==15 or id==16):
-                        print(confidences[index], id)
+                    if confidences[index]>0.6 and (id==15 or id==16): # 개 or 고양이인 경우
                         if id==15:
                             if check_record_15==False:
                                 check_record_15=True
@@ -205,7 +205,7 @@ class YoloDetect(EmailSender, SmsSender):
 
                         cx = x+(w/2)
                         cy = y+(h/2)
-
+                        # 4사분면으로 나누어 사분면 구하기
                         location = 0
                         if cx<=midHeight and cy<=midWidth:
                             location=2
@@ -224,6 +224,7 @@ class YoloDetect(EmailSender, SmsSender):
 
         return frame
 
+    # 사용자 가족 멤버 이메일, 전화번호 목록 업데이트
     def updateContactList(self, username):
         user = User.objects.get(username=username)
         family_members = Family.objects.filter(uid=user.id)
@@ -232,9 +233,8 @@ class YoloDetect(EmailSender, SmsSender):
         for family in family_members:
             self.EmailAddressList.append(family.email)
             self.PhoneNumberList.append(family.tel)
-        print(self.EmailAddressList)
-        print(self.PhoneNumberList)
 
+    # 이메일 전송
     def sendDetectPersonEmail(self, file1, file2):
         receivers = ''
         for email in self.EmailAddressList:
@@ -245,11 +245,15 @@ class YoloDetect(EmailSender, SmsSender):
                             sendimg1=file1, sendimg2=file2)
         super().sendEmail()
 
+    # SMS 전송
     def sendDetectPersonSMS(self):
         for phone in self.PhoneNumberList:
             receiver = '82'+phone
             receiver = receiver.replace('-', "")
-            super().sendSMS(receiver, '[SmartHomeCam] 사람 탐지\n웹사이트에 들어가서 확인해보세요.')
+            try:
+                super().sendSMS(receiver, '[SmartHomeCam] 사람 탐지\n웹사이트에 들어가서 확인해보세요.')
+            except Exception as e:
+                print(e)
 
 
 

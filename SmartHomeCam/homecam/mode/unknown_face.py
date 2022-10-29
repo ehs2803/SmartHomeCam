@@ -19,10 +19,10 @@ from mypage.models import Family
 
 from homecam.models import DetectUnknown, Alarm
 
-
+# 외부인 탐지
 class unknownFaceDetector(EmailSender, SmsSender):
     def __init__(self, username):
-        # shape predictor와 사용하는 recognition_model
+        # shape predictor와 recognition_model
         self.pose_predictor_5_point = dlib.shape_predictor("homecam/data/shape_predictor_5_face_landmarks.dat")
         self.face_encoder = dlib.face_recognition_model_v1("homecam/data/dlib_face_recognition_resnet_model_v1.dat")
 
@@ -48,6 +48,7 @@ class unknownFaceDetector(EmailSender, SmsSender):
         self.PhoneNumberList=[]
         self.EmailAddressList=[]
 
+    # 가족멤버에 등록된 얼굴 사진 불러오기
     def updateFamilyMemberFaces(self):
         user = User.objects.get(username=self.username)
         family_members = Family.objects.filter(uid=user.id)
@@ -55,7 +56,6 @@ class unknownFaceDetector(EmailSender, SmsSender):
             image1 = family.image1
             image2 = family.image2
             image3 = family.image3
-            print(image1)
             if image1!='':
                 try:
                     index = family.image1_s3.rfind('/')
@@ -127,6 +127,7 @@ class unknownFaceDetector(EmailSender, SmsSender):
         return zip(*sorted(zip(distances, dbfaces, face_names)))
 
     def recognition_face(self, img, camid):
+        # 10초마다 외부인 탐지
         if time.time()-self.recognition_face_time<10:
             return;
         copy_image = img.copy()
@@ -182,15 +183,18 @@ class unknownFaceDetector(EmailSender, SmsSender):
                 filepath2 = settings.MEDIA_ROOT + '/' + str(rfmodel.image2)
                 try:
                     self.sendDetectunknownFaceEmail(filepath1, filepath2)
+                except Exception as e:
+                    print(e)
+                try:
                     self.sendDetectUnknownSMS()
                 except Exception as e:
                     print(e)
 
                 self.recognition_face_time=time.time()
-                print('unknown detect: ', computed_distances_ordered[0])
                 break
         return img
 
+    # 사용자 가족 멤버 이메일, 전화번호 목록 업데이트
     def updateContactList(self, username):
         user = User.objects.get(username=username)
         family_members = Family.objects.filter(uid=user.id)
@@ -202,6 +206,7 @@ class unknownFaceDetector(EmailSender, SmsSender):
         print(self.EmailAddressList)
         print(self.PhoneNumberList)
 
+    # 이메일 전송
     def sendDetectunknownFaceEmail(self, file1, file2):
         receivers = ''
         for email in self.EmailAddressList:
@@ -212,8 +217,12 @@ class unknownFaceDetector(EmailSender, SmsSender):
                             sendimg1=file1, sendimg2=file2)
         super().sendEmail()
 
+    # SMS 전송
     def sendDetectUnknownSMS(self):
         for phone in self.PhoneNumberList:
             receiver = '82'+phone
             receiver = receiver.replace('-', "")
-            super().sendSMS(receiver, '[SmartHomeCam] 외부인 탐지\n웹사이트에 들어가서 확인해보세요.')
+            try:
+                super().sendSMS(receiver, '[SmartHomeCam] 외부인 탐지\n웹사이트에 들어가서 확인해보세요.')
+            except Exception as e:
+                print(e)

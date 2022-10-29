@@ -17,10 +17,11 @@ import time
 from homecam.models import DetectFire, Alarm
 from mypage.models import Family
 
-
+# 화재탐지
 class FireDetector(EmailSender, SmsSender):
     def __init__(self, username):
         self.username = username
+        # 화재탐지 모델 로드
         self.net = cv2.dnn.readNet("homecam/data/FireDetectorYOLO.weights",
                                    "homecam/data/FireDetectorYOLO.cfg")
         self.classes = ["fire"]
@@ -38,7 +39,9 @@ class FireDetector(EmailSender, SmsSender):
         self.PhoneNumberList=[]
         self.EmailAddressList=[]
 
+    # 화재탐지
     def detect_fire(self, frame, size, score_threshold, nms_threshold, camid):
+        # 10초마다 화재 여부 확인
         if time.time()-self.detect_fire_time<10:
             return;
         copy_frame = frame.copy()
@@ -58,7 +61,7 @@ class FireDetector(EmailSender, SmsSender):
         class_ids = []
         confidences = []
         boxes = []
-        # printq
+
         for out in outs:
             for detection in out:
                 scores = detection[5:]
@@ -139,16 +142,19 @@ class FireDetector(EmailSender, SmsSender):
                     filepath2 = settings.MEDIA_ROOT + '/' + str(dfmodel.image2)
                     try:
                         self.sendDetectFireEmail(filepath1, filepath2)
+                    except Exception as e:
+                        print(e)
+                    try:
                         self.sendDetectFireSMS()
                     except Exception as e:
                         print(e)
 
                     self.detect_fire_time=time.time()
-                    print('detect fire')
                     break
 
         return frame
 
+    # 사용자 가족 멤버 이메일, 전화번호 목록 업데이트
     def updateContactList(self, username):
         user = User.objects.get(username=username)
         family_members = Family.objects.filter(uid=user.id)
@@ -157,9 +163,8 @@ class FireDetector(EmailSender, SmsSender):
         for family in family_members:
             self.EmailAddressList.append(family.email)
             self.PhoneNumberList.append(family.tel)
-        print(self.EmailAddressList)
-        print(self.PhoneNumberList)
 
+    # 이메일 전송
     def sendDetectFireEmail(self, file1, file2):
         receivers = ''
         for email in self.EmailAddressList:
@@ -170,10 +175,13 @@ class FireDetector(EmailSender, SmsSender):
                             sendimg1=file1, sendimg2=file2)
         super().sendEmail()
 
+    # SMS 전송
     def sendDetectFireSMS(self):
         for phone in self.PhoneNumberList:
             receiver = '82'+phone
             receiver = receiver.replace('-', "")
-            super().sendSMS(receiver, '[SmartHomeCam] 화재 탐지\n웹사이트에 들어가서 확인해보세요.')
-            print("send sms")
+            try:
+                super().sendSMS(receiver, '[SmartHomeCam] 화재 탐지\n웹사이트에 들어가서 확인해보세요.')
+            except Exception as e:
+                print(e)
 
