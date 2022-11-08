@@ -1,6 +1,6 @@
 # SmartHomeCam (졸업작품)
 
-작품 주제 : 라즈베리파이와 인공지능을 이용한 스마트 라카메라 웹 서비스
+작품 주제 : 임베디드 시스템과 인공지능을 이용한 스마트 홈카메라 웹 서비스
 
 주제 선정 배경 : 1인 가구의 증가와 반려가구 1500만 시대에 외출 중에 카메라를 통해 집안상황 확인, 방범 서비스, 화재감지, 반려동물을 확인을 할 수 있습니다.
 
@@ -16,7 +16,7 @@
 
 1. 서비스 구성도
 
-![image](https://user-images.githubusercontent.com/65898555/200227133-9947e07e-6872-4cb1-a06c-c83ef8213642.png)
+<img width="881" alt="image" src="https://user-images.githubusercontent.com/65898555/200474278-be83471c-51dd-491c-940a-d8f764b8c530.png">
 
 <br>
 
