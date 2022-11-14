@@ -22,8 +22,7 @@
 
 ## **데이터베이스**
 
-
-![Untitled](images/Untitled.png)
+![image](https://user-images.githubusercontent.com/65898555/201661258-22f70315-1f4c-4c46-87f5-e42942586281.png)
 
 - auth_user : 사용자 정보
 - homecam : 사용자 계정에 연결된 홈카메라 정보
