@@ -36,7 +36,7 @@
 - detect_person : 홈카메라 사람탐지모드 저장
 - detect_aniaml : 홈카메라 반려동물탐지 모드 저장
 - detect_fire : 홈카메라 화재탐지 모드 저장
-- recognition_face : 홈카메라 외부인 탐지 모드 저장
+- detect_unknown : 홈카메라 외부인 탐지 모드 저장
 - safe_mode_nodetect : 홈카메라 안심모드 사람 미탐지 저장
 - safe_mode_noaction : 홈카메라 안심모드 사람 행동 미감지 저장
 
