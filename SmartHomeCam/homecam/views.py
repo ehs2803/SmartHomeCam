@@ -243,7 +243,7 @@ def set_mode_detectNoPerson(request ,id):
         if CAMERA.threads.get(user.username):
             client = CAMERA.threads[user.username]
             if client.connections.get(id) != None:
-                client.connections[id].check_detect_animal=homecam.po_safe_noperson
+                client.connections[id].check_detect_no_person=homecam.po_safe_noperson
                 client.connections[id].SafeMode.init_noPerson()
         return redirect('/mypage/homecam/manage')
 
@@ -271,7 +271,7 @@ def set_mode_detectNoAction(request, id):
         if CAMERA.threads.get(user.username):
             client = CAMERA.threads[user.username]
             if client.connections.get(id) != None:
-                client.connections[id].check_detect_animal=homecam.po_safe_noaction
+                client.connections[id].check_detect_no_action=homecam.po_safe_noaction
                 client.connections[id].SafeMode.init_noAction()
         return redirect('/mypage/homecam/manage')
 
